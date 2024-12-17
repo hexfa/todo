@@ -5,7 +5,7 @@ import 'package:todo/presentation/bloc/project_event.dart';
 import 'package:todo/presentation/bloc/project_state.dart';
 
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
-  final GetProjects getProjectsUseCase;
+  final GetProjectsUseCase getProjectsUseCase;
 
   ProjectsBloc(this.getProjectsUseCase) : super(ProjectsInitial()) {
     on<FetchProjectsEvent>((event, emit) async {

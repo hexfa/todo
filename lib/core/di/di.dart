@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo/core/util/storage.dart';
+import 'package:todo/data/datasources/projects_remote_datasource.dart';
+import 'package:todo/data/repositories/projects_repository_impl.dart';
+import 'package:todo/domain/usecases/get_projects_usecase.dart';
+import 'package:todo/presentation/bloc/project_bloc.dart';
+import 'package:todo/presentation/route/app_router.dart';
+import 'package:todo/services/api/dio_client.dart';
+import 'package:todo/services/api/project_service.dart';
 
-import '../../data/datasources/projects_remote_datasource.dart';
-import '../../data/repositories/projects_repository_impl.dart';
-import '../../domain/usecases/get_projects_usecase.dart';
-import '../../presentation/bloc/project_bloc.dart';
-import '../../services/api/dio_client.dart';
-import '../../services/api/project_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -14,14 +16,26 @@ void setupLocator(String token) {
   final dio = createDio(token);
   getIt.registerLazySingleton<Dio>(() => dio);
 
+  getIt.registerLazySingleton<Storage>(() => Storage());
+
+  getIt.registerLazySingleton<AppRouter>(
+          () => AppRouter(storage: getIt<Storage>()));
+
   final projectService = ProjectService(dio);
   getIt.registerLazySingleton<ProjectService>(() => projectService);
 
+  //register data sources
   getIt.registerLazySingleton<ProjectsRemoteDataSource>(
       () => ProjectsRemoteDataSourceImpl(getIt()));
+
+  //register repositories
   getIt.registerLazySingleton<ProjectsRepositoryImpl>(
       () => ProjectsRepositoryImpl(getIt()));
-  getIt.registerLazySingleton<GetProjects>(
-      () => GetProjects(getIt<ProjectsRepositoryImpl>()));
-  getIt.registerFactory<ProjectsBloc>(() => ProjectsBloc(getIt<GetProjects>()));
+
+  //register use cases
+  getIt.registerLazySingleton<GetProjectsUseCase>(
+      () => GetProjectsUseCase(getIt<ProjectsRepositoryImpl>()));
+
+  //register blocs
+  getIt.registerFactory<ProjectsBloc>(() => ProjectsBloc(getIt<GetProjectsUseCase>()));
 }

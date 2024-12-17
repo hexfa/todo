@@ -26,7 +26,6 @@ class _ProjectService implements ProjectService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<ProjectModelResponse>>(Options(
       method: 'GET',
@@ -44,7 +43,6 @@ class _ProjectService implements ProjectService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    print("innnnn ${_result.data}");
     var value = _result.data!
         .map((dynamic i) =>
             ProjectModelResponse.fromJson(i as Map<String, dynamic>))

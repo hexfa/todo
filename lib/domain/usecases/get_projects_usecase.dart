@@ -6,10 +6,10 @@ import '../entities/project.dart';
 import '../repositories/projects_repository.dart';
 import 'base_usecase.dart';
 
-class GetProjects implements UseCase<Either<Failure, List<Project>>, NoParams> {
+class GetProjectsUseCase implements UseCase<Either<Failure, List<Project>>, NoParams> {
   final ProjectsRepository repository;
 
-  GetProjects(this.repository);
+  GetProjectsUseCase(this.repository);
 
   @override
   Future<Either<Failure, List<Project>>> call(NoParams params) {
