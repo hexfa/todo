@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_it/get_it.dart';
 import 'package:todo/presentation/route/app_router.dart';
 
 import 'core/di/di.dart';
 
 void main() {
-  const token = '0123456789abcdef0123456789';
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
 
   setupLocator(token);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  AppRouter appRouter = GetIt.I<AppRouter>();
+  final AppRouter appRouter = getIt<AppRouter>();
+
+   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

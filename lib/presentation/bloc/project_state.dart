@@ -28,3 +28,15 @@ class ProjectsError extends ProjectsState {
   @override
   List<Object?> get props => [message];
 }
+
+class ProjectCreateSuccess extends ProjectsState {
+  final Project project;
+
+  ProjectCreateSuccess(this.project);
+}
+
+class ProjectFailure extends ProjectsState {
+  final String message;
+
+  ProjectFailure(this.message);
+}
