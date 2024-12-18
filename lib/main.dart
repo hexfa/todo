@@ -10,8 +10,8 @@ import 'package:todo/presentation/route/app_router.dart';
 import 'core/di/di.dart';
 
 void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
   const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
-
   await setupLocator(token);
   final storage = GetIt.I<Storage>();
   bool isDarkTheme = await storage.getData<bool>('isDarkTheme') ?? false;

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../core/error/failure.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/repositories/projects_repository.dart';

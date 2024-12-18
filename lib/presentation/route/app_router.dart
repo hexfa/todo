@@ -21,7 +21,7 @@ class AppRouter {
         builder: (context, state) {
           return BlocProvider<ProjectsBloc>(
             create: (context) => getIt<ProjectsBloc>(),
-            child: const ProjectsPage(),
+            child:  ProjectsPage(),
           );
         },
       ),
