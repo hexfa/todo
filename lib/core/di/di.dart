@@ -6,7 +6,7 @@ import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
-import 'package:todo/presentation/bloc/project_bloc.dart';
+import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';

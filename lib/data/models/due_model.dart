@@ -1,5 +1,3 @@
-// lib/data/models/due_model.dart
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/domain/entities/due.dart';
 
@@ -13,7 +11,7 @@ class DueModel extends Due {
   final String datetime;
   final String string;
   final String timezone;
-  DueModel({
+  const DueModel({
     required this.date,
     required this.isRrecurring ,
     required this.datetime,

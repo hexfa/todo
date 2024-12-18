@@ -1,5 +1,3 @@
-// test/features/projects/domain/usecases/get_projects_usecase_test.dart
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -8,6 +6,7 @@ import 'package:todo/core/error/failure.dart';
 import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
+import 'package:todo/domain/usecases/no_param.dart';
 
 import 'get_projects_usecase_test.mocks.dart';
 
@@ -40,7 +39,8 @@ void main() {
 
   test('should get projects from the repository', () async {
     // arrange
-    when(mockRepository.getProjects()).thenAnswer((_) async => Right(tProjects));
+    when(mockRepository.getProjects())
+        .thenAnswer((_) async => Right(tProjects));
     // act
     final result = await usecase(NoParams());
     // assert
@@ -51,12 +51,16 @@ void main() {
 
   test('should return ServerFailure when something goes wrong', () async {
     // arrange
-    when(mockRepository.getProjects())
-        .thenAnswer((_) async => const Left<Failure, List<Project>>(ServerFailure(message: 'Server Error')));
+    when(mockRepository.getProjects()).thenAnswer((_) async =>
+        const Left<Failure, List<Project>>(
+            ServerFailure(message: 'Server Error')));
     // act
     final result = await usecase(NoParams());
     // assert
-    expect(result, const Left<Failure, List<Project>>(ServerFailure(message: 'Server Error')));
+    expect(
+        result,
+        const Left<Failure, List<Project>>(
+            ServerFailure(message: 'Server Error')));
     verify(mockRepository.getProjects());
     verifyNoMoreInteractions(mockRepository);
   });
