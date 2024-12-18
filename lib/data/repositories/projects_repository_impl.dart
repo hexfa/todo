@@ -32,4 +32,16 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteProject(String id)async {
+    try {
+
+      final response = await remoteDataSource.deleteProjects(id);
+
+      return  Right(response);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

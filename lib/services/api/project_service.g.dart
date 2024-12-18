@@ -51,6 +51,30 @@ class _ProjectService implements ProjectService {
   }
 
   @override
+  Future<void> deleteProjects(String projectId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'projects/${projectId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
   Future<ProjectModelResponse> createProject(
     Map<String, dynamic> body,
     String requestId,
@@ -69,7 +93,7 @@ class _ProjectService implements ProjectService {
     )
             .compose(
               _dio.options,
-              '/projects',
+              'projects',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/presentation/route/app_router.dart';
-
 import 'core/di/di.dart';
 
 void main()async {
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: const [
             Locale('en'), // English
           ],
+
           routerConfig: appRouter.router,
           locale: const Locale('en'),
           debugShowCheckedModeBanner: false,

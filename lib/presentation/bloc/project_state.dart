@@ -10,6 +10,7 @@ abstract class ProjectsState extends Equatable {
 class ProjectsInitial extends ProjectsState {}
 
 class ProjectsLoading extends ProjectsState {}
+class DeleteProjectState extends ProjectsState {}
 
 class ProjectsLoaded extends ProjectsState {
   final List<Project> projects;
@@ -35,8 +36,3 @@ class ProjectCreateSuccess extends ProjectsState {
   ProjectCreateSuccess(this.project);
 }
 
-class ProjectFailure extends ProjectsState {
-  final String message;
-
-  ProjectFailure(this.message);
-}
