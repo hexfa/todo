@@ -1,0 +1,17 @@
+{
+  "helloWorld": "Hallo Welt!",
+  "confirmDeletion": "Löschung bestätigen",
+  "wantConfirmDeletion": "Möchten Sie dieses Projekt wirklich löschen?",
+  "cancel": "Abbrechen",
+  "delete": "Löschen",
+  "somethingWentWrong": "Etwas ist schiefgelaufen!",
+  "darkMode": "Dunkelmodus",
+  "language": "Sprache",
+  "english": "Englisch",
+  "german": "Deutsch",
+  "logout": "Abmelden",
+  "createProject": "Projekt erstellen",
+  "projectName": "Projektname",
+  "pleaseEnterProjectName": "Bitte geben Sie einen Projektnamen ein",
+  "nothingToSeeHere": "Hier gibt es nichts zu sehen"
+}

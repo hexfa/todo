@@ -23,7 +23,7 @@ class _StateWidgetState extends State<StateWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           widget.isLoading?
-          Lottie.asset(Assets.animations.loding,fit: BoxFit.fill):
+          Lottie.asset(Assets.animations.loding,fit: BoxFit.cover,width: 100,height: 100):
           Opacity(opacity: 0.5,
           child: Lottie.asset(Assets.animations.empty,fit: BoxFit.fill,width: 250,height: 250)),
 

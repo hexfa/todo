@@ -1,17 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
-import 'package:todo/gen/assets.gen.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/gen/assets.gen.dart';
+import 'package:todo/main.dart';
+import 'package:todo/presentation/views/base/base-state.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
 
-class _AppDrawerState extends State<AppDrawer> {
+class _AppDrawerState extends BaseState<AppDrawer> {
   bool isDarkTheme = true;
   String selectedLanguage = 'EN';
   bool isLanguageExpanded = false;
@@ -20,32 +22,42 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   void initState() {
     super.initState();
-    _loadThemePreference();
+    _loadPreferences();
   }
 
-  Future<void> _loadThemePreference() async {
-
-    bool? savedTheme = await storage.getData(StorageKey.IS_DARK_THEME);
+  Future<void> _loadPreferences() async {
+    String? savedLanguage = await storage.getLanguage();
+    bool? savedTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME);
     setState(() {
+      selectedLanguage = savedLanguage ?? 'EN';
       isDarkTheme = savedTheme ?? false;
     });
   }
 
+  Future<void> _changeLanguage(String languageCode) async {
+    setState(() {
+      selectedLanguage = languageCode;
+      isLanguageExpanded = false;
+    });
+    await storage.saveLanguage(languageCode);
+    Locale newLocale = Locale(languageCode);
+    MyApp.setLocale(context, newLocale);
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.purpleAccent.shade100, Colors.blue.shade200],
+            colors: [theme.colorScheme.primary, Colors.blue.shade200],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Column(
           children: [
-            // Custom Header
+            // Header
             Column(
               children: [
                 Padding(
@@ -74,10 +86,11 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
               ],
             ),
+            SizedBox(height: 8),
             // Dark Mode Switch
             ListTile(
               leading: Icon(Icons.brightness_6, color: Colors.white),
-              title: Text('Dark Mode', style: TextStyle(color: Colors.white)),
+              title: Text(localization.darkMode, style: TextStyle(color: Colors.white)),
               trailing: ThemeSwitcher(
                 builder: (context) {
                   return Switch(
@@ -96,10 +109,10 @@ class _AppDrawerState extends State<AppDrawer> {
                 },
               ),
             ),
-            // Language Expanded ListTile
+            // Language Selector
             ExpansionTile(
               leading: Icon(Icons.language, color: Colors.white),
-              title: Text('Language', style: TextStyle(color: Colors.white)),
+              title: Text(localization.language, style: TextStyle(color: Colors.white)),
               trailing: Text(
                 selectedLanguage,
                 style: TextStyle(
@@ -113,35 +126,26 @@ class _AppDrawerState extends State<AppDrawer> {
               },
               children: [
                 ListTile(
-                  title: Text('English', style: TextStyle(color: Colors.white)),
-                  trailing: selectedLanguage == 'EN'
-                      ? Icon(Icons.check, color: Colors.blue)
+                  title: Text(localization.english, style: TextStyle(color: Colors.white)),
+                  trailing: selectedLanguage == 'en'
+                      ? Icon(Icons.check, color: Colors.white)
                       : null,
-                  onTap: () {
-                    setState(() {
-                      selectedLanguage = 'EN';
-                      isLanguageExpanded = false;
-                    });
-                  },
+                  onTap: () => _changeLanguage('en'),
                 ),
                 ListTile(
-                  title: Text('German', style: TextStyle(color: Colors.white)),
-                  trailing: selectedLanguage == 'DE'
-                      ? Icon(Icons.check, color: Colors.blue)
+                  title: Text(localization.german, style: TextStyle(color: Colors.white)),
+                  trailing: selectedLanguage == 'de'
+                      ? Icon(Icons.check, color: Colors.white)
                       : null,
-                  onTap: () {
-                    setState(() {
-                      selectedLanguage = 'DE';
-                      isLanguageExpanded = false;
-                    });
-                  },
+                  onTap: () => _changeLanguage('de'),
                 ),
               ],
             ),
             Spacer(),
+            // Logout
             ListTile(
               leading: Icon(Icons.logout, color: Colors.white),
-              title: Text('Logout', style: TextStyle(color: Colors.white)),
+              title: Text(localization.logout, style: TextStyle(color: Colors.white)),
               onTap: () {
                 Navigator.pop(context);
               },
