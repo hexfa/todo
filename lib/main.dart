@@ -19,7 +19,7 @@ void main() async {
   String? languageCode = await storage.getLanguage();
   runApp(MyApp(
     isDarkTheme: isDarkTheme,
-    initialLocale: languageCode != null ? Locale(languageCode) : Locale('en'),
+    initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
   ));
 }
 
