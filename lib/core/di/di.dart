@@ -9,7 +9,13 @@ import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
+import '../../data/datasources/tasks_remote_datasource.dart';
+import '../../data/datasources/tasks_remote_datasource_impl.dart';
+import '../../data/repositories/tasks_repository_impl.dart';
+import '../../domain/repositories/tasks_repository.dart';
 import '../../domain/usecases/create_project_usecase.dart';
+import '../../domain/usecases/get_tasks_usecase.dart';
+import '../../presentation/bloc/task/task_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -29,10 +35,19 @@ void setupLocator(String token) {
   getIt.registerLazySingleton<ProjectsRemoteDataSource>(
       () => ProjectsRemoteDataSourceImpl(getIt()));
 
+  getIt.registerLazySingleton<TasksRemoteDataSource>(
+        () => TasksRemoteDataSourceImpl(
+      service: getIt<ProjectService>(),
+    ),
+  );
+
   //register repositories
   getIt.registerLazySingleton<ProjectsRepositoryImpl>(
       () => ProjectsRepositoryImpl(getIt()));
 
+  getIt.registerLazySingleton<TasksRepository>(
+        () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
+  );
   //register use cases
   getIt.registerLazySingleton<GetProjectsUseCase>(
       () => GetProjectsUseCase(getIt<ProjectsRepositoryImpl>()));
@@ -41,11 +56,19 @@ void setupLocator(String token) {
     () => CreateProjectUseCase(getIt<ProjectsRepositoryImpl>()),
   );
 
+  getIt.registerLazySingleton<GetTasksUseCase>(
+        () => GetTasksUseCase(getIt<TasksRepository>()),
+  );
+
   //register blocs
   getIt.registerFactory<ProjectsBloc>(
     () => ProjectsBloc(
       createProjectUseCase: getIt<CreateProjectUseCase>(),
       getProjectsUseCase: getIt<GetProjectsUseCase>(),
     ),
+  );
+
+  getIt.registerFactory<TasksBloc>(
+        () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>()),
   );
 }

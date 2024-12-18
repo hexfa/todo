@@ -3,6 +3,7 @@ import 'package:retrofit/http.dart';
 import 'package:todo/data/models/project_model_response.dart';
 
 import '../../core/constants/constants_value.dart';
+import '../../data/models/task_model_response.dart';
 
 part 'project_service.g.dart';
 
@@ -18,4 +19,7 @@ abstract class ProjectService {
     @Body() Map<String, dynamic> body,
     @Header("X-Request-Id") String requestId,
   );
+
+  @GET("tasks")
+  Future<List<TaskModelResponse>> getTasks();
 }
