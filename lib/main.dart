@@ -15,7 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
   await setupLocator(token);
-
   bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
   String? languageCode = await storage.getLanguage();
   runApp(MyApp(

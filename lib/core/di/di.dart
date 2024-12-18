@@ -21,7 +21,7 @@ import '../../presentation/bloc/task/task_bloc.dart';
 
 final getIt = GetIt.instance;
 
-void setupLocator(String token) {
+Future<void> setupLocator(String token) async{
   final dio = createDio(token);
   getIt.registerLazySingleton<Dio>(() => dio);
 
