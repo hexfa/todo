@@ -21,21 +21,21 @@ import '../../presentation/bloc/task/task_bloc.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setupLocator(String token) async{
+Future<void> setupLocator(String token) async {
   final dio = createDio(token);
   getIt.registerLazySingleton<Dio>(() => dio);
 
   getIt.registerLazySingleton<Storage>(() => Storage());
 
   getIt.registerLazySingleton<AppRouter>(
-      () => AppRouter(storage: getIt<Storage>()));
+          () => AppRouter(storage: getIt<Storage>()));
 
   final projectService = ProjectService(dio);
   getIt.registerLazySingleton<ProjectService>(() => projectService);
 
-  //register data sources
+  // Register data sources
   getIt.registerLazySingleton<ProjectsRemoteDataSource>(
-      () => ProjectsRemoteDataSourceImpl(getIt()));
+          () => ProjectsRemoteDataSourceImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRemoteDataSource>(
         () => TasksRemoteDataSourceImpl(
@@ -43,19 +43,20 @@ Future<void> setupLocator(String token) async{
     ),
   );
 
-  //register repositories
-  getIt.registerLazySingleton<ProjectsRepositoryImpl>(
-      () => ProjectsRepositoryImpl(getIt()));
+  // Register repositories
+  getIt.registerLazySingleton<ProjectsRepository>(
+          () => ProjectsRepositoryImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
         () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
   );
-  //register use cases
+
+  // Register use cases
   getIt.registerLazySingleton<GetProjectsUseCase>(
-      () => GetProjectsUseCase(getIt<ProjectsRepositoryImpl>()));
+          () => GetProjectsUseCase(getIt<ProjectsRepository>()));
 
   getIt.registerLazySingleton<CreateProjectUseCase>(
-    () => CreateProjectUseCase(getIt<ProjectsRepositoryImpl>()),
+        () => CreateProjectUseCase(getIt<ProjectsRepository>()),
   );
 
   getIt.registerLazySingleton<GetTasksUseCase>(
@@ -65,12 +66,13 @@ Future<void> setupLocator(String token) async{
   getIt.registerLazySingleton<DeleteUseCase>(
         () => DeleteUseCase(getIt<ProjectsRepository>()),
   );
-  //register blocs
+
+  // Register blocs
   getIt.registerFactory<ProjectsBloc>(
-    () => ProjectsBloc(
+        () => ProjectsBloc(
       createProjectUseCase: getIt<CreateProjectUseCase>(),
       getProjectsUseCase: getIt<GetProjectsUseCase>(),
-      deleteUseCase:getIt<DeleteUseCase>()
+      deleteUseCase: getIt<DeleteUseCase>(),
     ),
   );
 
