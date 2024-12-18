@@ -9,6 +9,7 @@ import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
+import '../../domain/usecases/create_project_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -19,7 +20,7 @@ Future<void> setupLocator(String token)async {
   getIt.registerLazySingleton<Storage>(() => Storage());
 
   getIt.registerLazySingleton<AppRouter>(
-          () => AppRouter(storage: getIt<Storage>()));
+      () => AppRouter(storage: getIt<Storage>()));
 
   final projectService = ProjectService(dio);
   getIt.registerLazySingleton<ProjectService>(() => projectService);
@@ -36,6 +37,15 @@ Future<void> setupLocator(String token)async {
   getIt.registerLazySingleton<GetProjectsUseCase>(
       () => GetProjectsUseCase(getIt<ProjectsRepositoryImpl>()));
 
+  getIt.registerLazySingleton<CreateProjectUseCase>(
+    () => CreateProjectUseCase(getIt<ProjectsRepositoryImpl>()),
+  );
+
   //register blocs
-  getIt.registerFactory<ProjectsBloc>(() => ProjectsBloc(getIt<GetProjectsUseCase>()));
+  getIt.registerFactory<ProjectsBloc>(
+    () => ProjectsBloc(
+      createProjectUseCase: getIt<CreateProjectUseCase>(),
+      getProjectsUseCase: getIt<GetProjectsUseCase>(),
+    ),
+  );
 }

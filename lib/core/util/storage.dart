@@ -4,9 +4,7 @@ class Storage {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<void> saveData<T>(String key, T value) async {
-    print("savedata $value");
     if (value is String) {
-      print("yes");
       await _secureStorage.write(key: key, value: value);
     } else if (value is int || value is double || value is bool) {
       await _secureStorage.write(key: key, value: value.toString());
@@ -16,9 +14,7 @@ class Storage {
   }
 
   Future<T?> getData<T>(String key) async {
-    print("getData $key");
     String? value = await _secureStorage.read(key: key);
-    print("getdata2 $value");
     if (value == null) {
       return null;
     }
