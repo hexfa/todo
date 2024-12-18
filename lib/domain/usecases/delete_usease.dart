@@ -1,18 +1,18 @@
-import 'package:dartz/dartz.dart';
 
-import '../../core/error/failure.dart';
-import '../entities/project.dart';
-import '../repositories/projects_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:todo/core/error/failure.dart';
+import 'package:todo/domain/repositories/projects_repository.dart';
+
 import 'base_usecase.dart';
 
-class DeleteUseCase {
+
+class DeleteProjectUseCase implements UseCase<bool, String> {
   final ProjectsRepository repository;
 
-  DeleteUseCase(this.repository);
+  DeleteProjectUseCase(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(String id) {
-    return repository.deleteProject(id);
+  Future<Either<Failure, bool>> call(String params) async {
+    return await repository.deleteProject(params);
   }
 }
-

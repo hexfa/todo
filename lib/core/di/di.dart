@@ -44,33 +44,33 @@ void setupLocator(String token) {
   );
 
   //register repositories
-  getIt.registerLazySingleton<ProjectsRepositoryImpl>(
-      () => ProjectsRepositoryImpl(getIt()));
+  getIt.registerLazySingleton<ProjectsRepository>(
+          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>()));
 
   getIt.registerLazySingleton<TasksRepository>(
         () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
   );
   //register use cases
   getIt.registerLazySingleton<GetProjectsUseCase>(
-      () => GetProjectsUseCase(getIt<ProjectsRepositoryImpl>()));
+      () => GetProjectsUseCase(getIt<ProjectsRepository>()));
 
   getIt.registerLazySingleton<CreateProjectUseCase>(
-    () => CreateProjectUseCase(getIt<ProjectsRepositoryImpl>()),
+    () => CreateProjectUseCase(getIt<ProjectsRepository>()),
   );
 
   getIt.registerLazySingleton<GetTasksUseCase>(
         () => GetTasksUseCase(getIt<TasksRepository>()),
   );
 
-  getIt.registerLazySingleton<DeleteUseCase>(
-        () => DeleteUseCase(getIt<ProjectsRepository>()),
+  getIt.registerLazySingleton<DeleteProjectUseCase>(
+        () => DeleteProjectUseCase(getIt<ProjectsRepository>()),
   );
   //register blocs
   getIt.registerFactory<ProjectsBloc>(
     () => ProjectsBloc(
       createProjectUseCase: getIt<CreateProjectUseCase>(),
       getProjectsUseCase: getIt<GetProjectsUseCase>(),
-      deleteUseCase:getIt<DeleteUseCase>()
+      deleteUseCase:getIt<DeleteProjectUseCase>()
     ),
   );
 

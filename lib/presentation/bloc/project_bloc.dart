@@ -9,7 +9,7 @@ import '../../domain/usecases/create_project_usecase.dart';
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   final GetProjectsUseCase getProjectsUseCase;
   final CreateProjectUseCase createProjectUseCase;
-  final DeleteUseCase deleteUseCase;
+  final DeleteProjectUseCase deleteUseCase;
 
   ProjectsBloc({
     required this.getProjectsUseCase,

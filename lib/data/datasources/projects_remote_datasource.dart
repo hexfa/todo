@@ -1,10 +1,11 @@
+import 'package:todo/core/error/failure.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/services/api/project_service.dart';
 
 abstract class ProjectsRemoteDataSource {
   Future<List<ProjectModelResponse>> getProjects();
 
-  Future<void> deleteProjects(String id);
+  Future<bool> deleteProjects(String id);
 
   Future<ProjectModelResponse> createProjects(String name, String uuid);
 }
@@ -25,7 +26,14 @@ class ProjectsRemoteDataSourceImpl implements ProjectsRemoteDataSource {
   }
 
   @override
-  Future<void> deleteProjects(String id) async{
-    return await service.deleteProjects(id);
+  Future<bool> deleteProjects(String id) async{
+    try {
+      await service.deleteProjects(id);
+      return true; // Indicate success
+    } catch (e) {
+      throw const ServerFailure(message: 'Failed to delete project');
+    }
   }
+
+
 }

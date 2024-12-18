@@ -80,19 +80,19 @@ class MockProjectsRepository extends _i1.Mock
       ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Project>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> deleteProject(String? id) =>
+  _i4.Future<_i2.Either<_i5.Failure, bool>> deleteProject(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteProject,
           [id],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
-            _FakeEither_0<_i5.Failure, void>(
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, bool>>.value(
+            _FakeEither_0<_i5.Failure, bool>(
           this,
           Invocation.method(
             #deleteProject,
             [id],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
+      ) as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }

@@ -8,5 +8,5 @@ abstract class ProjectsRepository {
 
   Future<Either<Failure, Project>> createProject(String name);
 
-  Future<Either<Failure, void>> deleteProject(String id);
+  Future<Either<Failure, bool>> deleteProject(String id);
 }
