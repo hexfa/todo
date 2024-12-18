@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -23,14 +25,14 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
   List<String> _stateList = [];
   String? _selectState;
 
-  List<String> _projectList = [];
-  String? _selectProject;
+  List<Project> _projectList = [];
+  Project? _selectProject;
 
   List<String> _pointList = [];
   String? _selectPoint;
 
-  List<String> _priorityList = [];
-  String? _selectPriority;
+  List<int> _priorityList = [];
+  int? _selectPriority;
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +70,16 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
                   // project
-                  DropdownButton<String>(
+                  DropdownButton<Project>(
                       value: _selectProject,
                       hint: Text('Select a project'),
-                      items: _projectList.map((String option) {
-                        return DropdownMenuItem<String>(
+                      items: _projectList.map((Project option) {
+                        return DropdownMenuItem<Project>(
                           value: option,
-                          child: Text(option),
+                          child: Text(option.name),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
+                      onChanged: (Project? newValue) {
                         setState(() {
                           _selectProject = newValue;
                         });
@@ -116,16 +118,16 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                       },
                       isExpanded: true),
                   // priority
-                  DropdownButton<String>(
+                  DropdownButton<int>(
                       value: _selectPriority,
                       hint: Text('Select a priority'),
-                      items: _priorityList.map((String option) {
-                        return DropdownMenuItem<String>(
+                      items: _priorityList.map((int option) {
+                        return DropdownMenuItem<int>(
                           value: option,
-                          child: Text(option),
+                          child: Text('$option'),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
+                      onChanged: (int? newValue) {
                         setState(() {
                           _selectPriority = newValue;
                         });
@@ -162,15 +164,22 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      getBloc<CreateTaskBloc>(context).add(AddEvent(Task(
-                          _titleController.text,
-                          _descriptionController.text,
-                          _selectState ?? '',
-                          _selectPriority ?? '',
-                          _selectProject ?? '',
-                          _selectPoint ?? '',
-                          _selectStartDate,
-                          _selectEndDate)));
+                      getBloc<CreateTaskBloc>(context).add(AddEvent(TaskEntity(
+                          creatorId: '',
+                          createdAt: DateFormat("yyyy-MM-ddTHH:mm:ss.SSSSSSZ")
+                              .format(DateTime.now()),
+                          id: Uuid().v4(),
+                          title: _titleController.text,
+                          description: _descriptionController.text,
+                          state: _selectState ?? '',
+                          priority: _selectPriority ?? 1,
+                          projectId:
+                              _selectProject != null ? _selectProject!.id : '',
+                          startDate: _selectStartDate,
+                          endDate: _selectEndDate,
+                          labels: [],
+                          order: 0,
+                          url: '')));
                     },
                     child: const Text('Add Task'),
                   ),

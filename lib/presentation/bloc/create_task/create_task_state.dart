@@ -10,9 +10,9 @@ final class AddTaskInitial extends CreateTaskState {
 final class InitialDataState extends CreateTaskState {
   final List<String> stateList;
 
-  final List<String> projectList;
+  final List<Project> projectList;
   final List<String> pointList;
-  final List<String> priorityList;
+  final List<int> priorityList;
 
   InitialDataState(
       this.stateList, this.projectList, this.pointList, this.priorityList);

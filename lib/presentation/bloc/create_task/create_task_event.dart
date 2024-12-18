@@ -8,7 +8,7 @@ class InitialDataEvent extends CreateTaskEvent {
 }
 
 class AddEvent extends CreateTaskEvent {
-  final Task task;
+  final TaskEntity task;
 
   AddEvent(this.task);
 
