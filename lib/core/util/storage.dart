@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:todo/core/constants/storage_value.dart';
 
 class Storage {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -12,7 +13,13 @@ class Storage {
       throw Exception('Unsupported type');
     }
   }
+  Future<void> saveLanguage(String languageCode) async {
+    await saveData(StorageKey.SELECTED_LANGUAGE, languageCode);
+  }
 
+  Future<String?> getLanguage() async {
+    return await getData(StorageKey.SELECTED_LANGUAGE);
+  }
   Future<T?> getData<T>(String key) async {
     String? value = await _secureStorage.read(key: key);
     if (value == null) {
