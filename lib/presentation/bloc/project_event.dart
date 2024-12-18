@@ -7,6 +7,11 @@ abstract class ProjectsEvent extends Equatable {
 
 class FetchProjectsEvent extends ProjectsEvent {}
 
+class DeleteProjectEvent extends ProjectsEvent {
+  final String id;
+  DeleteProjectEvent(this.id);
+}
+
 class CreateProjectEvent extends ProjectsEvent {
   final String name;
 

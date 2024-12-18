@@ -7,4 +7,6 @@ abstract class ProjectsRepository {
   Future<Either<Failure, List<Project>>> getProjects();
 
   Future<Either<Failure, Project>> createProject(String name);
+
+  Future<Either<Failure, void>> deleteProject(String id);
 }

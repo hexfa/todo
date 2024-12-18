@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:todo/data/models/project_model_response.dart';
@@ -13,8 +14,11 @@ abstract class ProjectService {
 
   @GET("projects")
   Future<List<ProjectModelResponse>> getProjects();
+  
+  @DELETE("projects/{id}")
+  Future<void> deleteProjects(@Path('id') String projectId);
 
-  @POST("/projects")
+  @POST("projects")
   Future<ProjectModelResponse> createProject(
     @Body() Map<String, dynamic> body,
     @Header("X-Request-Id") String requestId,

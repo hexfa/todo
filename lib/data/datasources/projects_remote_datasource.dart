@@ -4,6 +4,8 @@ import 'package:todo/services/api/project_service.dart';
 abstract class ProjectsRemoteDataSource {
   Future<List<ProjectModelResponse>> getProjects();
 
+  Future<void> deleteProjects(String id);
+
   Future<ProjectModelResponse> createProjects(String name, String uuid);
 }
 
@@ -20,5 +22,10 @@ class ProjectsRemoteDataSourceImpl implements ProjectsRemoteDataSource {
   @override
   Future<ProjectModelResponse> createProjects(String name, String uuid) async {
     return await service.createProject({"name": name}, uuid);
+  }
+
+  @override
+  Future<void> deleteProjects(String id) async{
+    return await service.deleteProjects(id);
   }
 }
