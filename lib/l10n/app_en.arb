@@ -1,4 +1,19 @@
 {
   "helloWorld": "Hello World!",
-  "createTask": "Create Task"
+  "createTask": "Create Task",
+  "helloWorld": "Hello World!",
+  "confirmDeletion": "Confirm Deletion",
+  "wantConfirmDeletion": "Are you sure you want to delete this project?",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "somethingWentWrong": "Something went wrong!",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "english": "English",
+  "german": "German",
+  "logout": "Logout",
+  "createProject": "Create Project",
+  "projectName": "Project Name",
+  "pleaseEnterProjectName": "Please enter a project name",
+  "nothingToSeeHere": "Nothing to see here"
 }

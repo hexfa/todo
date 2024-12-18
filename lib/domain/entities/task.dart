@@ -1,20 +1,56 @@
-class Task {
+import 'package:equatable/equatable.dart';
+
+import 'due.dart';
+
+class TaskEntity extends Equatable {
+  final String creatorId;
+  final String createdAt;
+  final String? assigneeId;
+  final String? assignerId;
+  final int commentCount;
+  final bool isCompleted;
   final String title;
   final String description;
+  final Due? due;
+  final String? duration;
+  final String id;
+  final List<String> labels;
+  final int order;
+  final int priority;
+  final String projectId;
+  final String? sectionId;
+  final String? parentId;
+  final String url;
   final String state;
-  final String priority;
-  final String project;
-  final String point;
   final DateTime createDate = DateTime.now();
   final DateTime? startDate;
   final DateTime? endDate;
-  int commentCount = 0;
   bool isRunning;
   int durationWork;
 
-  Task(this.title, this.description, this.state, this.priority, this.project,
-      this.point, this.startDate, this.endDate,
-      {this.isRunning = false, this.durationWork = 0});
+  const TaskEntity({
+    required this.creatorId,
+    required this.createdAt,
+    this.assigneeId,
+    this.assignerId,
+    required this.commentCount,
+    required this.isCompleted,
+    required this.title,
+    required this.description,
+    this.due,
+    this.duration,
+    required this.id,
+    required this.labels,
+    required this.order,
+    required this.priority,
+    required this.projectId,
+    this.sectionId,
+    this.parentId,
+    required this.url,
+    required this.state,
+    required this.startDate,
+    required this.endDate,
+  });
 
   String get formattedTime {
     final hours = (durationWork ~/ 3600).toString().padLeft(2, '0');
@@ -22,4 +58,26 @@ class Task {
     final seconds = (durationWork % 60).toString().padLeft(2, '0');
     return '$hours:$minutes:$seconds';
   }
+
+  @override
+  List<Object?> get props => [
+        creatorId,
+        createdAt,
+        assigneeId,
+        assignerId,
+        commentCount,
+        isCompleted,
+        content,
+        description,
+        due,
+        duration,
+        id,
+        labels,
+        order,
+        priority,
+        projectId,
+        sectionId,
+        parentId,
+        url,
+      ];
 }

@@ -5,16 +5,14 @@ import '../entities/project.dart';
 import '../repositories/projects_repository.dart';
 import 'base_usecase.dart';
 
-class GetProjectsUseCase
-    implements UseCase<Either<Failure, List<Project>>, NoParams> {
+class DeleteUseCase {
   final ProjectsRepository repository;
 
-  GetProjectsUseCase(this.repository);
+  DeleteUseCase(this.repository);
 
   @override
-  Future<Either<Failure, List<Project>>> call(NoParams params) {
-    return repository.getProjects();
+  Future<Either<Failure, void>> call(String id) {
+    return repository.deleteProject(id);
   }
 }
 
-class NoParams {}
