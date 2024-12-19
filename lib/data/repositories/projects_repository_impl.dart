@@ -8,7 +8,7 @@ import '../datasources/projects_remote_datasource.dart';
 class ProjectsRepositoryImpl implements ProjectsRepository {
   final ProjectsRemoteDataSource remoteDataSource;
 
-  ProjectsRepositoryImpl(this.remoteDataSource);
+  ProjectsRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<Either<Failure, List<Project>>> getProjects() async {
@@ -34,7 +34,7 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteProject(String id)async {
+  Future<Either<Failure, bool>> deleteProject(String id)async {
     try {
 
       final response = await remoteDataSource.deleteProjects(id);

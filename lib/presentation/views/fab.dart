@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/presentation/bloc/project_bloc.dart';
-import 'package:todo/presentation/bloc/project_event.dart';
+import 'package:todo/presentation/bloc/project/project_bloc.dart';
+import 'package:todo/presentation/bloc/project/project_event.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 
 class FAB extends StatefulWidget {

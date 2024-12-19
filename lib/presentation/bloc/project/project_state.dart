@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/project.dart';
+import '../../../../domain/entities/project.dart';
 
 abstract class ProjectsState extends Equatable {
   @override
