@@ -46,7 +46,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                   itemBuilder: (context, index) {
                     final task = state.tasks[index];
                     return ListTile(
-                      title: Text(task.content),
+                      title: Text(task.title),
                       subtitle: Text('Due: ${task.due?.date ?? 'No due date'}'),
                       trailing: Icon(
                         task.isCompleted ? Icons.check_circle : Icons.circle,
