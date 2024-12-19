@@ -38,7 +38,7 @@ Future<void> setupLocator(String token) async {
           () => ProjectsRemoteDataSourceImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRemoteDataSource>(
-        () => TasksRemoteDataSourceImpl(
+    () => TasksRemoteDataSourceImpl(
       service: getIt<ProjectService>(),
     ),
   );
@@ -46,9 +46,12 @@ Future<void> setupLocator(String token) async {
   // Register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
           () => ProjectsRepositoryImpl( remoteDataSource: getIt()));
+  //register repositories
+  getIt.registerLazySingleton<ProjectsRepository>(
+      () => ProjectsRepositoryImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
-        () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
+    () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
   );
 
   // Register use cases
@@ -60,7 +63,7 @@ Future<void> setupLocator(String token) async {
   );
 
   getIt.registerLazySingleton<GetTasksUseCase>(
-        () => GetTasksUseCase(getIt<TasksRepository>()),
+    () => GetTasksUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<DeleteProjectUseCase>(
@@ -77,6 +80,6 @@ Future<void> setupLocator(String token) async {
   );
 
   getIt.registerFactory<TasksBloc>(
-        () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>()),
+    () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>()),
   );
 }

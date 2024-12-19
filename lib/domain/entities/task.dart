@@ -9,7 +9,7 @@ class TaskEntity extends Equatable {
   final String? assignerId;
   final int commentCount;
   final bool isCompleted;
-  final String content;
+  final String title;
   final String description;
   final Due? due;
   final String? duration;
@@ -21,19 +21,22 @@ class TaskEntity extends Equatable {
   final String? sectionId;
   final String? parentId;
   final String url;
+  final String state;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final bool isRunning;
+  final int durationWork;
 
   const TaskEntity({
     required this.creatorId,
     required this.createdAt,
+    required this.id,
     this.assigneeId,
     this.assignerId,
-    required this.commentCount,
-    required this.isCompleted,
-    required this.content,
+    required this.title,
     required this.description,
     this.due,
     this.duration,
-    required this.id,
     required this.labels,
     required this.order,
     required this.priority,
@@ -41,6 +44,13 @@ class TaskEntity extends Equatable {
     this.sectionId,
     this.parentId,
     required this.url,
+    required this.state,
+    this.startDate,
+    this.endDate,
+    this.commentCount = 0,
+    this.isCompleted = false,
+    this.isRunning = false,
+    this.durationWork = 0,
   });
 
   @override
@@ -51,7 +61,7 @@ class TaskEntity extends Equatable {
         assignerId,
         commentCount,
         isCompleted,
-        content,
+        title,
         description,
         due,
         duration,
@@ -63,5 +73,17 @@ class TaskEntity extends Equatable {
         sectionId,
         parentId,
         url,
+        state,
+        startDate,
+        endDate,
+        isRunning,
+        durationWork,
       ];
+
+  String get formattedTime {
+    final hours = (durationWork ~/ 3600).toString().padLeft(2, '0');
+    final minutes = ((durationWork % 3600) ~/ 60).toString().padLeft(2, '0');
+    final seconds = (durationWork % 60).toString().padLeft(2, '0');
+    return '$hours:$minutes:$seconds';
+  }
 }
