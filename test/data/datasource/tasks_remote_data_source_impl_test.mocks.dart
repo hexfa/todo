@@ -77,26 +77,18 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
 
   @override
   _i5.Future<_i2.ProjectModelResponse> createProject(
-    Map<String, dynamic>? body,
-    String? requestId,
-  ) =>
+          Map<String, dynamic>? body) =>
       (super.noSuchMethod(
         Invocation.method(
           #createProject,
-          [
-            body,
-            requestId,
-          ],
+          [body],
         ),
         returnValue: _i5.Future<_i2.ProjectModelResponse>.value(
             _FakeProjectModelResponse_0(
           this,
           Invocation.method(
             #createProject,
-            [
-              body,
-              requestId,
-            ],
+            [body],
           ),
         )),
       ) as _i5.Future<_i2.ProjectModelResponse>);
@@ -132,6 +124,16 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
   _i5.Future<void> deleteTask(String? id) => (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
+          [id],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> closeTask(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #closeTask,
           [id],
         ),
         returnValue: _i5.Future<void>.value(),

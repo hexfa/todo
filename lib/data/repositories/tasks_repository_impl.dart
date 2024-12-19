@@ -45,4 +45,16 @@ class TasksRepositoryImpl implements TasksRepository {
       return Left(e);
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> closeTask(String id) async {
+    try {
+      final result = await remoteDataSource.closeTask(id);
+      return Right(result);
+    }on ServerFailure catch (e) {
+  return Left(ServerFailure(message: e.message));
+  } catch (e) {
+  return const Left(ServerFailure(message: 'Unexpected Error'));
+  }
+  }
 }

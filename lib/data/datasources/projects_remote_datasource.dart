@@ -5,7 +5,7 @@ import 'package:todo/services/api/project_service.dart';
 abstract class ProjectsRemoteDataSource {
   Future<List<ProjectModelResponse>> getProjects();
   Future<bool> deleteProjects(String id);
-  Future<ProjectModelResponse> createProjects(String name, String uuid);
+  Future<ProjectModelResponse> createProjects(String name);
 }
 
 class ProjectsRemoteDataSourceImpl implements ProjectsRemoteDataSource {
@@ -23,9 +23,9 @@ class ProjectsRemoteDataSourceImpl implements ProjectsRemoteDataSource {
   }
 
   @override
-  Future<ProjectModelResponse> createProjects(String name, String uuid) async {
+  Future<ProjectModelResponse> createProjects(String name) async {
     try {
-      return await service.createProject({"name": name}, uuid);
+      return await service.createProject({"name": name});
     } catch (e) {
       throw const ServerFailure(message: 'Failed to create project');
     }

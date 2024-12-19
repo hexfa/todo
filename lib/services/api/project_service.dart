@@ -22,7 +22,6 @@ abstract class ProjectService {
   @POST("projects")
   Future<ProjectModelResponse> createProject(
     @Body() Map<String, dynamic> body,
-    @Header("X-Request-Id") String requestId,
   );
 
   @GET("tasks")
@@ -35,6 +34,11 @@ abstract class ProjectService {
 
   @DELETE("tasks/{id}")
   Future<void> deleteTask(
+      @Path("id") String id,
+      );
+
+  @POST("tasks/{id}/close")
+  Future<void> closeTask(
       @Path("id") String id,
       );
 

@@ -1,13 +1,10 @@
-// test/domain/usecases/delete_task_usecase_test.dart
-
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failure.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
-
 
 import 'delete_task_usecase_test.mocks.dart';
 
@@ -25,51 +22,50 @@ void main() {
 
   test(
       'should call repository.deleteTask with the correct id and return Right(true) when deletion is successful',
-          () async {
-        // Arrange
-        when(mockTasksRepository.deleteTask(tId))
-            .thenAnswer((_) async => Right(true));
+      () async {
+    // Arrange
+    when(mockTasksRepository.deleteTask(tId))
+        .thenAnswer((_) async => Right(true));
 
-        // Act
-        final result = await useCase(tId);
+    // Act
+    final result = await useCase(tId);
 
-        // Assert
-        verify(mockTasksRepository.deleteTask(tId));
-        expect(result, Right(true));
-        verifyNoMoreInteractions(mockTasksRepository);
-      });
+    // Assert
+    verify(mockTasksRepository.deleteTask(tId));
+    expect(result, Right(true));
+    verifyNoMoreInteractions(mockTasksRepository);
+  });
 
   test(
       'should return ServerFailure when repository.deleteTask fails with a ServerFailure',
-          () async {
-        // Arrange
-        when(mockTasksRepository.deleteTask(tId))
-            .thenAnswer((_) async => Left(ServerFailure(message: 'Failed to delete task')));
+      () async {
+    // Arrange
+    when(mockTasksRepository.deleteTask(tId)).thenAnswer(
+        (_) async => Left(ServerFailure(message: 'Failed to delete task')));
 
-        // Act
-        final result = await useCase(tId);
+    // Act
+    final result = await useCase(tId);
 
-        // Assert
-        verify(mockTasksRepository.deleteTask(tId));
-        expect(result, Left(ServerFailure(message: 'Failed to delete task')));
-        verifyNoMoreInteractions(mockTasksRepository);
-      });
+    // Assert
+    verify(mockTasksRepository.deleteTask(tId));
+    expect(result, Left(ServerFailure(message: 'Failed to delete task')));
+    verifyNoMoreInteractions(mockTasksRepository);
+  });
 
   test(
       'should return ServerFailure when repository.deleteTask throws an exception',
-          () async {
-        // Arrange
-        when(mockTasksRepository.deleteTask(tId))
-            .thenThrow(Exception());
+      () async {
+    // Arrange
+    when(mockTasksRepository.deleteTask(tId)).thenThrow(Exception());
 
-        // Act
-        final result = await useCase(tId);
+    // Act
+    final result = await useCase(tId);
 
-        // Assert
-        verify(mockTasksRepository.deleteTask(tId));
-        // Depending on your implementation, you might need to handle exceptions differently
-        // Here, assuming that the use case catches the exception and returns a ServerFailure
-        expect(result, Left(ServerFailure(message: 'Failed to delete task')));
-        verifyNoMoreInteractions(mockTasksRepository);
-      });
+    // Assert
+    verify(mockTasksRepository.deleteTask(tId));
+    // Depending on your implementation, you might need to handle exceptions differently
+    // Here, assuming that the use case catches the exception and returns a ServerFailure
+    expect(result, Left(ServerFailure(message: 'Failed to delete task')));
+    verifyNoMoreInteractions(mockTasksRepository);
+  });
 }

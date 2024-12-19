@@ -26,7 +26,7 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
     try {
       var requestId = const Uuid().v4();
 
-      final response = await remoteDataSource.createProjects(name, requestId);
+      final response = await remoteDataSource.createProjects(name);
       return Right(response.toEntity());
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

@@ -4,6 +4,7 @@ import 'package:todo/core/util/storage.dart';
 import 'package:todo/data/datasources/projects_remote_datasource.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
+import 'package:todo/domain/usecases/CloseTaskUseCase.dart';
 import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
@@ -74,6 +75,10 @@ Future<void> setupLocator(String token) async{
 
   getIt.registerLazySingleton<DeleteTaskUseCase>(
         () => DeleteTaskUseCase(getIt<TasksRepository>()),
+  );
+
+  getIt.registerLazySingleton<CloseTaskUseCase>(
+        () => CloseTaskUseCase(getIt<TasksRepository>()),
   );
   //register blocs
   getIt.registerFactory<ProjectsBloc>(

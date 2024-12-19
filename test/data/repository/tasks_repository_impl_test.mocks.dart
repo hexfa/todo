@@ -78,4 +78,13 @@ class MockTasksRemoteDataSource extends _i1.Mock
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<bool> closeTask(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #closeTask,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }

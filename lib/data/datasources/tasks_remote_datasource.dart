@@ -6,4 +6,5 @@ abstract class TasksRemoteDataSource {
   Future<TaskModelResponse> createTask(TaskDataRequest taskData);
 
   Future<bool> deleteTask(String id);
+  Future<bool> closeTask(String id);
 }

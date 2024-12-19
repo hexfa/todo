@@ -46,4 +46,14 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
       throw const ServerFailure(message: 'Failed to delete task');
     }
   }
+
+  @override
+  Future<bool> closeTask(String id) async {
+    try {
+      await service.closeTask(id);
+      return true;
+    } catch (e) {
+      throw const ServerFailure(message: 'Failed to close task');
+    }
+  }
 }
