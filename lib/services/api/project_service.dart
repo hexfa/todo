@@ -45,7 +45,6 @@ abstract class ProjectService {
   @POST("/tasks/{id}")
   Future<TaskModelResponse> updateTask(
       @Body() TaskDataRequest taskData,
-
       @Path("id") String id
       );
 

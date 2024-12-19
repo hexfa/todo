@@ -27,10 +27,10 @@ class AppRouter {
           final taskId = state.pathParameters['taskId'];
           if (taskId == null || taskId.isEmpty) {
             return const Scaffold(
-              body: Center(child: Text('Task ID is missing')),
+              body: Center(child: Text('Project ID is missing')),
             );
           }
-          return TasksPage(taskId: taskId);
+          return TasksPage(projectId: taskId);
         },
       ),
 

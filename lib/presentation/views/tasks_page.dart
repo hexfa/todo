@@ -13,8 +13,9 @@ import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
 
 class TasksPage extends StatefulWidget {
-  final String taskId;
-  const TasksPage({super.key, required this.taskId});
+  final String projectId;
+
+  const TasksPage({super.key, required this.projectId});
   @override
   State<TasksPage> createState() => _TasksPageState();
 }
@@ -31,7 +32,7 @@ class _TasksPageState extends BaseState<TasksPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          getIt<TasksBloc>()..add(FetchTasksEvent(widget.taskId)),
+          getIt<TasksBloc>()..add(FetchTasksEvent(widget.projectId)),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -55,7 +56,7 @@ class _TasksPageState extends BaseState<TasksPage> {
         body: BlocConsumer<TasksBloc, TasksState>(
           listener: (context, state) {
             if (state is TasksError) {
-              context.read<TasksBloc>().add(FetchTasksEvent(widget.taskId));
+              context.read<TasksBloc>().add(FetchTasksEvent(widget.projectId));
             }
           },
           builder: (context, state) {
@@ -90,24 +91,25 @@ class _TasksPageState extends BaseState<TasksPage> {
                           int? oldItemIndex,
                           int? newListIndex,
                           int? newItemIndex,
-                          BoardItemState state) {},
+                          BoardItemState state) {
+                        String priority = '1';
+                        if (oldListIndex == 0) {
+                          priority = '1';
+                        } else if (oldListIndex == 1) {
+                          priority = '2';
+                        } else if (oldListIndex == 2) {
+                          priority = '3';
+                        }
+
+                        context.read<TasksBloc>().add(UpdateTaskEvent(
+                            task.id, priority, widget.projectId));
+                      },
                       item: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          onTap: () {
-                            showCustomDialog(
-                                context: context,
-                                title: localization.confirmDeletion,
-                                content: localization.wantConfirmDeletionTask,
-                                cancelText: localization.cancel,
-                                confirmText: localization.delete,
-                                onConfirm: () {
-                                  //todo
-                                });
-                          },
                           title: Text(
                             task.title,
                             maxLines: 1,
@@ -117,9 +119,20 @@ class _TasksPageState extends BaseState<TasksPage> {
                               fontSize: 14,
                             ),
                           ),
-                          trailing: const Icon(
-                            Icons.delete_outline,
-                            color: Colors.redAccent,
+                          trailing:  IconButton(
+                             onPressed: () {
+                            showCustomDialog(
+                                context: context,
+                                title: localization.confirmDeletion,
+                                content: localization.wantConfirmDeletionTask,
+                                cancelText: localization.cancel,
+                                confirmText: localization.delete,
+                                onConfirm: () {
+                                  context.read<TasksBloc>().add(
+                                      DeleteEvent(task.id, widget.projectId));
+                                });
+                          }, icon: const Icon(Icons.delete_outline,
+                            color: Colors.redAccent,),
                           ),
                         ),
                       ),

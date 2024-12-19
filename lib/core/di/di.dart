@@ -9,9 +9,11 @@ import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
 import 'package:todo/domain/usecases/create_project_usecase.dart';
+import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
 import 'package:todo/domain/usecases/get_tasks_usecase.dart';
+import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
@@ -55,8 +57,15 @@ Future<void> setupLocator(String token) async {
   getIt.registerLazySingleton<GetProjectsUseCase>(
           () => GetProjectsUseCase(getIt<ProjectsRepository>()));
 
+  getIt.registerLazySingleton<UpdateTaskUseCase>(
+      () => UpdateTaskUseCase(getIt<TasksRepository>()));
+
   getIt.registerLazySingleton<CreateProjectUseCase>(
         () => CreateProjectUseCase(getIt<ProjectsRepository>()),
+  );
+
+  getIt.registerLazySingleton<DeleteTaskUseCase>(
+    () => DeleteTaskUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<GetTasksUseCase>(
@@ -77,6 +86,9 @@ Future<void> setupLocator(String token) async {
   );
 
   getIt.registerFactory<TasksBloc>(
-    () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>()),
+    () => TasksBloc(
+        getTasksUseCase: getIt<GetTasksUseCase>(),
+        updateTaskUseCase: getIt<UpdateTaskUseCase>(),
+        deleteTaskUseCase: getIt<DeleteTaskUseCase>()),
   );
 }

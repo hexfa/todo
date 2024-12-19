@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 class TaskDataEntityRequest extends Equatable{
-  final String content;
-  final String dueString;
-  final String dueLang;
-  final String priority;
+  final String? content;
+  final String? dueString;
+  final String? dueLang;
+  final String? priority;
 
   const TaskDataEntityRequest({
     required this.content,
