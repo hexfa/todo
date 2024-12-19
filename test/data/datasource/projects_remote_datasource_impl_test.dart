@@ -123,15 +123,15 @@ void main() {
         'should return ProjectModelResponse when the call to service is successful',
         () async {
       // Arrange
-      when(mockProjectService.createProject({"name": tName}, tUuid))
+      when(mockProjectService.createProject({"name": tName}))
           .thenAnswer((_) async => tProjectModelResponse);
 
       // Act
-      final result = await dataSource.createProjects(tName, tUuid);
+      final result = await dataSource.createProjects(tName);
 
       // Assert
       expect(result, tProjectModelResponse);
-      verify(mockProjectService.createProject({"name": tName}, tUuid));
+      verify(mockProjectService.createProject({"name": tName}));
       verifyNoMoreInteractions(mockProjectService);
     });
 
@@ -139,15 +139,15 @@ void main() {
         'should throw ServerFailure when the call to service throws an exception',
         () async {
       // Arrange
-      when(mockProjectService.createProject({"name": tName}, tUuid))
+      when(mockProjectService.createProject({"name": tName}))
           .thenThrow(Exception());
 
       // Act
-      final call = dataSource.createProjects(tName, tUuid);
+      final call = dataSource.createProjects(tName);
 
       // Assert
       expect(() => call, throwsA(isA<ServerFailure>()));
-      verify(mockProjectService.createProject({"name": tName}, tUuid));
+      verify(mockProjectService.createProject({"name": tName}));
       verifyNoMoreInteractions(mockProjectService);
     });
   });
