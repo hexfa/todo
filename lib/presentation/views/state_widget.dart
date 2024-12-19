@@ -23,13 +23,13 @@ class _StateWidgetState extends State<StateWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           widget.isLoading?
-          Lottie.asset(Assets.animations.loding,fit: BoxFit.cover,width: 100,height: 100):
-          Opacity(opacity: 0.5,
+          Lottie.asset(Assets.animations.loding,fit: BoxFit.scaleDown,width: 100,height: 100):
+          Opacity(opacity: 0.8,
           child: Lottie.asset(Assets.animations.empty,fit: BoxFit.fill,width: 250,height: 250)),
 
           if(!widget.isLoading)
           Opacity(
-            opacity: 0.5,
+            opacity: 0.7,
             child: Text(
               widget.message??'Nothing to see here',
               style: theme.textTheme.titleMedium,

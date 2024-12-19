@@ -46,9 +46,6 @@ Future<void> setupLocator(String token) async {
   // Register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
           () => ProjectsRepositoryImpl( remoteDataSource: getIt()));
-  //register repositories
-  getIt.registerLazySingleton<ProjectsRepository>(
-      () => ProjectsRepositoryImpl(remoteDataSource: getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),

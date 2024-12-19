@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:todo/domain/entities/section.dart';
 import 'package:todo/domain/entities/task.dart';
 
 abstract class TasksState extends Equatable {
@@ -14,8 +15,9 @@ class TasksLoading extends TasksState {}
 
 class TasksLoaded extends TasksState {
   final List<TaskEntity> tasks;
+  final List<Section> sections;
 
-  const TasksLoaded(this.tasks);
+  const TasksLoaded(this.tasks, this.sections);
 
   @override
   List<Object?> get props => [tasks];

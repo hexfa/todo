@@ -10,6 +10,7 @@ import 'package:todo/presentation/bloc/project/project_state.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/app_drawer.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
+import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/fab.dart';
 import 'package:todo/presentation/views/state_widget.dart';
 
@@ -46,9 +47,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
               if (state is ProjectsError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
+
                 context.read<ProjectsBloc>().add(FetchProjectsEvent());
               }
               if (state is ProjectCreateSuccess ||
@@ -82,8 +81,13 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                       final project = state.projects[index];
                       return InkWell(
                         onTap: (){
-                          context.go('${AppRoutePath.taskListRoute}/${project.id}'); // Pass "123" as the task ID
-
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              context.push(
+                                  '${AppRoutePath.taskListRoute}/${project
+                                      .id}');
+                            }
+                          });
                         },
                         child: Card(
 
@@ -122,43 +126,22 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                                     icon: Icon(Icons.close,
                                         color: Colors.white),
                                     onPressed: () {
-                                      showDialog(
-                                        context: gridContext,
-                                        builder:
-                                            (BuildContext dialogContext) {
-                                          return AlertDialog(
-                                            title: Text(localization
-                                                .confirmDeletion ),
-                                            content: Text(localization
-                                                .wantConfirmDeletion ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(
-                                                      dialogContext)
-                                                      .pop();
-                                                },
-                                                child: Text(
-                                                  localization.cancel,style: TextStyle(color: theme.colorScheme.primary), ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  context
-                                                      .read<ProjectsBloc>()
-                                                      .add(
-                                                      DeleteProjectEvent(
-                                                          project.id));
-                                                  Navigator.of(
-                                                      dialogContext)
-                                                      .pop();
-                                                },
-                                                child: Text(
-                                                    localization.delete, style:TextStyle(color: theme.colorScheme.primary)),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                      showCustomDialog(context: context,
+                                          title: localization
+                                              .confirmDeletion ,
+                                          content: localization
+                                              .wantConfirmDeletion ,
+                                          cancelText: localization
+                                              .cancel ,
+                                          confirmText: localization
+                                              .delete ,
+                                          onConfirm: (){
+                                            context
+                                                .read<ProjectsBloc>()
+                                                .add(
+                                                DeleteProjectEvent(
+                                                    project.id));
+                                          });
                                     },
                                   ),
                                 )
