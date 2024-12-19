@@ -7,4 +7,7 @@ abstract class TasksEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchTasksEvent extends TasksEvent {}
+class FetchTasksEvent extends TasksEvent {
+  final String? projectId;
+  FetchTasksEvent(this.projectId);
+}

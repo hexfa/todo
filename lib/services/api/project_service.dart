@@ -25,5 +25,5 @@ abstract class ProjectService {
   );
 
   @GET("tasks")
-  Future<List<TaskModelResponse>> getTasks();
+  Future<List<TaskModelResponse>> getTasks(@Query('project_id')String? projectId);
 }

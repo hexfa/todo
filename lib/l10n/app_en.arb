@@ -13,5 +13,6 @@
   "createProject": "Create Project",
   "projectName": "Project Name",
   "pleaseEnterProjectName": "Please enter a project name",
+  "createTask": "Create task",
   "nothingToSeeHere": "Nothing to see here"
 }

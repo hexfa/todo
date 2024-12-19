@@ -12,9 +12,9 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   });
 
   @override
-  Future<List<TaskModelResponse>> getTasks() async {
+  Future<List<TaskModelResponse>> getTasks(String? projectId) async {
     try {
-      final tasks = await service.getTasks();
+      final tasks = await service.getTasks( projectId);
       return tasks;
     } catch (e) {
       throw const ServerFailure(message: 'Failed to fetch tasks');
