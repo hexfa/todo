@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:todo/data/models/project_model_response.dart';
+import 'package:todo/data/models/task_data_request.dart';
 
 import '../../core/constants/constants_value.dart';
 import '../../data/models/task_model_response.dart';
@@ -26,4 +27,15 @@ abstract class ProjectService {
 
   @GET("tasks")
   Future<List<TaskModelResponse>> getTasks();
+
+  @POST("tasks")
+  Future<TaskModelResponse> createTask(
+      @Body() TaskDataRequest taskData,
+      );
+
+  @DELETE("tasks/{id}")
+  Future<void> deleteTask(
+      @Path("id") String id,
+      );
+
 }

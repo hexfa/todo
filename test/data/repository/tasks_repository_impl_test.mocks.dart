@@ -3,11 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:todo/data/datasources/tasks_remote_datasource.dart' as _i2;
-import 'package:todo/data/models/task_model_response.dart' as _i4;
+import 'package:todo/data/datasources/tasks_remote_datasource.dart' as _i3;
+import 'package:todo/data/models/task_data_request.dart' as _i5;
+import 'package:todo/data/models/task_model_response.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -22,22 +23,59 @@ import 'package:todo/data/models/task_model_response.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeTaskModelResponse_0 extends _i1.SmartFake
+    implements _i2.TaskModelResponse {
+  _FakeTaskModelResponse_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [TasksRemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTasksRemoteDataSource extends _i1.Mock
-    implements _i2.TasksRemoteDataSource {
+    implements _i3.TasksRemoteDataSource {
   MockTasksRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.TaskModelResponse>> getTasks() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TaskModelResponse>> getTasks() => (super.noSuchMethod(
         Invocation.method(
           #getTasks,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.TaskModelResponse>>.value(
-            <_i4.TaskModelResponse>[]),
-      ) as _i3.Future<List<_i4.TaskModelResponse>>);
+        returnValue: _i4.Future<List<_i2.TaskModelResponse>>.value(
+            <_i2.TaskModelResponse>[]),
+      ) as _i4.Future<List<_i2.TaskModelResponse>>);
+
+  @override
+  _i4.Future<_i2.TaskModelResponse> createTask(_i5.TaskDataRequest? taskData) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createTask,
+          [taskData],
+        ),
+        returnValue:
+            _i4.Future<_i2.TaskModelResponse>.value(_FakeTaskModelResponse_0(
+          this,
+          Invocation.method(
+            #createTask,
+            [taskData],
+          ),
+        )),
+      ) as _i4.Future<_i2.TaskModelResponse>);
+
+  @override
+  _i4.Future<bool> deleteTask(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteTask,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }
