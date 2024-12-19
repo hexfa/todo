@@ -2,22 +2,22 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/data/datasources/projects_remote_datasource.dart';
+import 'package:todo/data/datasources/tasks_remote_datasource.dart';
+import 'package:todo/data/datasources/tasks_remote_datasource_impl.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
+import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
+import 'package:todo/domain/repositories/tasks_repository.dart';
+import 'package:todo/domain/usecases/create_project_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
-import 'package:todo/presentation/bloc/project_bloc.dart';
+import 'package:todo/domain/usecases/get_tasks_usecase.dart';
+import 'package:todo/presentation/bloc/project/project_bloc.dart';
+import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
-import '../../data/datasources/tasks_remote_datasource.dart';
-import '../../data/datasources/tasks_remote_datasource_impl.dart';
-import '../../data/repositories/tasks_repository_impl.dart';
-import '../../domain/repositories/tasks_repository.dart';
-import '../../domain/usecases/create_project_usecase.dart';
-import '../../domain/usecases/get_tasks_usecase.dart';
-import '../../presentation/bloc/task/task_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -45,7 +45,7 @@ Future<void> setupLocator(String token) async {
 
   // Register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl(getIt()));
+          () => ProjectsRepositoryImpl( remoteDataSource: getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
         () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
@@ -63,8 +63,8 @@ Future<void> setupLocator(String token) async {
         () => GetTasksUseCase(getIt<TasksRepository>()),
   );
 
-  getIt.registerLazySingleton<DeleteUseCase>(
-        () => DeleteUseCase(getIt<ProjectsRepository>()),
+  getIt.registerLazySingleton<DeleteProjectUseCase>(
+        () => DeleteProjectUseCase(getIt<ProjectsRepository>()),
   );
 
   // Register blocs
@@ -72,7 +72,7 @@ Future<void> setupLocator(String token) async {
         () => ProjectsBloc(
       createProjectUseCase: getIt<CreateProjectUseCase>(),
       getProjectsUseCase: getIt<GetProjectsUseCase>(),
-      deleteUseCase: getIt<DeleteUseCase>(),
+      deleteUseCase: getIt<DeleteProjectUseCase>(),
     ),
   );
 
