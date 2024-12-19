@@ -112,4 +112,30 @@ class MockTasksRepository extends _i1.Mock implements _i3.TasksRepository {
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>> updateTask(
+    _i7.TaskDataRequest? taskData,
+    String? id,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateTask,
+          [
+            taskData,
+            id,
+          ],
+        ),
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>.value(
+            _FakeEither_0<_i5.Failure, _i6.TaskEntity>(
+          this,
+          Invocation.method(
+            #updateTask,
+            [
+              taskData,
+              id,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>);
 }

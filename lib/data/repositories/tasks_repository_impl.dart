@@ -51,10 +51,25 @@ class TasksRepositoryImpl implements TasksRepository {
     try {
       final result = await remoteDataSource.closeTask(id);
       return Right(result);
-    }on ServerFailure catch (e) {
-  return Left(ServerFailure(message: e.message));
-  } catch (e) {
-  return const Left(ServerFailure(message: 'Unexpected Error'));
+    } on ServerFailure catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected Error'));
+    }
   }
+
+  @override
+  Future<Either<Failure, TaskEntity>> updateTask(TaskDataRequest taskData,
+      String id) async {
+    try {
+      final response = await remoteDataSource.updateTask(
+          taskData, id
+      );
+      return Right(response);
+    } on ServerFailure catch (e) {
+      return const Left(ServerFailure(message:'Unexpected Error'));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected Error'));
+    }
   }
 }

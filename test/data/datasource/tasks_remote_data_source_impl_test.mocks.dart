@@ -139,4 +139,30 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i3.TaskModelResponse> updateTask(
+    _i6.TaskDataRequest? taskData,
+    String? id,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateTask,
+          [
+            taskData,
+            id,
+          ],
+        ),
+        returnValue:
+            _i5.Future<_i3.TaskModelResponse>.value(_FakeTaskModelResponse_1(
+          this,
+          Invocation.method(
+            #updateTask,
+            [
+              taskData,
+              id,
+            ],
+          ),
+        )),
+      ) as _i5.Future<_i3.TaskModelResponse>);
 }

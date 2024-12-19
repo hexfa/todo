@@ -9,6 +9,7 @@ import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
+import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
@@ -79,6 +80,10 @@ Future<void> setupLocator(String token) async{
 
   getIt.registerLazySingleton<CloseTaskUseCase>(
         () => CloseTaskUseCase(getIt<TasksRepository>()),
+  );
+
+  getIt.registerLazySingleton<UpdateTaskUseCase>(
+        () => UpdateTaskUseCase(getIt<TasksRepository>()),
   );
   //register blocs
   getIt.registerFactory<ProjectsBloc>(
