@@ -14,16 +14,13 @@ import 'package:todo/presentation/views/state_widget.dart';
 
 class TasksPage extends StatefulWidget {
   final String taskId;
-
-  const TasksPage({Key? key, required this.taskId}) : super(key: key);
-
+  const TasksPage({super.key, required this.taskId});
   @override
   State<TasksPage> createState() => _TasksPageState();
 }
 
 class _TasksPageState extends BaseState<TasksPage> {
   late BoardViewController boardViewController;
-
   @override
   void initState() {
     super.initState();
@@ -38,7 +35,7 @@ class _TasksPageState extends BaseState<TasksPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Kanban Board',
+            localization.kanbanBoard,
             style: theme.textTheme.titleMedium
                 ?.copyWith(color: theme.colorScheme.onPrimary),
           ),
@@ -51,7 +48,6 @@ class _TasksPageState extends BaseState<TasksPage> {
               icon: Icon(Icons.add, color: theme.colorScheme.onPrimary),
               onPressed: () {
                 // TODO: Add functionality to create a new task
-                print('Add new task');
               },
             ),
           ],
@@ -105,7 +101,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                             showCustomDialog(
                                 context: context,
                                 title: localization.confirmDeletion,
-                                content: 'Are you sure you want to delete this task?',
+                                content: localization.wantConfirmDeletionTask,
                                 cancelText: localization.cancel,
                                 confirmText: localization.delete,
                                 onConfirm: () {
@@ -121,7 +117,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                               fontSize: 14,
                             ),
                           ),
-                          trailing: Icon(
+                          trailing: const Icon(
                             Icons.delete_outline,
                             color: Colors.redAccent,
                           ),
@@ -132,15 +128,14 @@ class _TasksPageState extends BaseState<TasksPage> {
                 );
               }).toList();
 
-              if (state.tasks.isNotEmpty)
-                return Container(
-                  child: BoardView(
-                    boardViewController: boardViewController,
-                    lists: boardLists,
-                  ),
+              if (state.tasks.isNotEmpty) {
+                return BoardView(
+                  boardViewController: boardViewController,
+                  lists: boardLists,
                 );
-              else
-                return StateWidget(isLoading: false, 'Create Task');
+              } else {
+                return StateWidget(isLoading: false, localization.createTask);
+              }
             } else {
               return const SizedBox.shrink();
             }

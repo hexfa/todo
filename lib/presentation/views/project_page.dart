@@ -2,6 +2,7 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo/core/constants/constants_value.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
@@ -40,8 +41,8 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
           floatingActionButton: showFab ? FAB() : null,
           appBar: AppBar(
               title: Text(
-                'Projects',
-                style: theme.textTheme.titleMedium
+            localization.projects,
+            style: theme.textTheme.titleMedium
                     ?.copyWith(color: theme.colorScheme.onPrimary),
               )),
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
@@ -118,9 +119,9 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
-                                project.name != 'Inbox'
-                                    ? Positioned(
-                                  top: 8,
+                                if (project.name != inbox)
+                                  Positioned(
+                                    top: 8,
                                   left: 8,
                                   child: IconButton(
                                     icon: Icon(Icons.close,
@@ -144,8 +145,9 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                                           });
                                     },
                                   ),
-                                )
-                                    : SizedBox.shrink(),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
                               ],
                             ),
                           ),
@@ -157,7 +159,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
               } else if (state is ProjectsError) {
                 return  Center(child: Text(localization.somethingWentWrong));
               }
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             },
           ),
         ),
