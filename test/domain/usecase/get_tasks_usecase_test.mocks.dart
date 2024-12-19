@@ -44,11 +44,12 @@ class MockTasksRepository extends _i1.Mock implements _i3.TasksRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.TaskEntity>>> getTasks() =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.TaskEntity>>> getTasks(
+          String? projectId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getTasks,
-          [],
+          [projectId],
         ),
         returnValue:
             _i4.Future<_i2.Either<_i5.Failure, List<_i6.TaskEntity>>>.value(
@@ -56,7 +57,7 @@ class MockTasksRepository extends _i1.Mock implements _i3.TasksRepository {
           this,
           Invocation.method(
             #getTasks,
-            [],
+            [projectId],
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.TaskEntity>>>);

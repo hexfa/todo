@@ -22,7 +22,6 @@ abstract class ProjectService {
   @POST("projects")
   Future<ProjectModelResponse> createProject(
     @Body() Map<String, dynamic> body,
-    @Header("X-Request-Id") String requestId,
   );
 
   @GET("tasks")

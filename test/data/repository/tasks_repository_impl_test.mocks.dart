@@ -44,10 +44,11 @@ class MockTasksRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<List<_i2.TaskModelResponse>> getTasks() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TaskModelResponse>> getTasks(String? projectId) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getTasks,
-          [],
+          [projectId],
         ),
         returnValue: _i4.Future<List<_i2.TaskModelResponse>>.value(
             <_i2.TaskModelResponse>[]),

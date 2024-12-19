@@ -48,11 +48,11 @@ void main() {
         'should return Right<List<TaskEntity>> when the call to remote data source is successful',
         () async {
       // Arrange
-      when(mockRemoteDataSource.getTasks())
+      when(mockRemoteDataSource.getTasks('2345233582'))
           .thenAnswer((_) async => tTaskModelList);
 
       // Act
-      final result = await repository.getTasks();
+      final result = await repository.getTasks('2345233582');
 
       // Assert
       expect(result.isRight(), true);
@@ -62,7 +62,7 @@ void main() {
           expect(tasks, equals(tTaskEntityList));
         },
       );
-      verify(mockRemoteDataSource.getTasks());
+      verify(mockRemoteDataSource.getTasks('2345233582'));
       verifyNoMoreInteractions(mockRemoteDataSource);
     });
 
@@ -70,11 +70,11 @@ void main() {
         'should return Left(ServerFailure) when the call to remote data source throws ServerFailure',
         () async {
       // Arrange
-      when(mockRemoteDataSource.getTasks())
+      when(mockRemoteDataSource.getTasks('2345233582'))
           .thenThrow(ServerFailure(message: 'Server Error'));
 
       // Act
-      final result = await repository.getTasks();
+      final result = await repository.getTasks('2345233582');
 
       // Assert
       expect(result.isLeft(), true);
@@ -85,7 +85,7 @@ void main() {
         },
         (_) => fail('Expected Left but got Right'),
       );
-      verify(mockRemoteDataSource.getTasks());
+      verify(mockRemoteDataSource.getTasks('2345233582'));
       verifyNoMoreInteractions(mockRemoteDataSource);
     });
 
@@ -93,10 +93,10 @@ void main() {
         'should return Left(ServerFailure) when the call to remote data source throws a generic exception',
         () async {
       // Arrange
-      when(mockRemoteDataSource.getTasks()).thenThrow(Exception());
+      when(mockRemoteDataSource.getTasks('2345233582')).thenThrow(Exception());
 
       // Act
-      final result = await repository.getTasks();
+      final result = await repository.getTasks('2345233582');
 
       // Assert
       expect(result.isLeft(), true);
@@ -107,7 +107,7 @@ void main() {
         },
         (_) => fail('Expected Left but got Right'),
       );
-      verify(mockRemoteDataSource.getTasks());
+      verify(mockRemoteDataSource.getTasks('2345233582'));
       verifyNoMoreInteractions(mockRemoteDataSource);
     });
 
@@ -115,10 +115,10 @@ void main() {
         'should return Right(empty list) when remote data source returns an empty list',
         () async {
       // Arrange
-      when(mockRemoteDataSource.getTasks()).thenAnswer((_) async => []);
+      when(mockRemoteDataSource.getTasks('2345233582')).thenAnswer((_) async => []);
 
       // Act
-      final result = await repository.getTasks();
+      final result = await repository.getTasks('2345233582');
 
       // Assert
       expect(result.isRight(), true);
@@ -128,7 +128,7 @@ void main() {
           expect(tasks, equals(<TaskEntity>[]));
         },
       );
-      verify(mockRemoteDataSource.getTasks());
+      verify(mockRemoteDataSource.getTasks('2345233582'));
       verifyNoMoreInteractions(mockRemoteDataSource);
     });
   });
