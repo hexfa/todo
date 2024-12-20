@@ -8,10 +8,11 @@ part of 'task_data_request.dart';
 
 TaskDataRequest _$TaskDataRequestFromJson(Map<String, dynamic> json) =>
     TaskDataRequest(
-      content: json['content'] as String,
-      dueString: json['due_string'] as String,
-      dueLang: json['due_lang'] as String,
-      priority: json['priority'] as String,
+      content: json['content'] as String?,
+      dueString: json['due_string'] as String?,
+      dueLang: json['due_lang'] as String?,
+      project_id: json['project_id'] as String?,
+      priority: json['priority'] as String?,
     );
 
 Map<String, dynamic> _$TaskDataRequestToJson(TaskDataRequest instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$TaskDataRequestToJson(TaskDataRequest instance) =>
       'due_string': instance.dueString,
       'due_lang': instance.dueLang,
       'priority': instance.priority,
+      'project_id': instance.project_id,
     };

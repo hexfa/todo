@@ -1,9 +1,17 @@
 import 'package:todo/core/error/failure.dart';
-import 'package:todo/data/datasources/tasks_remote_datasource.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
+import 'package:todo/services/api/project_service.dart';
 
-import '../../services/api/project_service.dart';
+abstract class TasksRemoteDataSource {
+  Future<List<TaskModelResponse>> getTasks(String? projectId);
+  Future<TaskModelResponse> createTask(TaskDataRequest taskData);
+
+  Future<bool> deleteTask(String id);
+  Future<bool> closeTask(String id);
+  Future<TaskModelResponse> updateTask(TaskDataRequest taskData,String id);
+
+}
 
 class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   final ProjectService service;
@@ -29,7 +37,7 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
     try {
 
       return await service.createTask(
-        taskData);
+          taskData);
     } catch (e) {
       throw const ServerFailure(message: 'Failed to create task');
     }
@@ -60,8 +68,8 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   @override
   Future<TaskModelResponse> updateTask(TaskDataRequest taskData, String id) async{
     try {
-     return await service.updateTask(
-        taskData,id
+      return await service.updateTask(
+          taskData,id
       );
     } catch (e) {
       throw const ServerFailure(message: 'Failed to update task');

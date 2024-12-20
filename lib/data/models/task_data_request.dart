@@ -12,10 +12,13 @@ class TaskDataRequest extends TaskDataEntityRequest {
   @JsonKey(name: 'due_lang')
   final String? dueLang;
   final String? priority;
+  final String? project_id;
+
 
   const TaskDataRequest({required this.content,
     required this.dueString,
     required this.dueLang,
+    required this.project_id,
     required this.priority}) :super(content: content,
       dueString: dueString,
       dueLang: dueLang,

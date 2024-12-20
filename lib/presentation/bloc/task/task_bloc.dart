@@ -51,6 +51,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           dueString: null,
           dueLang: null,
           priority: event.priority,
+          project_id: null,
         ),
       ));
       result.fold(

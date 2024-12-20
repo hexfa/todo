@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/domain/entities/task.dart';
 
@@ -5,38 +6,73 @@ import 'due_model.dart';
 
 part 'task_model_response.g.dart';
 
+@HiveType(typeId: 1)
 @JsonSerializable(explicitToJson: true)
-class TaskModelResponse extends TaskEntity {
+class TaskModelResponse extends HiveObject {
+  @HiveField(0)
   @JsonKey(name: 'creator_id')
   final String creatorId;
+
+  @HiveField(1)
   @JsonKey(name: 'created_at')
   final String createdAt;
+
+  @HiveField(2)
   @JsonKey(name: 'assignee_id')
   final String? assigneeId;
+
+  @HiveField(3)
   @JsonKey(name: 'assigner_id')
   final String? assignerId;
+
+  @HiveField(4)
   @JsonKey(name: 'comment_count')
   final int commentCount;
+
+  @HiveField(5)
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
 
+  @HiveField(6)
   final String content;
+
+  @HiveField(7)
   final String description;
+
+  @HiveField(8)
   final DueModel? due;
+
+  @HiveField(9)
   final String? duration;
+
+  @HiveField(10)
   final String id;
+
+  @HiveField(11)
   final List<String> labels;
+
+  @HiveField(12)
   final int order;
+
+  @HiveField(13)
   final int priority;
+
+  @HiveField(14)
   @JsonKey(name: 'project_id')
   final String projectId;
+
+  @HiveField(15)
   @JsonKey(name: 'section_id')
   final String? sectionId;
+
+  @HiveField(16)
   @JsonKey(name: 'parent_id')
   final String? parentId;
+
+  @HiveField(17)
   final String url;
 
-  const TaskModelResponse({
+   TaskModelResponse({
     required this.creatorId,
     required this.createdAt,
     this.assigneeId,
@@ -55,45 +91,9 @@ class TaskModelResponse extends TaskEntity {
     this.sectionId,
     this.parentId,
     required this.url,
-  }) : super(
-            creatorId: creatorId,
-            createdAt: createdAt,
-            assigneeId: assigneeId,
-            assignerId: assignerId,
-            commentCount: commentCount,
-            isCompleted: isCompleted,
-            title: content,
-            description: description,
-            due: due,
-            duration: duration,
-            id: id,
-            labels: labels,
-            order: order,
-            priority: priority,
-            projectId: projectId,
-            sectionId: sectionId,
-            parentId: parentId,
-            url: url,
-            state: '');
+  });
 
   factory TaskModelResponse.fromJson(Map<String, dynamic> json) {
-    print("TaskModelResponse ${json['creator_id']}");
-    print("TaskModelResponse ${json['created_at']}");
-    print("TaskModelResponse ${json['assignee_id']}");
-    print("TaskModelResponse ${json['assigner_id']}");
-    print("TaskModelResponse ${json['comment_count']}");
-    print("TaskModelResponse ${json['is_completed']}");
-    print("TaskModelResponse ${json['description']}");
-    print("TaskModelResponse ${json['due']}");
-    print("TaskModelResponse ${json['id']}");
-    print("TaskModelResponse ${json['order']}");
-    print("TaskModelResponse ${json['parent_id']}");
-    print("TaskModelResponse ${json['section_id']}");
-    print("TaskModelResponse ${json['url']}");
-    // print("TaskModelResponse ${DueModel.fromJson(json['due']).}");
-    print("TaskModelResponse ${json['creator_id']}");
-    print("TaskModelResponse ${json['creator_id']}");
-
     return TaskModelResponse(
       creatorId: json['creator_id'] as String,
       createdAt: json['created_at'] as String,
@@ -119,8 +119,29 @@ class TaskModelResponse extends TaskEntity {
     );
   }
 
-/*  factory TaskModelResponse.fromJson(Map<String, dynamic> json) =>
-      _$TaskModelResponseFromJson(json);*/
-
   Map<String, dynamic> toJson() => _$TaskModelResponseToJson(this);
+
+  TaskEntity toEntity() {
+    return TaskEntity(
+      creatorId: creatorId,
+      createdAt: createdAt,
+      assigneeId: assigneeId,
+      assignerId: assignerId,
+      commentCount: commentCount,
+      isCompleted: isCompleted,
+      title: content,
+      description: description,
+      due: due,
+      duration: duration,
+      id: id,
+      labels: labels,
+      order: order,
+      priority: priority,
+      projectId: projectId,
+      sectionId: sectionId,
+      parentId: parentId,
+      url: url,
+      state: '', // Set appropriate value for `state` if required
+    );
+  }
 }

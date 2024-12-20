@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo/core/error/failure.dart';
-import 'package:todo/data/datasources/tasks_remote_datasource.dart';
+import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/entities/task.dart';
@@ -20,7 +20,7 @@ void main() {
   });
 
   group('getTasks', () {
-    const tTaskModelResponse = TaskModelResponse(
+    var tTaskModelResponse = TaskModelResponse(
       creatorId: "12345",
       createdAt: "2023-10-01T12:34:56Z",
       assigneeId: "54321",
@@ -42,7 +42,7 @@ void main() {
     );
 
     final List<TaskModelResponse> tTaskModelList = [tTaskModelResponse];
-    final List<TaskEntity> tTaskEntityList = [tTaskModelResponse];
+    final List<TaskEntity> tTaskEntityList = [tTaskModelResponse.toEntity()];
 
     test(
         'should return Right<List<TaskEntity>> when the call to remote data source is successful',

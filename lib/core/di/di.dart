@@ -1,11 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/core/util/storage.dart';
-import 'package:todo/data/datasources/projects_remote_datasource.dart';
-import 'package:todo/data/datasources/tasks_remote_datasource.dart';
-import 'package:todo/data/datasources/tasks_remote_datasource_impl.dart';
+import 'package:todo/data/datasources/local/projects_local_datasource.dart';
+import 'package:todo/data/datasources/local/sync_local_datasource.dart';
+import 'package:todo/data/datasources/local/tasks_local_datasource.dart';
+import 'package:todo/data/datasources/remote/projects_remote_datasource.dart';
+import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
+import 'package:todo/data/models/project_model_response.dart';
+import 'package:todo/data/models/sync_model.dart';
+import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
+import 'package:todo/data/sync_manager.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
 import 'package:todo/domain/usecases/create_project_usecase.dart';
@@ -35,6 +42,15 @@ Future<void> setupLocator(String token) async {
   final projectService = ProjectService(dio);
   getIt.registerLazySingleton<ProjectService>(() => projectService);
 
+  // Register Hive Boxes
+  final taskBox = await Hive.openBox<TaskModelResponse>('tasks');
+  final projectBox = await Hive.openBox<ProjectModelResponse>('projects');
+  final syncBox = await Hive.openBox<SyncOperation>('sync');
+
+  getIt.registerSingleton<Box<TaskModelResponse>>(taskBox);
+  getIt.registerSingleton<Box<ProjectModelResponse>>(projectBox);
+  getIt.registerSingleton<Box<SyncOperation>>(syncBox);
+
   // Register data sources
   getIt.registerLazySingleton<ProjectsRemoteDataSource>(
           () => ProjectsRemoteDataSourceImpl(getIt()));
@@ -45,13 +61,30 @@ Future<void> setupLocator(String token) async {
     ),
   );
 
+  // Register Local Data Sources
+  getIt.registerLazySingleton<TasksLocalDataSource>(
+      () => TasksLocalDataSourceImpl(getIt()));
+  getIt.registerLazySingleton<ProjectsLocalDataSource>(
+      () => ProjectsLocalDataSourceImpl(getIt()));
+  getIt.registerLazySingleton<SyncLocalDataSource>(
+      () => SyncLocalDataSource(getIt()));
+
   // Register repositories
-  getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl( remoteDataSource: getIt()));
+  getIt.registerLazySingleton<ProjectsRepository>(() => ProjectsRepositoryImpl(
+      remoteDataSource: getIt(), localDataSource: getIt(), syncQueue: getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
-    () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
+    () => TasksRepositoryImpl(
+        remoteDataSource: getIt<TasksRemoteDataSource>(),
+        localDataSource: getIt(),
+        syncQueue: getIt()),
   );
+
+  getIt.registerLazySingleton(() => SyncManager(
+    syncQueue: getIt<SyncLocalDataSource>(),
+    projectsRemoteDataSource: getIt<ProjectsRemoteDataSource>(),
+    tasksRemoteDataSource: getIt<TasksRemoteDataSource>(),
+  ));
 
   // Register use cases
   getIt.registerLazySingleton<GetProjectsUseCase>(
