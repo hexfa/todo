@@ -1,13 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/data/datasources/comments_remote_datasource.dart';
+import 'package:todo/data/datasources/comments_remote_datasource_impl.dart';
 import 'package:todo/data/datasources/projects_remote_datasource.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
+import 'package:todo/domain/repositories/comments_repository.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/usecases/CloseTaskUseCase.dart';
 import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
+import 'package:todo/domain/usecases/get_all_comments_usecase.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
@@ -44,6 +48,12 @@ Future<void> setupLocator(String token) async{
   getIt.registerLazySingleton<TasksRemoteDataSource>(
         () => TasksRemoteDataSourceImpl(
       service: getIt<ProjectService>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<CommentsRemoteDataSource>(
+        () => CommentsRemoteDataSourceImpl(
+      getIt<ProjectService>(),
     ),
   );
 
@@ -84,6 +94,10 @@ Future<void> setupLocator(String token) async{
 
   getIt.registerLazySingleton<UpdateTaskUseCase>(
         () => UpdateTaskUseCase(getIt<TasksRepository>()),
+  );
+
+  getIt.registerLazySingleton<GetAllCommentsUseCase>(
+        () => GetAllCommentsUseCase(getIt<CommentsRepository>()),
   );
   //register blocs
   getIt.registerFactory<ProjectsBloc>(

@@ -6,6 +6,7 @@
 import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:todo/data/models/comment_model.dart' as _i7;
 import 'package:todo/data/models/project_model_response.dart' as _i2;
 import 'package:todo/data/models/task_data_request.dart' as _i6;
 import 'package:todo/data/models/task_model_response.dart' as _i3;
@@ -165,4 +166,15 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
           ),
         )),
       ) as _i5.Future<_i3.TaskModelResponse>);
+
+  @override
+  _i5.Future<List<_i7.CommentModel>> getAllComments(String? taskId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getComments,
+          [taskId],
+        ),
+        returnValue:
+            _i5.Future<List<_i7.CommentModel>>.value(<_i7.CommentModel>[]),
+      ) as _i5.Future<List<_i7.CommentModel>>);
 }
