@@ -1,13 +1,17 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todo/core/constants/constants_value.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/project/project_event.dart';
 import 'package:todo/presentation/bloc/project/project_state.dart';
+import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/app_drawer.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
+import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/fab.dart';
 import 'package:todo/presentation/views/state_widget.dart';
 
@@ -37,16 +41,14 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
           floatingActionButton: showFab ? FAB() : null,
           appBar: AppBar(
               title: Text(
-            'Projects',
+            localization.projects,
             style: theme.textTheme.titleMedium
-                ?.copyWith(color: theme.colorScheme.onPrimary),
-          )),
+                    ?.copyWith(color: theme.colorScheme.onPrimary),
+              )),
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
               if (state is ProjectsError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
+
                 context.read<ProjectsBloc>().add(FetchProjectsEvent());
               }
               if (state is ProjectCreateSuccess ||
@@ -68,7 +70,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                 } else {
                   return GridView.builder(
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
@@ -78,84 +80,76 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                     itemCount: state.projects.length,
                     itemBuilder: (gridContext, index) {
                       final project = state.projects[index];
-                      return Card(
-                        elevation: 4,
-                        margin: const EdgeInsets.all(4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                gradiantColors[index],
-                                theme.primaryColor
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
+                      return InkWell(
+                        onTap: (){
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              context.push(
+                                  '${AppRoutePath.taskListRoute}/${project
+                                      .id}');
+                            }
+                          });
+                        },
+                        child: Card(
+
+                          elevation: 4,
+                          margin: const EdgeInsets.all(4),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Text(
-                                  project.name,
-                                  style: theme.textTheme.titleMedium
-                                      ?.copyWith(color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  gradiantColors[index],
+                                  theme.primaryColor
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
-                              project.name != 'Inbox'
-                                  ? Positioned(
-                                      top: 8,
-                                      left: 8,
-                                      child: IconButton(
-                                        icon: Icon(Icons.close,
-                                            color: Colors.white),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: gridContext,
-                                            builder:
-                                                (BuildContext dialogContext) {
-                                              return AlertDialog(
-                                                title: Text(localization
-                                                        .confirmDeletion ),
-                                                content: Text(localization
-                                                        .wantConfirmDeletion ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(
-                                                              dialogContext)
-                                                          .pop();
-                                                    },
-                                                    child: Text(
-                                                        localization.cancel ),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      context
-                                                          .read<ProjectsBloc>()
-                                                          .add(
-                                                              DeleteProjectEvent(
-                                                                  project.id));
-                                                      Navigator.of(
-                                                              dialogContext)
-                                                          .pop();
-                                                    },
-                                                    child: Text(
-                                                        localization.delete),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    project.name,
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                if (project.name != inbox)
+                                  Positioned(
+                                    top: 8,
+                                  left: 8,
+                                  child: IconButton(
+                                    icon: Icon(Icons.close,
+                                        color: Colors.white),
+                                    onPressed: () {
+                                      showCustomDialog(context: context,
+                                          title: localization
+                                              .confirmDeletion ,
+                                          content: localization
+                                              .wantConfirmDeletion ,
+                                          cancelText: localization
+                                              .cancel ,
+                                          confirmText: localization
+                                              .delete ,
+                                          onConfirm: (){
+                                            context
+                                                .read<ProjectsBloc>()
+                                                .add(
+                                                DeleteProjectEvent(
+                                                    project.id));
+                                          });
+                                    },
+                                  ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -165,7 +159,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
               } else if (state is ProjectsError) {
                 return  Center(child: Text(localization.somethingWentWrong));
               }
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             },
           ),
         ),

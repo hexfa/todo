@@ -1,9 +1,11 @@
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/task_data_request.dart';
 
 import '../../core/constants/constants_value.dart';
+import '../../data/models/comment_model.dart';
 import '../../data/models/comment_model.dart';
 import '../../data/models/task_model_response.dart';
 
@@ -25,7 +27,7 @@ abstract class ProjectService {
   );
 
   @GET("tasks")
-  Future<List<TaskModelResponse>> getTasks();
+  Future<List<TaskModelResponse>> getTasks(@Query('project_id')String? projectId);
 
   @POST("tasks")
   Future<TaskModelResponse> createTask(

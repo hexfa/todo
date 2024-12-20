@@ -1,13 +1,11 @@
-
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failure.dart';
 import 'package:todo/domain/entities/task.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
 import 'package:todo/domain/usecases/get_tasks_usecase.dart';
-import 'package:todo/domain/usecases/no_param.dart';
 
 import 'get_tasks_usecase_test.mocks.dart';
 
@@ -29,7 +27,6 @@ void main() {
       assignerId: null,
       commentCount: 5,
       isCompleted: false,
-      content: "Test Task",
       description: "This is a test task",
       due: null,
       duration: "1h",
@@ -41,6 +38,8 @@ void main() {
       sectionId: "sec_1",
       parentId: null,
       url: "https://todoist.com/showTask?id=1",
+      title: 'test',
+      state: '',
     );
 
     final List<TaskEntity> tTaskList = [tTaskEntity];
@@ -49,48 +48,47 @@ void main() {
         'should return Right<List<TaskEntity>> when the call to repository is successful',
             () async {
           // Arrange
-          when(mockTasksRepository.getTasks())
-              .thenAnswer((_) async => Right(tTaskList));
+      when(mockTasksRepository.getTasks('2345233582'))
+          .thenAnswer((_) async => Right(tTaskList));
 
           // Act
-          final result = await useCase.call(NoParams());
+      final result = await useCase.call(TasksParams('2345233582'));
 
-          // Assert
+      // Assert
           expect(result, Right(tTaskList));
-          verify(mockTasksRepository.getTasks());
-          verifyNoMoreInteractions(mockTasksRepository);
+      verify(mockTasksRepository.getTasks('2345233582'));
+      verifyNoMoreInteractions(mockTasksRepository);
         });
 
     test(
         'should return Left(ServerFailure) when the call to repository fails with ServerFailure',
             () async {
           // Arrange
-          when(mockTasksRepository.getTasks())
-              .thenAnswer((_) async => const Left(ServerFailure(message: 'Server Error')));
+      when(mockTasksRepository.getTasks('2345233582')).thenAnswer((_) async => const Left(ServerFailure(message: 'Server Error')));
 
           // Act
-          final result = await useCase.call(NoParams());
+      final result = await useCase.call(TasksParams('2345233582'));
 
-          // Assert
+      // Assert
           expect(result, const Left(ServerFailure(message: 'Server Error')));
-          verify(mockTasksRepository.getTasks());
-          verifyNoMoreInteractions(mockTasksRepository);
+      verify(mockTasksRepository.getTasks('2345233582'));
+      verifyNoMoreInteractions(mockTasksRepository);
         });
 
     test(
         'should return Left(ServerFailure) when the repository returns a ServerFailure',
             () async {
           // Arrange
-          when(mockTasksRepository.getTasks())
+          when(mockTasksRepository.getTasks('2345233582'))
               .thenAnswer((_) async => const Left(ServerFailure(message: 'Unexpected Error')));
 
           // Act
-          final result = await useCase.call(NoParams());
+      final result = await useCase.call(TasksParams('2345233582'));
 
-          // Assert
+      // Assert
           expect(result, const Left(ServerFailure(message: 'Unexpected Error')));
-          verify(mockTasksRepository.getTasks());
-          verifyNoMoreInteractions(mockTasksRepository);
+      verify(mockTasksRepository.getTasks('2345233582'));
+      verifyNoMoreInteractions(mockTasksRepository);
         });
   });
 }

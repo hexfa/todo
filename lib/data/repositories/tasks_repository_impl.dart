@@ -12,9 +12,9 @@ class TasksRepositoryImpl implements TasksRepository {
   TasksRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<TaskEntity>>> getTasks() async {
+  Future<Either<Failure, List<TaskEntity>>> getTasks(String? projectId) async {
     try {
-      final taskModels = await remoteDataSource.getTasks();
+      final taskModels = await remoteDataSource.getTasks(projectId);
       final tasks = taskModels.map((model) => model).toList();
       return Right(tasks);
     } on ServerFailure catch (e) {

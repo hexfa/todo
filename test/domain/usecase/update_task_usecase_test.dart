@@ -1,13 +1,12 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:todo/domain/usecases/update_task_usecase.dart';
-import 'package:todo/domain/repositories/tasks_repository.dart';
-import 'package:todo/domain/entities/task.dart';
-import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/core/error/failure.dart';
+import 'package:todo/data/models/task_data_request.dart';
+import 'package:todo/domain/entities/task.dart';
+import 'package:todo/domain/repositories/tasks_repository.dart';
+import 'package:todo/domain/usecases/update_task_usecase.dart';
 
 import 'update_task_usecase_test.mocks.dart';
 
@@ -30,7 +29,6 @@ void main() {
     assignerId: null,
     commentCount: 5,
     isCompleted: false,
-    content: "Test Task",
     description: "This is a test task",
     due: null,
     duration: "1h",
@@ -42,6 +40,8 @@ void main() {
     sectionId: "sec_1",
     parentId: null,
     url: "https://todoist.com/showTask?id=1",
+    title: 'test',
+    state: '',
   );
 
   group('UpdateTaskUseCase Tests', () {

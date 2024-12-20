@@ -48,14 +48,14 @@ void main() {
         'should return list of TaskModelResponse when the call to ProjectService is successful',
         () async {
       // Arrange
-      when(mockProjectService.getTasks()).thenAnswer((_) async => tTaskList);
+      when(mockProjectService.getTasks('2345233582')).thenAnswer((_) async => tTaskList);
 
       // Act
-      final result = await dataSource.getTasks();
+      final result = await dataSource.getTasks('2345233582');
 
       // Assert
       expect(result, equals(tTaskList));
-      verify(mockProjectService.getTasks());
+      verify(mockProjectService.getTasks('1'));
       verifyNoMoreInteractions(mockProjectService);
     });
   });
@@ -64,14 +64,14 @@ void main() {
       'should throw ServerFailure when the call to ProjectService throws an exception',
           () async {
         // Arrange
-        when(mockProjectService.getTasks()).thenThrow(Exception());
+        when(mockProjectService.getTasks('2345233582')).thenThrow(Exception());
 
         // Act
         final call = dataSource.getTasks;
 
         // Assert
-        expect(() => call(), throwsA(isA<ServerFailure>()));
-        verify(mockProjectService.getTasks());
+        expect(() => call('2345233582'), throwsA(isA<ServerFailure>()));
+        verify(mockProjectService.getTasks('2345233582'));
         verifyNoMoreInteractions(mockProjectService);
       });
 
@@ -79,14 +79,14 @@ void main() {
       'should return empty list when ProjectService returns an empty list',
           () async {
         // Arrange
-        when(mockProjectService.getTasks()).thenAnswer((_) async => []);
+        when(mockProjectService.getTasks('2345233582')).thenAnswer((_) async => []);
 
         // Act
-        final result = await dataSource.getTasks();
+        final result = await dataSource.getTasks('2345233582');
 
         // Assert
         expect(result, equals([]));
-        verify(mockProjectService.getTasks());
+        verify(mockProjectService.getTasks('2345233582'));
         verifyNoMoreInteractions(mockProjectService);
       });
 

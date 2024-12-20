@@ -6,12 +6,12 @@ part 'task_data_request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TaskDataRequest extends TaskDataEntityRequest {
-  final String content;
+  final String? content;
   @JsonKey(name: 'due_string')
-  final String dueString;
+  final String? dueString;
   @JsonKey(name: 'due_lang')
-  final String dueLang;
-  final String priority;
+  final String? dueLang;
+  final String? priority;
 
   const TaskDataRequest({required this.content,
     required this.dueString,

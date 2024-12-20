@@ -1,11 +1,17 @@
 {
   "helloWorld": "Hallo Welt!",
+  "createTask": "Aufgabe erstellen",
   "confirmDeletion": "Löschung bestätigen",
-  "wantConfirmDeletion": "Möchten Sie dieses Projekt wirklich löschen?",
+  "wantConfirmDeletion": "Sind Sie sicher, dass Sie dieses Projekt löschen möchten?",
+  "wantConfirmDeletionTask": "Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?",
+  "kanbanBoard": "Kanban-Tafel",
+  "createTask": "Eine Aufgabe erstellen",
+  "projects": "Projekte",
+  "addNewTask": "Neue Aufgabe hinzufügen",
   "cancel": "Abbrechen",
   "delete": "Löschen",
   "somethingWentWrong": "Etwas ist schiefgelaufen!",
-  "darkMode": "Dunkelmodus",
+  "darkMode": "Dunkler Modus",
   "language": "Sprache",
   "english": "Englisch",
   "german": "Deutsch",
@@ -13,5 +19,6 @@
   "createProject": "Projekt erstellen",
   "projectName": "Projektname",
   "pleaseEnterProjectName": "Bitte geben Sie einen Projektnamen ein",
-  "nothingToSeeHere": "Hier gibt es nichts zu sehen"
+  "createTask": "Aufgabe erstellen",
+  "nothingToSeeHere": "Nichts zu sehen hier"
 }

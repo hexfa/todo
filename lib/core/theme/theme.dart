@@ -15,8 +15,8 @@ const Color onErrorColor = Colors.white;
 // Colors for Dark Theme
  Color darkPrimaryColor = Colors.deepPurple.shade500;
 const Color darkOnPrimaryColor = Colors.white;
-const Color darkCardColor = Color(0xFF1E1E1E);
- Color darkBackgroundColor = Colors.black.withOpacity(0.75);
+const Color darkCardColor = Colors.black45;
+ Color darkBackgroundColor = Colors.grey.shade800;
 const Color darkErrorColor = Color(0xffff6767);
 const Color darkOnErrorColor = Colors.black;
 
@@ -86,14 +86,33 @@ final ThemeData lightTheme = ThemeData(
     ),
     contentPadding: const EdgeInsets.all(16),
   ),
+  cardColor: cardColor,
+
   colorScheme:  ColorScheme.light(
     primary: primaryColor,
     onPrimary: onPrimaryColor,
     surface: backgroundColor,
+    onSurface: Colors.black87,
     error: errorColor,
     onError: onErrorColor,
   ),
-  textTheme: GoogleFonts.robotoTextTheme(),
+  textTheme: TextTheme(
+    displayLarge: GoogleFonts.roboto(color: Colors.black87),
+    displayMedium: GoogleFonts.roboto(color: Colors.black87),
+    displaySmall: GoogleFonts.roboto(color: Colors.black87),
+    headlineLarge: GoogleFonts.roboto(color: Colors.black87),
+    headlineMedium: GoogleFonts.roboto(color: Colors.black87),
+    headlineSmall: GoogleFonts.roboto(color: Colors.black87),
+    titleLarge: GoogleFonts.roboto(color: Colors.black87),
+    titleMedium: GoogleFonts.roboto(color: Colors.black87),
+    titleSmall: GoogleFonts.roboto(color: Colors.black87),
+    bodyLarge: GoogleFonts.roboto(color: Colors.black87),
+    bodyMedium: GoogleFonts.roboto(color: Colors.black87),
+    bodySmall: GoogleFonts.roboto(color: Colors.black87),
+    labelLarge: GoogleFonts.roboto(color: Colors.black87),
+    labelMedium: GoogleFonts.roboto(color: Colors.black87),
+    labelSmall: GoogleFonts.roboto(color: Colors.black87),
+  ),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -107,6 +126,7 @@ final ThemeData darkTheme = ThemeData(
     color: darkCardColor,
     elevation: 2,
   ),
+
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: darkPrimaryColor,
@@ -142,16 +162,30 @@ final ThemeData darkTheme = ThemeData(
     ),
     contentPadding: const EdgeInsets.all(16),
   ),
+cardColor: darkCardColor,
   colorScheme:  ColorScheme.dark(
     primary: darkPrimaryColor,
     onPrimary: darkOnPrimaryColor,
     surface: darkBackgroundColor,
+    onSurface: Colors.white,
     error: darkErrorColor,
     onError: darkOnErrorColor,
   ),
-  textTheme: GoogleFonts.robotoTextTheme(
-    const TextTheme(
-      bodyMedium: TextStyle(color: Colors.white),
-    ),
+  textTheme: TextTheme(
+    displayLarge: GoogleFonts.roboto(color: Colors.white),
+    displayMedium: GoogleFonts.roboto(color:  Colors.white),
+    displaySmall: GoogleFonts.roboto(color:  Colors.white),
+    headlineLarge: GoogleFonts.roboto(color:  Colors.white),
+    headlineMedium: GoogleFonts.roboto(color:  Colors.white),
+    headlineSmall: GoogleFonts.roboto(color:  Colors.white),
+    titleLarge: GoogleFonts.roboto(color:  Colors.white),
+    titleMedium: GoogleFonts.roboto(color:  Colors.white),
+    titleSmall: GoogleFonts.roboto(color:  Colors.white),
+    bodyLarge: GoogleFonts.roboto(color:  Colors.white),
+    bodyMedium: GoogleFonts.roboto(color:  Colors.white),
+    bodySmall: GoogleFonts.roboto(color:  Colors.white),
+    labelLarge: GoogleFonts.roboto(color:  Colors.white),
+    labelMedium: GoogleFonts.roboto(color:  Colors.white),
+    labelSmall: GoogleFonts.roboto(color:  Colors.white),
   ),
 );
