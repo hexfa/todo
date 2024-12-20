@@ -40,8 +40,7 @@ void main() {
     sectionId: "sec_1",
     parentId: null,
     url: "https://todoist.com/showTask?id=1",
-    title: 'test',
-    state: '',
+    content: 'test'
   );
 
   group('UpdateTaskUseCase Tests', () {

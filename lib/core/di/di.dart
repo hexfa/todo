@@ -16,10 +16,10 @@ import 'package:todo/domain/usecases/get_tasks_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
+import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
-
 
 final getIt = GetIt.instance;
 
@@ -30,14 +30,14 @@ Future<void> setupLocator(String token) async {
   getIt.registerLazySingleton<Storage>(() => Storage());
 
   getIt.registerLazySingleton<AppRouter>(
-          () => AppRouter(storage: getIt<Storage>()));
+      () => AppRouter(storage: getIt<Storage>()));
 
   final projectService = ProjectService(dio);
   getIt.registerLazySingleton<ProjectService>(() => projectService);
 
   // Register data sources
   getIt.registerLazySingleton<ProjectsRemoteDataSource>(
-          () => ProjectsRemoteDataSourceImpl(getIt()));
+      () => ProjectsRemoteDataSourceImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRemoteDataSource>(
     () => TasksRemoteDataSourceImpl(
@@ -47,7 +47,7 @@ Future<void> setupLocator(String token) async {
 
   // Register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl( remoteDataSource: getIt()));
+      () => ProjectsRepositoryImpl(remoteDataSource: getIt()));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
@@ -55,13 +55,13 @@ Future<void> setupLocator(String token) async {
 
   // Register use cases
   getIt.registerLazySingleton<GetProjectsUseCase>(
-          () => GetProjectsUseCase(getIt<ProjectsRepository>()));
+      () => GetProjectsUseCase(getIt<ProjectsRepository>()));
 
   getIt.registerLazySingleton<UpdateTaskUseCase>(
       () => UpdateTaskUseCase(getIt<TasksRepository>()));
 
   getIt.registerLazySingleton<CreateProjectUseCase>(
-        () => CreateProjectUseCase(getIt<ProjectsRepository>()),
+    () => CreateProjectUseCase(getIt<ProjectsRepository>()),
   );
 
   getIt.registerLazySingleton<DeleteTaskUseCase>(
@@ -73,12 +73,12 @@ Future<void> setupLocator(String token) async {
   );
 
   getIt.registerLazySingleton<DeleteProjectUseCase>(
-        () => DeleteProjectUseCase(getIt<ProjectsRepository>()),
+    () => DeleteProjectUseCase(getIt<ProjectsRepository>()),
   );
 
   // Register blocs
   getIt.registerFactory<ProjectsBloc>(
-        () => ProjectsBloc(
+    () => ProjectsBloc(
       createProjectUseCase: getIt<CreateProjectUseCase>(),
       getProjectsUseCase: getIt<GetProjectsUseCase>(),
       deleteUseCase: getIt<DeleteProjectUseCase>(),
@@ -91,4 +91,8 @@ Future<void> setupLocator(String token) async {
         updateTaskUseCase: getIt<UpdateTaskUseCase>(),
         deleteTaskUseCase: getIt<DeleteTaskUseCase>()),
   );
+
+  getIt.registerFactory<UpdateTaskBloc>(() => UpdateTaskBloc(
+        updateTaskUseCase: getIt<UpdateTaskUseCase>(),
+      ));
 }

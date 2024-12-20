@@ -15,10 +15,9 @@ import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/fab.dart';
 import 'package:todo/presentation/views/state_widget.dart';
 
-
-
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
+
   @override
   State<ProjectsPage> createState() => _ProjectsPageState();
 }
@@ -43,12 +42,11 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
               title: Text(
             localization.projects,
             style: theme.textTheme.titleMedium
-                    ?.copyWith(color: theme.colorScheme.onPrimary),
-              )),
+                ?.copyWith(color: theme.colorScheme.onPrimary),
+          )),
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
               if (state is ProjectsError) {
-
                 context.read<ProjectsBloc>().add(FetchProjectsEvent());
               }
               if (state is ProjectCreateSuccess ||
@@ -66,11 +64,12 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                 return StateWidget(isLoading: true, null);
               } else if (state is ProjectsLoaded) {
                 if (state.projects.isEmpty) {
-                  return StateWidget(isLoading: false, localization.createProject);
+                  return StateWidget(
+                      isLoading: false, localization.createProject);
                 } else {
                   return GridView.builder(
                     gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
@@ -81,17 +80,15 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                     itemBuilder: (gridContext, index) {
                       final project = state.projects[index];
                       return InkWell(
-                        onTap: (){
+                        onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (mounted) {
                               context.push(
-                                  '${AppRoutePath.taskListRoute}/${project
-                                      .id}');
+                                  '${AppRoutePath.taskListRoute}/${project.id}');
                             }
                           });
                         },
                         child: Card(
-
                           elevation: 4,
                           margin: const EdgeInsets.all(4),
                           shape: RoundedRectangleBorder(
@@ -122,29 +119,25 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                                 if (project.name != inbox)
                                   Positioned(
                                     top: 8,
-                                  left: 8,
-                                  child: IconButton(
-                                    icon: Icon(Icons.close,
-                                        color: Colors.white),
-                                    onPressed: () {
-                                      showCustomDialog(context: context,
-                                          title: localization
-                                              .confirmDeletion ,
-                                          content: localization
-                                              .wantConfirmDeletion ,
-                                          cancelText: localization
-                                              .cancel ,
-                                          confirmText: localization
-                                              .delete ,
-                                          onConfirm: (){
-                                            context
-                                                .read<ProjectsBloc>()
-                                                .add(
-                                                DeleteProjectEvent(
-                                                    project.id));
-                                          });
-                                    },
-                                  ),
+                                    left: 8,
+                                    child: IconButton(
+                                      icon: Icon(Icons.close,
+                                          color: Colors.white),
+                                      onPressed: () {
+                                        showCustomDialog(
+                                            context: context,
+                                            title: localization.confirmDeletion,
+                                            content: localization
+                                                .wantConfirmDeletion,
+                                            cancelText: localization.cancel,
+                                            confirmText: localization.delete,
+                                            onConfirm: () {
+                                              context.read<ProjectsBloc>().add(
+                                                  DeleteProjectEvent(
+                                                      project.id));
+                                            });
+                                      },
+                                    ),
                                   )
                                 else
                                   const SizedBox.shrink(),
@@ -157,7 +150,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                   );
                 }
               } else if (state is ProjectsError) {
-                return  Center(child: Text(localization.somethingWentWrong));
+                return Center(child: Text(localization.somethingWentWrong));
               }
               return const SizedBox.shrink();
             },

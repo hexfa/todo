@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/domain/entities/task.dart';
 
 import 'due_model.dart';
@@ -19,11 +20,10 @@ class TaskModelResponse extends TaskEntity {
   final int commentCount;
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
-
   final String content;
   final String description;
-  final DueModel? due;
-  final String? duration;
+  DueModel? due;
+  String? duration;
   final String id;
   final List<String> labels;
   final int order;
@@ -35,8 +35,11 @@ class TaskModelResponse extends TaskEntity {
   @JsonKey(name: 'parent_id')
   final String? parentId;
   final String url;
+  String state;
+  bool isRunning;
+  List<Comment> commentList = [];
 
-  const TaskModelResponse({
+  TaskModelResponse({
     required this.creatorId,
     required this.createdAt,
     this.assigneeId,
@@ -55,6 +58,8 @@ class TaskModelResponse extends TaskEntity {
     this.sectionId,
     this.parentId,
     required this.url,
+    this.state = '',
+    this.isRunning = false,
   }) : super(
             creatorId: creatorId,
             createdAt: createdAt,
@@ -62,7 +67,7 @@ class TaskModelResponse extends TaskEntity {
             assignerId: assignerId,
             commentCount: commentCount,
             isCompleted: isCompleted,
-            title: content,
+            content: content,
             description: description,
             due: due,
             duration: duration,
@@ -73,8 +78,11 @@ class TaskModelResponse extends TaskEntity {
             projectId: projectId,
             sectionId: sectionId,
             parentId: parentId,
-            url: url,
-            state: '');
+            url: url);
+
+  void addComment(Comment comment) {
+    commentList.add(comment);
+  }
 
   factory TaskModelResponse.fromJson(Map<String, dynamic> json) {
     print("TaskModelResponse ${json['creator_id']}");

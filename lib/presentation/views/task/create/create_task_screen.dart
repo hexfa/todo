@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/domain/entities/project.dart';
-import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:uuid/uuid.dart';
@@ -164,22 +164,24 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      getBloc<CreateTaskBloc>(context).add(AddEvent(TaskEntity(
-                          creatorId: '',
-                          createdAt: DateFormat("yyyy-MM-ddTHH:mm:ss.SSSSSSZ")
-                              .format(DateTime.now()),
-                          id: Uuid().v4(),
-                          title: _titleController.text,
-                          description: _descriptionController.text,
-                          state: _selectState ?? '',
-                          priority: _selectPriority ?? 1,
-                          projectId:
-                              _selectProject != null ? _selectProject!.id : '',
-                          startDate: _selectStartDate,
-                          endDate: _selectEndDate,
-                          labels: [],
-                          order: 0,
-                          url: '')));
+                      getBloc<CreateTaskBloc>(context).add(AddEvent(
+                          TaskModelResponse(
+                              commentCount: 0,
+                              isCompleted: false,
+                              creatorId: '',
+                              createdAt:
+                                  DateFormat("yyyy-MM-ddTHH:mm:ss.SSSSSSZ")
+                                      .format(DateTime.now()),
+                              id: Uuid().v4(),
+                              content: _titleController.text,
+                              description: _descriptionController.text,
+                              priority: _selectPriority ?? 1,
+                              projectId: _selectProject != null
+                                  ? _selectProject!.id
+                                  : '',
+                              labels: [],
+                              order: 0,
+                              url: '')));
                     },
                     child: const Text('Add Task'),
                   ),

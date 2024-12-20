@@ -5,23 +5,28 @@ import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
 import 'package:todo/core/di/di.dart';
+import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
+import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/task/update/update_task_screen.dart';
 
 class TasksPage extends StatefulWidget {
   final String projectId;
 
   const TasksPage({super.key, required this.projectId});
+
   @override
   State<TasksPage> createState() => _TasksPageState();
 }
 
 class _TasksPageState extends BaseState<TasksPage> {
   late BoardViewController boardViewController;
+
   @override
   void initState() {
     super.initState();
@@ -104,35 +109,69 @@ class _TasksPageState extends BaseState<TasksPage> {
                         context.read<TasksBloc>().add(UpdateTaskEvent(
                             task.id, priority, widget.projectId));
                       },
-                      item: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            task.title,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: theme.colorScheme.onSurface,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
+                      item: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return BlocProvider(
+                                  create: (context) => getIt<UpdateTaskBloc>()
+                                    ..currentTask = TaskModelResponse(
+                                        creatorId: task.creatorId,
+                                        createdAt: task.createdAt,
+                                        commentCount: task.commentCount,
+                                        isCompleted: task.isCompleted,
+                                        content: task.content,
+                                        description: task.description,
+                                        id: task.id,
+                                        labels: task.labels,
+                                        order: task.order,
+                                        priority: task.priority,
+                                        projectId: task.projectId,
+                                        url: task.url),
+                                  child: UpdateTaskScreen(taskId: task.id),
+                                );
+                              },
                             ),
+                          );
+
+                          // router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
+                        },
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          trailing:  IconButton(
-                             onPressed: () {
-                            showCustomDialog(
-                                context: context,
-                                title: localization.confirmDeletion,
-                                content: localization.wantConfirmDeletionTask,
-                                cancelText: localization.cancel,
-                                confirmText: localization.delete,
-                                onConfirm: () {
-                                  context.read<TasksBloc>().add(
-                                      DeleteEvent(task.id, widget.projectId));
-                                });
-                          }, icon: const Icon(Icons.delete_outline,
-                            color: Colors.redAccent,),
+                          child: ListTile(
+                            title: Text(
+                              task.content,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showCustomDialog(
+                                    context: context,
+                                    title: localization.confirmDeletion,
+                                    content:
+                                        localization.wantConfirmDeletionTask,
+                                    cancelText: localization.cancel,
+                                    confirmText: localization.delete,
+                                    onConfirm: () {
+                                      context.read<TasksBloc>().add(DeleteEvent(
+                                          task.id, widget.projectId));
+                                    });
+                              },
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                color: Colors.redAccent,
+                              ),
+                            ),
                           ),
                         ),
                       ),
