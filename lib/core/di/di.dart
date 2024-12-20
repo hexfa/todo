@@ -109,6 +109,6 @@ Future<void> setupLocator(String token) async{
   );
 
   getIt.registerFactory<TasksBloc>(
-        () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>()),
+        () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>(), updateTaskUseCase: getIt<UpdateTaskUseCase>(), deleteTaskUseCase: getIt<DeleteTaskUseCase>()),
   );
 }

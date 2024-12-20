@@ -172,7 +172,7 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
   _i5.Future<List<_i7.CommentModel>> getAllComments(String? taskId) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getComments,
+          #getAllComments,
           [taskId],
         ),
         returnValue:

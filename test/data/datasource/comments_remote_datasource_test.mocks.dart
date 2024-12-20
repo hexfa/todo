@@ -95,10 +95,11 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
       ) as _i5.Future<_i2.ProjectModelResponse>);
 
   @override
-  _i5.Future<List<_i3.TaskModelResponse>> getTasks() => (super.noSuchMethod(
+  _i5.Future<List<_i3.TaskModelResponse>> getTasks(String? projectId) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getTasks,
-          [],
+          [projectId],
         ),
         returnValue: _i5.Future<List<_i3.TaskModelResponse>>.value(
             <_i3.TaskModelResponse>[]),
@@ -171,7 +172,7 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
   _i5.Future<List<_i7.CommentModel>> getAllComments(String? taskId) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getComments,
+          #getAllComments,
           [taskId],
         ),
         returnValue:
