@@ -21,38 +21,43 @@ void main() {
   });
 
   const tId = "2995104339";
-  const tTaskDataRequest = TaskDataRequest(content: "Buy Coffee",dueString: "tomorrow at 12:00", dueLang: "en", priority: "4");
+  var tTaskDataRequest = TaskDataRequest(
+      content: "Buy Coffee",
+      description: "Description of by coffee",
+      deadLine: "2024-12-19",
+      priority: "4",
+      projectId: '123567');
   const tTaskEntity = TaskEntity(
-    creatorId: "12345",
-    createdAt: "2023-10-01T12:34:56Z",
-    assigneeId: "54321",
-    assignerId: null,
-    commentCount: 5,
-    isCompleted: false,
-    description: "This is a test task",
-    due: null,
-    duration: "1h",
-    id: "1",
-    labels: ["label1", "label2"],
-    order: 1,
-    priority: 4,
-    projectId: "proj_1",
-    sectionId: "sec_1",
-    parentId: null,
-    url: "https://todoist.com/showTask?id=1",
-    content: 'test'
-  );
+      creatorId: "12345",
+      createdAt: "2023-10-01T12:34:56Z",
+      assigneeId: "54321",
+      assignerId: null,
+      commentCount: 5,
+      isCompleted: false,
+      description: "This is a test task",
+      due: null,
+      duration: "1h",
+      id: "1",
+      labels: ["label1", "label2"],
+      order: 1,
+      priority: 4,
+      projectId: "proj_1",
+      sectionId: "sec_1",
+      parentId: null,
+      url: "https://todoist.com/showTask?id=1",
+      content: 'test');
 
   group('UpdateTaskUseCase Tests', () {
     test(
       'should call repository.updateTask with correct parameters and return TaskEntity on success',
-          () async {
+      () async {
         // Arrange
         when(mockTasksRepository.updateTask(tTaskDataRequest, tId))
             .thenAnswer((_) async => Right(tTaskEntity));
 
         // Act
-        final result = await useCase(UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
+        final result = await useCase(
+            UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
 
         // Assert
         verify(mockTasksRepository.updateTask(tTaskDataRequest, tId));
@@ -63,13 +68,14 @@ void main() {
 
     test(
       'should return ServerFailure when repository.updateTask fails',
-          () async {
+      () async {
         // Arrange
-        when(mockTasksRepository.updateTask(tTaskDataRequest, tId))
-            .thenAnswer((_) async => Left(ServerFailure(message: "Failed to update task")));
+        when(mockTasksRepository.updateTask(tTaskDataRequest, tId)).thenAnswer(
+            (_) async => Left(ServerFailure(message: "Failed to update task")));
 
         // Act
-        final result = await useCase(UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
+        final result = await useCase(
+            UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
 
         // Assert
         verify(mockTasksRepository.updateTask(tTaskDataRequest, tId));
@@ -80,20 +86,20 @@ void main() {
 
     test(
       'should return ServerFailure when repository.updateTask throws an exception',
-          () async {
+      () async {
         // Arrange
         when(mockTasksRepository.updateTask(any, any))
             .thenThrow(Exception("Unexpected error"));
 
         // Act
-        final result = await useCase(UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
+        final result = await useCase(
+            UpdateTaskParams(id: tId, taskData: tTaskDataRequest));
 
         // Assert
-        expect(result, Left(ServerFailure(message: 'Exception: Unexpected error')));
+        expect(result,
+            Left(ServerFailure(message: 'Exception: Unexpected error')));
         verify(mockTasksRepository.updateTask(any, any));
       },
     );
-
-
   });
 }

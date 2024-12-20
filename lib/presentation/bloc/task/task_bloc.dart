@@ -25,11 +25,12 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   }) : super(TasksInitial()) {
     on<FetchTasksEvent>((event, emit) async {
       emit(TasksLoading());
-      final result = await getTasksUseCase.call(TasksParams(event.projectId??''));
+      final result =
+          await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
 
       result.fold(
         (failure) => emit(TasksError(failure.message)),
-        (tasks) => emit(TasksLoaded(tasks,sectionResult)),
+        (tasks) => emit(TasksLoaded(tasks, sectionResult)),
       );
     });
 
@@ -48,8 +49,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
           content: null,
-          dueString: null,
-          dueLang: null,
+          description: null,
+          deadLine: null,
+          projectId: event.projectId,
           priority: event.priority,
         ),
       ));
@@ -62,7 +64,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     });
 
     on<DeleteEvent>((event, emit) async {
-      final result = await deleteTaskUseCase.call(event.taskId??'');
+      final result = await deleteTaskUseCase.call(event.taskId ?? '');
       result.fold(
         (failure) => emit(TasksError(failure.message)),
         (task) {

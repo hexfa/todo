@@ -7,6 +7,11 @@ class InitialDataEvent extends CreateTaskEvent {
   List<Object> get props => [];
 }
 
+class FetchProject extends CreateTaskEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class AddEvent extends CreateTaskEvent {
   final TaskEntity task;
 

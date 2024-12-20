@@ -8,16 +8,18 @@ part of 'task_data_request.dart';
 
 TaskDataRequest _$TaskDataRequestFromJson(Map<String, dynamic> json) =>
     TaskDataRequest(
-      content: json['content'] as String,
-      dueString: json['due_string'] as String,
-      dueLang: json['due_lang'] as String,
-      priority: json['priority'] as String,
+      content: json['content'] as String?,
+      description: json['description'] as String?,
+      deadLine: json['due_date'] as String?,
+      priority: json['priority'] as String?,
+      projectId: json['project_id'] as String?,
     );
 
 Map<String, dynamic> _$TaskDataRequestToJson(TaskDataRequest instance) =>
     <String, dynamic>{
       'content': instance.content,
-      'due_string': instance.dueString,
-      'due_lang': instance.dueLang,
+      'description': instance.description,
+      'due_date': instance.deadLine,
       'priority': instance.priority,
+      'project_id': instance.projectId,
     };

@@ -30,11 +30,11 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
     final result = await updateTaskUseCase.call(UpdateTaskParams(
       id: event.task.id,
       taskData: TaskDataRequest(
-        content: event.task.content,
-        dueString: null,
-        dueLang: null,
-        priority: event.task.priority.toString(),
-      ),
+          content: event.task.content,
+          description: event.task.description,
+          deadLine: event.task.due?.date,
+          priority: event.task.priority.toString(),
+          projectId: event.task.projectId),
     ));
     result.fold(
         (failure) => emit(UpdateTaskErrorState(failure.message)),

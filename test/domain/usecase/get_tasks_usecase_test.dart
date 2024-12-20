@@ -39,56 +39,56 @@ void main() {
       parentId: null,
       url: "https://todoist.com/showTask?id=1",
       content: 'test',
-      state: '',
     );
 
     final List<TaskEntity> tTaskList = [tTaskEntity];
 
     test(
         'should return Right<List<TaskEntity>> when the call to repository is successful',
-            () async {
-          // Arrange
+        () async {
+      // Arrange
       when(mockTasksRepository.getTasks('2345233582'))
           .thenAnswer((_) async => Right(tTaskList));
 
-          // Act
+      // Act
       final result = await useCase.call(TasksParams('2345233582'));
 
       // Assert
-          expect(result, Right(tTaskList));
+      expect(result, Right(tTaskList));
       verify(mockTasksRepository.getTasks('2345233582'));
       verifyNoMoreInteractions(mockTasksRepository);
-        });
+    });
 
     test(
         'should return Left(ServerFailure) when the call to repository fails with ServerFailure',
-            () async {
-          // Arrange
-      when(mockTasksRepository.getTasks('2345233582')).thenAnswer((_) async => const Left(ServerFailure(message: 'Server Error')));
+        () async {
+      // Arrange
+      when(mockTasksRepository.getTasks('2345233582')).thenAnswer(
+          (_) async => const Left(ServerFailure(message: 'Server Error')));
 
-          // Act
+      // Act
       final result = await useCase.call(TasksParams('2345233582'));
 
       // Assert
-          expect(result, const Left(ServerFailure(message: 'Server Error')));
+      expect(result, const Left(ServerFailure(message: 'Server Error')));
       verify(mockTasksRepository.getTasks('2345233582'));
       verifyNoMoreInteractions(mockTasksRepository);
-        });
+    });
 
     test(
         'should return Left(ServerFailure) when the repository returns a ServerFailure',
-            () async {
-          // Arrange
-          when(mockTasksRepository.getTasks('2345233582'))
-              .thenAnswer((_) async => const Left(ServerFailure(message: 'Unexpected Error')));
+        () async {
+      // Arrange
+      when(mockTasksRepository.getTasks('2345233582')).thenAnswer(
+          (_) async => const Left(ServerFailure(message: 'Unexpected Error')));
 
-          // Act
+      // Act
       final result = await useCase.call(TasksParams('2345233582'));
 
       // Assert
-          expect(result, const Left(ServerFailure(message: 'Unexpected Error')));
+      expect(result, const Left(ServerFailure(message: 'Unexpected Error')));
       verify(mockTasksRepository.getTasks('2345233582'));
       verifyNoMoreInteractions(mockTasksRepository);
-        });
+    });
   });
 }

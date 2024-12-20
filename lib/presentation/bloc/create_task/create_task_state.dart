@@ -8,20 +8,29 @@ final class AddTaskInitial extends CreateTaskState {
 }
 
 final class InitialDataState extends CreateTaskState {
-  final List<String> stateList;
-
   final List<Project> projectList;
-  final List<String> pointList;
-  final List<int> priorityList;
 
-  InitialDataState(
-      this.stateList, this.projectList, this.pointList, this.priorityList);
+  InitialDataState(this.projectList);
 
   @override
-  List<Object> get props => [stateList, projectList, pointList, priorityList];
+  List<Object> get props => [projectList];
 }
 
 final class AddSuccessState extends CreateTaskState {
   @override
   List<Object> get props => [];
+}
+
+final class CreateTaskLoadingState extends CreateTaskState {
+  @override
+  List<Object> get props => [];
+}
+
+final class CreateTaskFailedState extends CreateTaskState {
+  final String message;
+
+  CreateTaskFailedState(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

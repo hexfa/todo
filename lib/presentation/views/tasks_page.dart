@@ -10,6 +10,7 @@ import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
+import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
@@ -53,7 +54,7 @@ class _TasksPageState extends BaseState<TasksPage> {
             IconButton(
               icon: Icon(Icons.add, color: theme.colorScheme.onPrimary),
               onPressed: () {
-                // TODO: Add functionality to create a new task
+                router.push(AppRoutePath.createTaskRoute);
               },
             ),
           ],

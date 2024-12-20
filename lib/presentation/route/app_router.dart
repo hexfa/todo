@@ -40,8 +40,8 @@ class AppRouter {
 
       // Add Task Route
       GoRoute(
-        path: AppRoutePath.addTaskRoute,
-        builder: (context, state) => CreateTaskScreen(),
+        path: AppRoutePath.createTaskRoute,
+        builder: (context, state) => const CreateTaskScreen(),
       ),
       GoRoute(
         path: '${AppRoutePath.updateTaskRoute}/:taskId',

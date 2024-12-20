@@ -20,7 +20,7 @@ void main() {
   });
 
   group('getTasks', () {
-    const tTaskModelResponse = TaskModelResponse(
+    var tTaskModelResponse = TaskModelResponse(
       creatorId: "12345",
       createdAt: "2023-10-01T12:34:56Z",
       assigneeId: "54321",
@@ -115,7 +115,8 @@ void main() {
         'should return Right(empty list) when remote data source returns an empty list',
         () async {
       // Arrange
-      when(mockRemoteDataSource.getTasks('2345233582')).thenAnswer((_) async => []);
+      when(mockRemoteDataSource.getTasks('2345233582'))
+          .thenAnswer((_) async => []);
 
       // Act
       final result = await repository.getTasks('2345233582');
