@@ -48,12 +48,14 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final result = await updateTaskUseCase.call(UpdateTaskParams(
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
-          content: null,
-          description: null,
-          deadLine: null,
-          projectId: event.projectId,
-          priority: event.priority,
-        ),
+            content: null,
+            description: null,
+            deadLine: null,
+            projectId: event.projectId,
+            priority: event.priority,
+            duration: 0,
+            startTimer: '',
+            durationUnit: 'minute'),
       ));
       result.fold(
         (failure) => emit(TasksError(failure.message)),

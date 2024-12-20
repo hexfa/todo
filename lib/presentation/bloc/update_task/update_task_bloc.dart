@@ -28,13 +28,17 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
       ConfirmUpdateTask event, Emitter emit) async {
     emit(UpdateTaskLoadingState());
     final result = await updateTaskUseCase.call(UpdateTaskParams(
-      id: event.task.id,
+      id: event.id,
       taskData: TaskDataRequest(
-          content: event.task.content,
-          description: event.task.description,
-          deadLine: event.task.due?.date,
-          priority: event.task.priority.toString(),
-          projectId: event.task.projectId),
+          content: event.content,
+          description: event.description,
+          deadLine: event.deadLine,
+          priority: event.priority.toString(),
+          projectId: event.projectId,
+        duration: 1,
+        startTimer: event.startTimer,
+        durationUnit: 'minute'
+      ),
     ));
     result.fold(
         (failure) => emit(UpdateTaskErrorState(failure.message)),
@@ -63,18 +67,18 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
   }
 
   void _onStopTimer(StopTimer event, Emitter emit) {
-    currentTask.isRunning = false;
-    currentTask.duration = event.second.toString();
-    currentTask.due!.startTimer = '';
-    //update task
-    emit(UpdateTask(currentTask));
+    // currentTask.isRunning = false;
+    // currentTask.durationChange = event.second.toString();
+    // currentTask.due!.startTimer = '';
+    // //update task
+    // emit(UpdateTask(currentTask));
   }
 
   void _onFinishTimer(FinishTimer event, Emitter emit) {
-    currentTask.isRunning = false;
-    currentTask.duration =
-        calculateDifferenceInSeconds(currentTask.due!.startTimer).toString();
-    currentTask.due?.startTimer = '';
+    // currentTask.isRunning = false;
+    // currentTask.durationChange =
+    //     calculateDifferenceInSeconds(currentTask.due!.startTimer).toString();
+    // currentTask.due?.startTimer = '';
     //update task
   }
 

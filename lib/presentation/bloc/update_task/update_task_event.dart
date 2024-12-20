@@ -24,12 +24,35 @@ class FinishTimer extends UpdateTaskEvent {}
 class UpdateTimer extends UpdateTaskEvent {}
 
 class ConfirmUpdateTask extends UpdateTaskEvent {
-  final TaskModelResponse task;
+  final String id;
+  final String projectId;
+  final String content;
+  final String description;
+  final int priority;
+  final String deadLine;
+  final String startTimer;
+  final int duration;
 
-  ConfirmUpdateTask(this.task);
+  ConfirmUpdateTask(
+      {required this.id,
+      required this.projectId,
+      required this.content,
+      required this.description,
+      required this.priority,
+      required this.deadLine,
+      required this.startTimer,
+      required this.duration});
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [
+        projectId,
+        content,
+        description,
+        priority,
+        deadLine,
+        startTimer,
+        duration
+      ];
 }
 
 class CreateCommentEvent extends UpdateTaskEvent {

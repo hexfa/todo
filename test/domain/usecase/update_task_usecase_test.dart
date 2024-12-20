@@ -21,12 +21,15 @@ void main() {
   });
 
   const tId = "2995104339";
-  var tTaskDataRequest = TaskDataRequest(
+  var tTaskDataRequest = const TaskDataRequest(
       content: "Buy Coffee",
       description: "Description of by coffee",
       deadLine: "2024-12-19",
       priority: "4",
-      projectId: '123567');
+      projectId: '123567',
+      durationUnit: 'minute',
+      duration: 1,
+      startTimer: "2024-12-19");
   const tTaskEntity = TaskEntity(
       creatorId: "12345",
       createdAt: "2023-10-01T12:34:56Z",
@@ -36,7 +39,7 @@ void main() {
       isCompleted: false,
       description: "This is a test task",
       due: null,
-      duration: "1h",
+      // durationChange: "1h",
       id: "1",
       labels: ["label1", "label2"],
       order: 1,

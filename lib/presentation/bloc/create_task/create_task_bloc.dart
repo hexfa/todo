@@ -30,7 +30,10 @@ class CreateTaskBloc extends Bloc<CreateTaskEvent, CreateTaskState> {
         description: event.task.description,
         deadLine: event.task.due?.date,
         priority: event.task.priority.toString(),
-        projectId: event.task.projectId));
+        projectId: event.task.projectId,
+        startTimer: '',
+        duration: 1,
+        durationUnit: 'minute'));
     result.fold(
       (failure) => emit(CreateTaskFailedState('Failed to create task')),
       (projects) => emit(AddSuccessState()),

@@ -19,7 +19,7 @@ TaskModelResponse _$TaskModelResponseFromJson(Map<String, dynamic> json) =>
       due: json['due'] == null
           ? null
           : DueModel.fromJson(json['due'] as Map<String, dynamic>),
-      duration: json['duration'] as String?,
+      // durationChange: json['duration'] as String?,
       id: json['id'] as String,
       labels:
           (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
@@ -42,7 +42,7 @@ Map<String, dynamic> _$TaskModelResponseToJson(TaskModelResponse instance) =>
       'content': instance.content,
       'description': instance.description,
       'due': instance.due?.toJson(),
-      'duration': instance.duration,
+      // 'duration': instance.durationChange,
       'id': instance.id,
       'labels': instance.labels,
       'order': instance.order,

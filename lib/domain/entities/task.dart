@@ -12,7 +12,8 @@ class TaskEntity extends Equatable {
   final String content;
   final String description;
   final Due? due;
-  final String? duration;
+
+  // final String? durationChange;
   final String id;
   final List<String> labels;
   final int order;
@@ -31,7 +32,7 @@ class TaskEntity extends Equatable {
     required this.content,
     required this.description,
     this.due,
-    this.duration,
+    // this.durationChange,
     required this.labels,
     required this.order,
     required this.priority,
@@ -54,7 +55,7 @@ class TaskEntity extends Equatable {
         content,
         description,
         due,
-        duration,
+        // durationChange,
         id,
         labels,
         order,

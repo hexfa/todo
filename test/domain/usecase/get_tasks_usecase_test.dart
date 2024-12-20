@@ -29,7 +29,7 @@ void main() {
       isCompleted: false,
       description: "This is a test task",
       due: null,
-      duration: "1h",
+      // durationChange: "1h",
       id: "1",
       labels: ["label1", "label2"],
       order: 1,

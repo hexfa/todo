@@ -20,6 +20,10 @@ class UpdateTaskScreen extends StatefulWidget {
 
 class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   final TextEditingController _commentController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final List<String> _priorityList = ['todo', 'inProgress', 'done'];
+  String? _selectPriority;
   TaskModelResponse? task;
 
   Timer? _timer;
@@ -30,11 +34,25 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   void initState() {
     super.initState();
     task = context.read<UpdateTaskBloc>().currentTask;
-
-    if (task != null && task!.isRunning) {
-      _seconds = task?.duration != null ? int.parse(task!.duration!) : 0;
-      _startTimer();
+    //init data
+    _contentController.text = task!.content;
+    _descriptionController.text = task!.description;
+    switch (task!.priority) {
+      case 2:
+        _selectPriority = 'inProgress';
+        break;
+      case 3:
+        _selectPriority = 'done';
+        break;
+      default:
+        _selectPriority = 'todo';
+        break;
     }
+
+    // if (task != null && task!.isRunning) {
+    //   _seconds = task?.durationChange != null ? int.parse(task!.durationChange!) : 0;
+    //   _startTimer();
+    // }
   }
 
   @override
@@ -80,13 +98,13 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           task = state.task;
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (task != null && task!.isRunning && !_isRunning) {
-              _seconds =
-                  task?.duration != null ? int.parse(task!.duration!) : 0;
-              _startTimer();
-            } else if (task != null && !task!.isRunning && _isRunning) {
-              _stopTimer();
-            }
+            // if (task != null && task!.isRunning && !_isRunning) {
+            //   _seconds =
+            //       task?.durationChange != null ? int.parse(task!.durationChange!) : 0;
+            //   _startTimer();
+            // } else if (task != null && !task!.isRunning && _isRunning) {
+            //   _stopTimer();
+            // }
           });
         }
 
@@ -104,9 +122,16 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      context
-                          .read<UpdateTaskBloc>()
-                          .add(ConfirmUpdateTask(task!));
+                      context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(
+                          id: task!.id,
+                          content: _contentController.text,
+                          description: _descriptionController.text,
+                          priority: getSelectPriority(),
+                          deadLine: task!.due?.date ?? '',
+                          startTimer: task!.due?.startTimer ?? '',
+                          duration: 1,
+                          // duration: task!.durationChange != null? int.parse(task!.durationChange!) : 0,
+                          projectId: task!.projectId));
                     },
                     icon: Icon(Icons.check))
               ],
@@ -119,38 +144,30 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //content
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Text(
-                          task?.content ?? 'No Content',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                    TextField(
+                      controller: _contentController,
+                      decoration: const InputDecoration(labelText: 'Title'),
                     ),
-                    //description
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 5 * 24.0,
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade100,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            task?.description ?? 'description',
-                            style: theme.textTheme.bodyMedium
-                                ?.copyWith(color: theme.colorScheme.onSurface),
-                          ),
-                        ),
-                      ),
+                    TextField(
+                      controller: _descriptionController,
+                      decoration:
+                          const InputDecoration(labelText: 'Description'),
                     ),
-                    SizedBox(height: 16),
+                    // priority
+                    DropdownButton<String>(
+                        value: _selectPriority,
+                        items: _priorityList.map((String option) {
+                          return DropdownMenuItem<String>(
+                            value: option,
+                            child: Text('$option'),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectPriority = newValue;
+                          });
+                        },
+                        isExpanded: true),
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
@@ -183,6 +200,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                       ),
                     ),
                     SizedBox(height: 16),
+                    //comment
                     Stack(
                       children: [
                         TextField(
@@ -244,5 +262,16 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         }
       },
     );
+  }
+
+  int getSelectPriority() {
+    switch (_selectPriority) {
+      case 'inProgress':
+        return 2;
+      case 'done':
+        return 3;
+      default:
+        return 1;
+    }
   }
 }

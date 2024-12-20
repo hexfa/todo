@@ -31,7 +31,7 @@ void main() {
       content: "Test Task",
       description: "This is a test task",
       due: null,
-      duration: "1h",
+      // durationChange: "1h",
       id: "1",
       labels: ["label1", "label2"],
       order: 1,
@@ -96,12 +96,18 @@ void main() {
     const tDeadLine = "2024-09-10";
     const tPriority = "4"; // Changed to String as per your base class
     const tProjectId = "123343";
+    const tDuration = 1;
+    const tDurationUnit = "minute";
+    const tStartTimer = "2024-09-10";
     var tTaskDataRequest = const TaskDataRequest(
         content: tContent,
         description: tDescription,
         deadLine: tDeadLine,
         priority: tPriority,
-        projectId: tProjectId);
+        projectId: tProjectId,
+        startTimer: tStartTimer,
+        duration: tDuration,
+        durationUnit: tDurationUnit);
     var tTaskModelResponse = TaskModelResponse(
       creatorId: "2671355",
       createdAt: "2019-12-11T22:36:50.000000Z",
@@ -118,7 +124,7 @@ void main() {
         startTimer: "2024-12-19",
         timezone: "Europe/Moscow",
       ),
-      duration: null,
+      // durationChange: null,
       id: "2995104339",
       labels: [],
       order: 1,

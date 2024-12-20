@@ -20,14 +20,15 @@ class TaskModelResponse extends TaskEntity {
   final int commentCount;
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
-  final String content;
-  final String description;
+  String content;
+  String description;
   DueModel? due;
-  String? duration;
+
+  // String? durationChange;
   final String id;
   final List<String> labels;
   final int order;
-  final int priority;
+  int priority;
   @JsonKey(name: 'project_id')
   final String projectId;
   @JsonKey(name: 'section_id')
@@ -49,7 +50,7 @@ class TaskModelResponse extends TaskEntity {
     required this.content,
     required this.description,
     this.due,
-    this.duration,
+    // this.durationChange,
     required this.id,
     required this.labels,
     required this.order,
@@ -70,7 +71,7 @@ class TaskModelResponse extends TaskEntity {
             content: content,
             description: description,
             due: due,
-            duration: duration,
+            // duration: duration,
             id: id,
             labels: labels,
             order: order,
@@ -114,7 +115,7 @@ class TaskModelResponse extends TaskEntity {
       /*due: json['due'] == null
           ? null
           : DueModel.fromJson(json['due'] as Map<String, dynamic>),*/
-      duration: json['duration'] as String?,
+      // durationChange: json['duration'] as String?,
       id: json['id'] as String,
       labels:
           (json['labels'] as List<dynamic>).map((e) => e as String).toList(),

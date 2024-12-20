@@ -13,19 +13,29 @@ class TaskDataRequest extends TaskDataEntityRequest {
   final String? priority;
   @JsonKey(name: 'project_id')
   final String? projectId;
+  @JsonKey(name: 'due_datetime')
+  final String? startTimer;
+  @JsonKey(name: 'duration')
+  final int? duration;
+  @JsonKey(name: 'duration_unit')
+  final String? durationUnit;
 
-  const TaskDataRequest({
-    required this.content,
-    required this.description,
-    required this.deadLine,
-    required this.priority,
-    required this.projectId,
-  }) : super(
-            content: content,
-            description: description,
-            deadLine: deadLine,
-            priority: priority,
-            projectId: projectId);
+  const TaskDataRequest(
+      {required this.content,
+      required this.description,
+      required this.deadLine,
+      required this.priority,
+      required this.projectId,
+      required this.startTimer,
+      required this.duration,
+      required this.durationUnit})
+      : super(
+          content: content,
+          description: description,
+          deadLine: deadLine,
+          priority: priority,
+          projectId: projectId,
+        );
 
   factory TaskDataRequest.fromJson(Map<String, dynamic> json) =>
       _$TaskDataRequestFromJson(json);
