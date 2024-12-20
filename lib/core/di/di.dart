@@ -1,9 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/data/datasources/comments_remote_datasource.dart';
 import 'package:todo/data/datasources/comments_remote_datasource_impl.dart';
-import 'package:todo/data/datasources/projects_remote_datasource.dart';
+import 'package:todo/data/datasources/local/projects_local_datasource.dart';
+import 'package:todo/data/datasources/local/sync_local_datasource.dart';
+import 'package:todo/data/datasources/local/tasks_local_datasource.dart';
+import 'package:todo/data/datasources/remote/projects_remote_datasource.dart';
+import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
+import 'package:todo/data/models/project_model_response.dart';
+import 'package:todo/data/models/sync_model.dart';
+import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/data/sync_manager.dart';
@@ -20,10 +28,6 @@ import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
-
-import '../../data/datasources/tasks_remote_datasource.dart';
-import '../../data/datasources/tasks_remote_datasource_impl.dart';
-import '../../data/repositories/tasks_repository_impl.dart';
 import '../../domain/repositories/tasks_repository.dart';
 import '../../domain/usecases/create_project_usecase.dart';
 import '../../domain/usecases/get_tasks_usecase.dart';
@@ -82,14 +86,13 @@ Future<void> setupLocator(String token) async{
 
   //register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>()));
+          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>(), localDataSource: getIt<ProjectsLocalDataSource>(), syncQueue: getIt<SyncLocalDataSource>()));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(
         remoteDataSource: getIt<TasksRemoteDataSource>(),
         localDataSource: getIt(),
         syncQueue: getIt()),
-        () => TasksRepositoryImpl(remoteDataSource: getIt<TasksRemoteDataSource>()),
   );
 
   getIt.registerLazySingleton(() => SyncManager(
