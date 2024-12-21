@@ -13,7 +13,8 @@ class CommentsRepositoryImpl implements CommentsRepository {
   Future<Either<Failure, List<Comment>>> getComments(String taskId) async {
     try {
       final comments = await remoteDataSource.getComments(taskId);
-      return Right(comments);
+
+      return Right(comments.map((t) => t.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
