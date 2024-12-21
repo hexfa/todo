@@ -26,7 +26,7 @@ class TaskModelResponseAdapter extends TypeAdapter<TaskModelResponse> {
       content: fields[6] as String,
       description: fields[7] as String,
       due: fields[8] as DueModel?,
-      duration: fields[9] as String?,
+      duration: fields[9] as DurationModel?,
       id: fields[10] as String,
       labels: (fields[11] as List).cast<String>(),
       order: fields[12] as int,
@@ -108,7 +108,9 @@ TaskModelResponse _$TaskModelResponseFromJson(Map<String, dynamic> json) =>
       due: json['due'] == null
           ? null
           : DueModel.fromJson(json['due'] as Map<String, dynamic>),
-      // durationChange: json['duration'] as String?,
+      duration: json['duration'] == null
+          ? null
+          : DurationModel.fromJson(json['duration'] as Map<String, dynamic>),
       id: json['id'] as String,
       labels:
           (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
@@ -131,7 +133,7 @@ Map<String, dynamic> _$TaskModelResponseToJson(TaskModelResponse instance) =>
       'content': instance.content,
       'description': instance.description,
       'due': instance.due?.toJson(),
-      // 'duration': instance.durationChange,
+      'duration': instance.duration?.toJson(),
       'id': instance.id,
       'labels': instance.labels,
       'order': instance.order,

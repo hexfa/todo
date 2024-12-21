@@ -36,7 +36,7 @@ class TasksRepositoryImpl implements TasksRepository {
       await localDataSource.saveTasks(remoteTasks);
       return Right(remoteTasks.map((t) => t.toEntity()).toList());
     } catch (e) {
-      return const Left(ServerFailure(message: 'Unexpected Error'));
+      return  Left(ServerFailure(message: 'Unexpected Error ${e.toString()}'));
     }
   }
 
