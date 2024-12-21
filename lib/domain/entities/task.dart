@@ -31,7 +31,7 @@ class TaskEntity extends Equatable {
     this.assignerId,
     required this.content,
     required this.description,
-    this.due,
+    required this.due,
     // this.durationChange,
     required this.labels,
     required this.order,

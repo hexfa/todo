@@ -36,8 +36,6 @@ class TaskModelResponse extends TaskEntity {
   @JsonKey(name: 'parent_id')
   final String? parentId;
   final String url;
-  String state;
-  bool isRunning;
   List<Comment> commentList = [];
 
   TaskModelResponse({
@@ -59,8 +57,6 @@ class TaskModelResponse extends TaskEntity {
     this.sectionId,
     this.parentId,
     required this.url,
-    this.state = '',
-    this.isRunning = false,
   }) : super(
             creatorId: creatorId,
             createdAt: createdAt,

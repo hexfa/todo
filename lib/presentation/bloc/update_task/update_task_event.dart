@@ -1,4 +1,3 @@
-import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/presentation/bloc/base/event_base.dart';
 
 abstract class UpdateTaskEvent extends EventBase {
@@ -8,18 +7,37 @@ abstract class UpdateTaskEvent extends EventBase {
 
 class TaskLoading extends UpdateTaskEvent {}
 
-class StartTimer extends UpdateTaskEvent {}
+class ChangeTimer extends UpdateTaskEvent {
+  final String id;
+  final String projectId;
+  final String content;
+  final String description;
+  final int priority;
+  final String deadLine;
+  final String startTimer;
+  final int duration;
 
-class StopTimer extends UpdateTaskEvent {
-  final int second;
-
-  StopTimer(this.second);
+  ChangeTimer(
+      {required this.id,
+      required this.projectId,
+      required this.content,
+      required this.description,
+      required this.priority,
+      required this.deadLine,
+      required this.startTimer,
+      required this.duration});
 
   @override
-  List<Object> get props => [second];
+  List<Object> get props => [
+        projectId,
+        content,
+        description,
+        priority,
+        deadLine,
+        startTimer,
+        duration
+      ];
 }
-
-class FinishTimer extends UpdateTaskEvent {}
 
 class UpdateTimer extends UpdateTaskEvent {}
 

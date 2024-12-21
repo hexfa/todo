@@ -128,7 +128,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                             DateTimeConvert.convertDateToString(
                                                 _selectEndDate!),
                                         datetime: '',
-                                        startTimer: '',
+                                        string: '',
                                         timezone: '',
                                         isRrecurring: isRecurring),
                                     commentCount: 0,

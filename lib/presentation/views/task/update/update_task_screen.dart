@@ -33,7 +33,9 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   @override
   void initState() {
     super.initState();
-    task = context.read<UpdateTaskBloc>().currentTask;
+    task = context
+        .read<UpdateTaskBloc>()
+        .currentTask;
     //init data
     _contentController.text = task!.content;
     _descriptionController.text = task!.description;
@@ -49,10 +51,15 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         break;
     }
 
-    // if (task != null && task!.isRunning) {
-    //   _seconds = task?.durationChange != null ? int.parse(task!.durationChange!) : 0;
-    //   _startTimer();
-    // }
+    //show timer
+    if (task != null && task!.due?.datetime != null &&
+        task!.due!.datetime.isNotEmpty) {
+      int diff = DateTimeConvert.calculateSecondsDifference(
+          task!.due!.datetime);
+      int duration = /*(task?.duration != null ? task!.commentCount : 0)  * 60 */ 0;
+      _seconds = diff + duration;
+      _startTimer();
+    }
   }
 
   @override
@@ -78,13 +85,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
     setState(() {});
   }
 
-  String _formatSecondsToTime(int seconds) {
-    final hours = (seconds ~/ 3600).toString().padLeft(2, '0');
-    final minutes = ((seconds % 3600) ~/ 60).toString().padLeft(2, '0');
-    final remainingSeconds = (seconds % 60).toString().padLeft(2, '0');
-    return '$hours:$minutes:$remainingSeconds';
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
@@ -96,16 +96,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
       builder: (context, state) {
         if (state is UpdateTask) {
           task = state.task;
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            // if (task != null && task!.isRunning && !_isRunning) {
-            //   _seconds =
-            //       task?.durationChange != null ? int.parse(task!.durationChange!) : 0;
-            //   _startTimer();
-            // } else if (task != null && !task!.isRunning && _isRunning) {
-            //   _stopTimer();
-            // }
-          });
         }
 
         if (state is UpdateTaskLoadingState) {
@@ -128,7 +118,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                           description: _descriptionController.text,
                           priority: getSelectPriority(),
                           deadLine: task!.due?.date ?? '',
-                          startTimer: task!.due?.startTimer ?? '',
+                          startTimer: task!.due?.datetime ?? '',
                           duration: 1,
                           // duration: task!.durationChange != null? int.parse(task!.durationChange!) : 0,
                           projectId: task!.projectId));
@@ -151,7 +141,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                     TextField(
                       controller: _descriptionController,
                       decoration:
-                          const InputDecoration(labelText: 'Description'),
+                      const InputDecoration(labelText: 'Description'),
                     ),
                     // priority
                     DropdownButton<String>(
@@ -173,11 +163,31 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                       child: InkWell(
                         onTap: () {
                           if (_isRunning) {
-                            context
-                                .read<UpdateTaskBloc>()
-                                .add(StopTimer(_seconds));
+                            context.read<UpdateTaskBloc>().add(ChangeTimer(
+                                id: task!.id,
+                                content: task!.content,
+                                description: task!.description,
+                                priority: task!.priority,
+                                deadLine: task!.due?.date ?? '',
+                                startTimer: '',
+                                duration: /*(task.duration * 60) + */ DateTimeConvert
+                                    .calculateSecondsDifference(
+                                    task!.due?.datetime ?? ''),
+                                projectId: task!.projectId
+                            ));
+                            _stopTimer();
                           } else {
-                            context.read<UpdateTaskBloc>().add(StartTimer());
+                            context.read<UpdateTaskBloc>().add(ChangeTimer(
+                                id: task!.id,
+                                content: task!.content,
+                                description: task!.description,
+                                priority: task!.priority,
+                                deadLine: task!.due?.date ?? '',
+                                startTimer: DateTimeConvert.getCurrentDate(),
+                                duration: /*task.duration * 60 + */ 1,
+                                projectId: task!.projectId
+                            ));
+                            _startTimer();
                           }
                         },
                         child: Text(
@@ -193,7 +203,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        '${_formatSecondsToTime(_seconds)}',
+                        '${DateTimeConvert.formatSecondsToTime(_seconds)}',
                         style: theme.textTheme.labelMedium?.copyWith(
                             color: theme.colorScheme.onSurface,
                             fontWeight: FontWeight.bold),

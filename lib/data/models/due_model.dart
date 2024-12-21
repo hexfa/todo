@@ -5,29 +5,28 @@ part 'due_model.g.dart';
 
 @JsonSerializable()
 class DueModel extends Due {
-  //start task
-  String date;
+  //deadline
+  final String date;
   @JsonKey(name: 'is_recurring')
   final bool isRrecurring;
 
-  //stop task
-  String datetime;
-
-  //start update_task
-  String startTimer;
+  //start timer
+  final String datetime;
+  @JsonKey(name: 'string')
+  final String string;
   final String timezone;
 
-  DueModel({
+  const DueModel({
     required this.date,
     required this.isRrecurring,
     required this.datetime,
-    required this.startTimer,
+    required this.string,
     required this.timezone,
   }) : super(
           date: date,
           isRecurring: isRrecurring,
           datetime: datetime,
-          startTimer: startTimer,
+          string: string,
           timezone: timezone,
         );
 
@@ -37,7 +36,7 @@ class DueModel extends Due {
       date: json['due']['date'] as String,
       isRrecurring: json['due']['is_recurring'] as bool,
       datetime: json['due']['datetime'] as String,
-      startTimer: json['due']['string'] as String,
+      string: json['due']['string'] as String,
       timezone: json['due']['timezone'] as String,
     );
   }

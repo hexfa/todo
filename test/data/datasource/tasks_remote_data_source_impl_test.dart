@@ -121,7 +121,7 @@ void main() {
         date: "2024-12-19",
         isRrecurring: false,
         datetime: "2024-12-19T12:00:00.000000Z",
-        startTimer: "2024-12-19",
+        string: "2024-12-19",
         timezone: "Europe/Moscow",
       ),
       // durationChange: null,

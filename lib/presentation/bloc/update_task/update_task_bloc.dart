@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:todo/core/util/date_time_convert.dart';
-import 'package:todo/data/models/due_model.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/domain/entities/comment.dart';
@@ -18,9 +15,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
   UpdateTaskBloc({required this.updateTaskUseCase})
       : super(TaskInitializeState()) {
     on<CreateCommentEvent>(_onCreateCommentEvent);
-    on<StartTimer>(_onStartTimer);
-    on<StopTimer>(_onStopTimer);
-    on<FinishTimer>(_onFinishTimer);
+    on<ChangeTimer>(_onChangeTimer);
     on<ConfirmUpdateTask>(_onConfirmUpdateTask);
   }
 
@@ -35,10 +30,9 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
           deadLine: event.deadLine,
           priority: event.priority.toString(),
           projectId: event.projectId,
-        duration: 1,
-        startTimer: event.startTimer,
-        durationUnit: 'minute'
-      ),
+          duration: event.duration,
+          startTimer: event.startTimer,
+          durationUnit: 'minute'),
     ));
     result.fold(
         (failure) => emit(UpdateTaskErrorState(failure.message)),
@@ -53,60 +47,18 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
     emit(UpdateTask(currentTask));
   }
 
-  void _onStartTimer(StartTimer event, Emitter emit) {
-    currentTask.due ??= DueModel(
-        date: '',
-        datetime: '',
-        isRrecurring: false,
-        startTimer: '',
-        timezone: '');
-    currentTask.isRunning = true;
-    currentTask.due?.startTimer = DateTimeConvert.getCurrentDate();
-    //update task
-    emit(UpdateTask(currentTask));
-  }
-
-  void _onStopTimer(StopTimer event, Emitter emit) {
-    // currentTask.isRunning = false;
-    // currentTask.durationChange = event.second.toString();
-    // currentTask.due!.startTimer = '';
-    // //update task
-    // emit(UpdateTask(currentTask));
-  }
-
-  void _onFinishTimer(FinishTimer event, Emitter emit) {
-    // currentTask.isRunning = false;
-    // currentTask.durationChange =
-    //     calculateDifferenceInSeconds(currentTask.due!.startTimer).toString();
-    // currentTask.due?.startTimer = '';
-    //update task
-  }
-
-  int calculateDifferenceInSeconds(String stopTime) {
-    try {
-      final DateFormat format = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ");
-      final DateTime parsedTime = format.parse(stopTime);
-      final DateTime currentTime = DateTime.now();
-      final Duration difference = currentTime.difference(parsedTime);
-      return difference.inSeconds;
-    } catch (e) {
-      print("Error parsing date: $e");
-      return 0;
-    }
-  }
-
-  void startTimerFrom(int initialSeconds) {
-    int elapsedSeconds = initialSeconds;
-
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      elapsedSeconds++;
-    });
-  }
-
-  int dateTimeStringToSeconds(String dateString) {
-    DateTime dateTime =
-        DateFormat("yyyy-MM-ddTHH:mm:ss.SSSSSSZ").parse(dateString);
-
-    return dateTime.toUtc().millisecondsSinceEpoch ~/ 1000;
+  Future<void> _onChangeTimer(ChangeTimer event, Emitter emit) async {
+    await updateTaskUseCase.call(UpdateTaskParams(
+      id: event.id,
+      taskData: TaskDataRequest(
+          content: event.content,
+          description: event.description,
+          deadLine: event.deadLine,
+          priority: event.priority.toString(),
+          projectId: event.projectId,
+          duration: event.duration ~/ 60,
+          startTimer: event.startTimer.isEmpty ? null : event.startTimer,
+          durationUnit: 'minute'),
+    ));
   }
 }

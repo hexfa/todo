@@ -5,6 +5,7 @@ import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
 import 'package:todo/core/di/di.dart';
+import 'package:todo/data/models/due_model.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
@@ -119,6 +120,14 @@ class _TasksPageState extends BaseState<TasksPage> {
                                 return BlocProvider(
                                   create: (context) => getIt<UpdateTaskBloc>()
                                     ..currentTask = TaskModelResponse(
+                                        due: DueModel(
+                                            date: task.due?.date ?? '',
+                                            isRrecurring:
+                                                task.due?.isRecurring ?? false,
+                                            datetime: task.due?.datetime ??
+                                                '2024-12-21T06:24:54',
+                                            string: task.due?.string ?? '',
+                                            timezone: task.due?.timezone ?? ''),
                                         creatorId: task.creatorId,
                                         createdAt: task.createdAt,
                                         commentCount: task.commentCount,
