@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/data/models/due_model.dart';
 import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
@@ -25,6 +26,7 @@ void main() async {
   Hive.registerAdapter(ProjectModelResponseAdapter());
   Hive.registerAdapter(SyncOperationAdapter());
   Hive.registerAdapter(DurationModelAdapter());
+  Hive.registerAdapter(DueModelAdapter());
   const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
   await setupLocator(token);
   bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;

@@ -104,9 +104,9 @@ class TaskModelResponse extends HiveObject {
       isCompleted: json['is_completed'] as bool,
       content: json['content'] as String,
       description: json['description'] as String,
-    /*  due: json['due'] == null
+      due: json['due'] == null
           ? null
-          : DueModel.fromJson(json['due'] as Map<String, dynamic>),*/
+          : DueModel.fromJson(json['due'] as Map<String, dynamic>),
       duration: json['duration'] == null
           ? null
           : DurationModel.fromJson(json['duration'] as Map<String, dynamic>),
@@ -134,7 +134,7 @@ class TaskModelResponse extends HiveObject {
       isCompleted: isCompleted,
       title: content,
       description: description,
-      due: due,
+      due: due?.toEntity(),
       duration: duration?.toEntity(),
       id: id,
       labels: labels,

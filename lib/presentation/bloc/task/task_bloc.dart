@@ -27,9 +27,14 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       emit(TasksLoading());
       final result = await getTasksUseCase.call(TasksParams(event.projectId??''));
 
+
       result.fold(
         (failure) => emit(TasksError(failure.message)),
-        (tasks) => emit(TasksLoaded(tasks,sectionResult)),
+        (tasks) {
+          print('object  title ${tasks.first.title}');
+          print('object  due ${tasks.first.due?.toString()}');
+          print('object  duration ${tasks.first.duration.toString()}');
+          emit(TasksLoaded(tasks,sectionResult));},
       );
     });
 

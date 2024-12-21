@@ -27,10 +27,10 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<Either<Failure, List<TaskEntity>>> getTasks(String? projectId) async {
     try {
-      final localTasks = await localDataSource.getTasks(projectId: projectId);
+     /* final localTasks = await localDataSource.getTasks(projectId: projectId);
       if (localTasks.isNotEmpty) {
         return Right(localTasks.map((t) => t.toEntity()).toList());
-      }
+      }*/
 
       final remoteTasks = await remoteDataSource.getTasks(projectId);
       await localDataSource.saveTasks(remoteTasks);
