@@ -21,7 +21,7 @@ void main() {
   });
 
   const tId = "2995104339";
-  const tTaskDataRequest = TaskDataRequest(content: "Buy Coffee",dueString: "tomorrow at 12:00", dueLang: "en", priority: "4");
+  const tTaskDataRequest = TaskDataRequest(content: "Buy Coffee",dueString: "tomorrow at 12:00", dueLang: "en", priority: "4", project_id: '2345233582');
   const tTaskEntity = TaskEntity(
     creatorId: "12345",
     createdAt: "2023-10-01T12:34:56Z",

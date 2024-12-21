@@ -99,7 +99,7 @@ void main() {
       content: tContent,
       dueString: tDueString,
       dueLang: tDueLang,
-      priority: tPriority,
+      priority: tPriority, project_id: '2345233582',
     );
     var tTaskModelResponse = TaskModelResponse(
       creatorId: "2671355",

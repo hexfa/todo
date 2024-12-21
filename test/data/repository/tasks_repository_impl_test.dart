@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     mockRemoteDataSource = MockTasksRemoteDataSource();
-    repository = TasksRepositoryImpl(remoteDataSource: mockRemoteDataSource);
+    repository = TasksRepositoryImpl(remoteDataSource: mockRemoteDataSource, localDataSource: null, syncQueue: null);
   });
 
   group('getTasks', () {
