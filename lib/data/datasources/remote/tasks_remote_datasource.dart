@@ -26,7 +26,7 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
       final tasks = await service.getTasks( projectId);
       return tasks;
     } catch (e) {
-      throw const ServerFailure(message: 'Failed to fetch tasks');
+      throw  ServerFailure(message: 'Failed to fetch tasks ${e.toString()}');
     }
   }
 

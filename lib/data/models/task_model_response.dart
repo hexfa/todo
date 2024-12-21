@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/domain/entities/task.dart';
 
 import 'due_model.dart';
@@ -43,7 +44,7 @@ class TaskModelResponse extends HiveObject {
   final DueModel? due;
 
   @HiveField(9)
-  final String? duration;
+  final DurationModel? duration;
 
   @HiveField(10)
   final String id;
@@ -72,7 +73,7 @@ class TaskModelResponse extends HiveObject {
   @HiveField(17)
   final String url;
 
-   TaskModelResponse({
+  TaskModelResponse({
     required this.creatorId,
     required this.createdAt,
     this.assigneeId,
@@ -103,15 +104,15 @@ class TaskModelResponse extends HiveObject {
       isCompleted: json['is_completed'] as bool,
       content: json['content'] as String,
       description: json['description'] as String,
-      /*due: json['due'] == null
+    /*  due: json['due'] == null
           ? null
           : DueModel.fromJson(json['due'] as Map<String, dynamic>),*/
-/*
-      duration: json['duration'] as String?,
-*/
+      duration: json['duration'] == null
+          ? null
+          : DurationModel.fromJson(json['duration'] as Map<String, dynamic>),
       id: json['id'] as String,
       labels:
-          (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
       order: (json['order'] as num).toInt(),
       priority: (json['priority'] as num).toInt(),
       projectId: json['project_id'] as String,
@@ -134,7 +135,7 @@ class TaskModelResponse extends HiveObject {
       title: content,
       description: description,
       due: due,
-      duration: duration,
+      duration: duration?.toEntity(),
       id: id,
       labels: labels,
       order: order,
@@ -147,3 +148,4 @@ class TaskModelResponse extends HiveObject {
     );
   }
 }
+

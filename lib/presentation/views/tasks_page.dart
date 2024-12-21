@@ -56,6 +56,7 @@ class _TasksPageState extends BaseState<TasksPage> {
         body: BlocConsumer<TasksBloc, TasksState>(
           listener: (context, state) {
             if (state is TasksError) {
+              print('errrrr is ${state.message}');
               context.read<TasksBloc>().add(FetchTasksEvent(widget.projectId));
             }
           },
