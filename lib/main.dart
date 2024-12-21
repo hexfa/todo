@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/sync_manager.dart';
@@ -18,28 +19,22 @@ import 'data/models/task_model_response.dart';
 final storage = GetIt.I<Storage>();
 
 void main() async {
-  try {
-    const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
-    await setupLocator(token);
-    WidgetsFlutterBinding.ensureInitialized();
-    await Hive.initFlutter();
-    Hive.registerAdapter(TaskModelResponseAdapter());
-    Hive.registerAdapter(ProjectModelResponseAdapter());
-    Hive.registerAdapter(SyncOperationAdapter());
-
-    bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ??
-        false;
-    String? languageCode = await storage.getLanguage();
-    final syncManager = getIt<SyncManager>();
-    syncManager.monitorConnection();
-    runApp(MyApp(
-      isDarkTheme: isDarkTheme,
-      initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
-    ));
-  }catch(e){
-    print('errrrrrrrrrrrrrr is $e');
-  }
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelResponseAdapter());
+  Hive.registerAdapter(ProjectModelResponseAdapter());
+  Hive.registerAdapter(SyncOperationAdapter());
+  Hive.registerAdapter(DurationModelAdapter());
+  const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
+  await setupLocator(token);
+  bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
+  String? languageCode = await storage.getLanguage();
+  final syncManager = getIt<SyncManager>();
+  syncManager.monitorConnection();
+  runApp(MyApp(
+    isDarkTheme: isDarkTheme,
+    initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
+  ));
 }
 
 class MyApp extends StatefulWidget {

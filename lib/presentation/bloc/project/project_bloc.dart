@@ -48,7 +48,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         },
         (project) {
           emit(ProjectCreateSuccess(project));
-          add(GetProjectsEvent());
         },
       );
     });

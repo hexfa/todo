@@ -31,7 +31,7 @@ void main() {
       content: "Test Task",
       description: "This is a test task",
       due: null,
-      // durationChange: "1h",
+      duration: "1h",
       id: "1",
       labels: ["label1", "label2"],
       order: 1,
