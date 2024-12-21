@@ -47,11 +47,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final result = await updateTaskUseCase.call(UpdateTaskParams(
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
-          content: null,
+          content: event.content,
           dueString: null,
           dueLang: null,
           priority: event.priority,
-          project_id: null,
+          project_id: event.projectId,
         ),
       ));
       result.fold(

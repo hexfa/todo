@@ -25,5 +25,6 @@ class UpdateTaskEvent extends TasksEvent {
   final String? taskId;
   final String? priority;
   final String? projectId;
-  UpdateTaskEvent(this.taskId, this.priority, this.projectId);
+  final String? content;
+  UpdateTaskEvent(this.taskId, this.priority, this.projectId, this.content);
 }
