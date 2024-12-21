@@ -34,38 +34,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   bool _isRunning = false;
 
   @override
-  void initState() {
-    super.initState();
-    task = context.read<UpdateTaskBloc>().currentTask;
-    //init data
-    _contentController.text = task!.content;
-    _descriptionController.text = task!.description;
-    switch (task!.priority) {
-      case 2:
-        _selectPriority = 'inProgress';
-        break;
-      case 3:
-        _selectPriority = 'done';
-        break;
-      default:
-        _selectPriority = 'todo';
-        break;
-    }
-
-    //show timer
-    if (task != null &&
-        task!.due?.datetime != null &&
-        task!.due!.datetime.isNotEmpty) {
-      int diff =
-          DateTimeConvert.calculateSecondsDifference(task!.due!.datetime);
-      int duration = /*(task?.duration != null ? task!.commentCount : 0)  * 60 */
-          0;
-      _seconds = diff + duration;
-      _startTimer();
-    }
-  }
-
-  @override
   void dispose() {
     _stopTimer();
     super.dispose();
@@ -92,6 +60,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
       listener: (context, state) {
+        print('-------------------۹۵}');
         if (state is ConfirmUpdateTaskState) {
           navigator.pop();
         }
@@ -99,6 +68,38 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
       builder: (context, state) {
         if (state is UpdateTask) {
           task = state.task;
+        }
+
+        if (state is TaskLoadedState) {
+          print('-------------------105 ${state.task.due}');
+          task = state.task;
+
+          //init data
+          _contentController.text = task!.content;
+          _descriptionController.text = task!.description;
+          switch (task!.priority) {
+            case 2:
+              _selectPriority = 'inProgress';
+              break;
+            case 3:
+              _selectPriority = 'done';
+              break;
+            default:
+              _selectPriority = 'todo';
+              break;
+          }
+
+          //show timer
+          if (task != null &&
+              task!.due?.datetime != null &&
+              task!.due!.datetime.isNotEmpty) {
+            int diff =
+                DateTimeConvert.calculateSecondsDifference(task!.due!.datetime);
+            int duration =
+                (task?.duration != null ? task!.commentCount : 0) * 60;
+            _seconds = diff + duration;
+            _startTimer();
+          }
         }
 
         return Scaffold(
@@ -112,167 +113,179 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
             actions: [
               IconButton(
                   onPressed: () {
-                    context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(
-                        id: task!.id,
-                        content: _contentController.text,
-                        description: _descriptionController.text,
-                        priority: getSelectPriority(),
-                        deadLine: task!.due?.date ?? '',
-                        startTimer: task!.due?.datetime ?? '',
-                        duration: 1,
-                        // duration: task!.durationChange != null? int.parse(task!.durationChange!) : 0,
-                        projectId: task!.projectId));
+                    if (task != null) {
+                      context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(
+                          id: task!.id,
+                          content: _contentController.text,
+                          description: _descriptionController.text,
+                          priority: getSelectPriority(),
+                          deadLine: task!.due?.date ?? '',
+                          startTimer: task!.due?.datetime ?? '',
+                          duration: 1,
+                          // duration: task!.durationChange != null? int.parse(task!.durationChange!) : 0,
+                          projectId: task!.projectId));
+                    }
                   },
                   icon: const Icon(Icons.check))
             ],
           ),
           body: state is UpdateTaskLoadingState
               ? StateWidget(null, isLoading: true)
-              : Container(
-                  color: theme.colorScheme.surface,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const SizedBox(height: 8),
-                        //content
-                        CustomNormalTextField(
-                            controller: _contentController,
-                            labelText: localization.content),
-                        const SizedBox(height: 20),
-                        CustomMultiLineTextField(
-                            controller: _descriptionController,
-                            labelText: localization.description,
-                            countLine: 3),
-                        SizedBox(height: 20),
-                        //priority
-                        CustomDropdown<String>(
-                            selectedValue: _selectPriority,
-                            items: _priorityList,
-                            hintText: localization.selectATaskState),
-                        const SizedBox(height: 16),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  if (_isRunning) {
-                                    context.read<UpdateTaskBloc>().add(
-                                        ChangeTimer(
-                                            id: task!.id,
-                                            content: task!.content,
-                                            description: task!.description,
-                                            priority: task!.priority,
-                                            deadLine: task!.due?.date ?? '',
-                                            startTimer: '',
-                                            duration: /*(task.duration * 60) + */
-                                                DateTimeConvert
-                                                    .calculateSecondsDifference(
-                                                        task!.due?.datetime ??
-                                                            ''),
-                                            projectId: task!.projectId));
-                                    _stopTimer();
-                                  } else {
-                                    context.read<UpdateTaskBloc>().add(
-                                        ChangeTimer(
-                                            id: task!.id,
-                                            content: task!.content,
-                                            description: task!.description,
-                                            priority: task!.priority,
-                                            deadLine: task!.due?.date ?? '',
-                                            startTimer: DateTimeConvert
-                                                .getCurrentDate(),
-                                            duration: /*task.duration * 60 + */
-                                                1,
-                                            projectId: task!.projectId));
-                                    _startTimer();
-                                  }
-                                },
-                                child: Text(
-                                  _isRunning
-                                      ? '${localization.stop} :'
-                                      : '${localization.start} :',
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                      color: _isRunning
-                                          ? theme.colorScheme.error
-                                          : Colors.green,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                DateTimeConvert.formatSecondsToTime(_seconds),
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                    color: theme.colorScheme.onSurface,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        //comment
-                        Stack(
+              : task == null
+                  ? Container()
+                  : Container(
+                      color: theme.colorScheme.surface,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 24),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            TextField(
-                              controller: _commentController,
-                              maxLines: 5,
-                              minLines: 5,
-                              keyboardType: TextInputType.multiline,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'post comment ...',
-                                alignLabelWithHint: true,
+                            const SizedBox(height: 8),
+                            //content
+                            CustomNormalTextField(
+                                controller: _contentController,
+                                labelText: localization.content),
+                            const SizedBox(height: 20),
+                            CustomMultiLineTextField(
+                                controller: _descriptionController,
+                                labelText: localization.description,
+                                countLine: 3),
+                            SizedBox(height: 20),
+                            //priority
+                            CustomDropdown<String>(
+                                selectedValue: _selectPriority,
+                                items: _priorityList,
+                                hintText: localization.selectATaskState),
+                            const SizedBox(height: 16),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      if (_isRunning) {
+                                        context.read<UpdateTaskBloc>().add(
+                                            ChangeTimer(
+                                                id: task!.id,
+                                                content: task!.content,
+                                                description: task!.description,
+                                                priority: task!.priority,
+                                                deadLine: task!.due?.date ?? '',
+                                                startTimer: '',
+                                                duration: ((task!.duration
+                                                                ?.amount ??
+                                                            1) *
+                                                        60) +
+                                                    DateTimeConvert
+                                                        .calculateSecondsDifference(
+                                                            task!.due
+                                                                    ?.datetime ??
+                                                                ''),
+                                                projectId: task!.projectId));
+                                        _stopTimer();
+                                      } else {
+                                        context.read<UpdateTaskBloc>().add(
+                                            ChangeTimer(
+                                                id: task!.id,
+                                                content: task!.content,
+                                                description: task!.description,
+                                                priority: task!.priority,
+                                                deadLine: task!.due?.date ?? '',
+                                                startTimer: DateTimeConvert
+                                                    .getCurrentDate(),
+                                                duration:
+                                                    (task!.duration?.amount ??
+                                                            1) *
+                                                        60,
+                                                projectId: task!.projectId));
+                                        _startTimer();
+                                      }
+                                    },
+                                    child: Text(
+                                      _isRunning
+                                          ? '${localization.stop} :'
+                                          : '${localization.start} :',
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                              color: _isRunning
+                                                  ? theme.colorScheme.error
+                                                  : Colors.green,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    DateTimeConvert.formatSecondsToTime(
+                                        _seconds),
+                                    style: theme.textTheme.labelLarge?.copyWith(
+                                        color: theme.colorScheme.onSurface,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
                               ),
-                              style: theme.textTheme.bodyMedium,
-                              scrollPadding: const EdgeInsets.all(20),
-                              scrollPhysics: BouncingScrollPhysics(),
                             ),
-                            Positioned(
-                              right: 10,
-                              bottom: 10,
-                              child: GestureDetector(
-                                onTap: () {
-                                  getBloc<UpdateTaskBloc>(context).add(
-                                      CreateCommentEvent(
-                                          _commentController.text));
-                                  _commentController.text = '';
-                                },
-                                child: Icon(
-                                  Icons.send,
-                                  color: Colors.blue,
+                            SizedBox(height: 20),
+                            //comment
+                            Stack(
+                              children: [
+                                TextField(
+                                  controller: _commentController,
+                                  maxLines: 5,
+                                  minLines: 5,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'post comment ...',
+                                    alignLabelWithHint: true,
+                                  ),
+                                  style: theme.textTheme.bodyMedium,
+                                  scrollPadding: const EdgeInsets.all(20),
+                                  scrollPhysics: BouncingScrollPhysics(),
                                 ),
-                              ),
+                                Positioned(
+                                  right: 10,
+                                  bottom: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      getBloc<UpdateTaskBloc>(context).add(
+                                          CreateCommentEvent(
+                                              _commentController.text));
+                                      _commentController.text = '';
+                                    },
+                                    child: Icon(
+                                      Icons.send,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text('Comments',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Flexible(
+                              child: ListView.builder(
+                                  itemCount: task!.commentList.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(
+                                          '' /*task!.commentList[index].comment*/),
+                                      // trailing: Text(
+                                      //     DateTimeConvert.convertDateToString(task!.commentList[index].dateCreated)),
+                                    );
+                                  }),
                             ),
                           ],
                         ),
-                        SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Comments',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        Flexible(
-                          child: ListView.builder(
-                              itemCount: task!.commentList.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(
-                                      '' /*task!.commentList[index].comment*/),
-                                  // trailing: Text(
-                                  //     DateTimeConvert.convertDateToString(task!.commentList[index].dateCreated)),
-                                );
-                              }),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
         );
       },
     );

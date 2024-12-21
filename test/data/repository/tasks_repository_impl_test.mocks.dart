@@ -57,6 +57,23 @@ class MockTasksRemoteDataSource extends _i1.Mock
       ) as _i4.Future<List<_i2.TaskModelResponse>>);
 
   @override
+  _i4.Future<_i2.TaskModelResponse> getTask(String? taskId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getTask,
+          [taskId],
+        ),
+        returnValue:
+            _i4.Future<_i2.TaskModelResponse>.value(_FakeTaskModelResponse_0(
+          this,
+          Invocation.method(
+            #getTask,
+            [taskId],
+          ),
+        )),
+      ) as _i4.Future<_i2.TaskModelResponse>);
+
+  @override
   _i4.Future<_i2.TaskModelResponse> createTask(_i5.TaskDataRequest? taskData) =>
       (super.noSuchMethod(
         Invocation.method(

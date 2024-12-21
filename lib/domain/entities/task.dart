@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:todo/data/models/duration_model.dart';
 
 import 'due.dart';
 
@@ -12,8 +13,7 @@ class TaskEntity extends Equatable {
   final String content;
   final String description;
   final Due? due;
-
-  // final String? durationChange;
+  final DurationModel? duration;
   final String id;
   final List<String> labels;
   final int order;
@@ -32,7 +32,7 @@ class TaskEntity extends Equatable {
     required this.content,
     required this.description,
     required this.due,
-    // this.durationChange,
+    this.duration,
     required this.labels,
     required this.order,
     required this.priority,
@@ -55,7 +55,7 @@ class TaskEntity extends Equatable {
         content,
         description,
         due,
-        // durationChange,
+        duration,
         id,
         labels,
         order,

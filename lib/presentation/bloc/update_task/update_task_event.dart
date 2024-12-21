@@ -81,3 +81,12 @@ class CreateCommentEvent extends UpdateTaskEvent {
   @override
   List<Object> get props => [comment];
 }
+
+class FetchTask extends UpdateTaskEvent {
+  final String taskId;
+
+  FetchTask({required this.taskId});
+
+  @override
+  List<Object> get props => [taskId];
+}

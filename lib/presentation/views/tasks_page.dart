@@ -110,44 +110,12 @@ class _TasksPageState extends BaseState<TasksPage> {
                         }
 
                         context.read<TasksBloc>().add(UpdateTaskEvent(
-                            task.id, priority, widget.projectId,task.title));
+                            task.id, priority, widget.projectId, task.content));
                       },
                       item: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return BlocProvider(
-                                  create: (context) => getIt<UpdateTaskBloc>()
-                                    ..currentTask = TaskModelResponse(
-                                        due: DueModel(
-                                            date: task.due?.date ?? '',
-                                            isRrecurring:
-                                                task.due?.isRecurring ?? false,
-                                            datetime: task.due?.datetime ??
-                                                '2024-12-21T06:24:54',
-                                            string: task.due?.string ?? '',
-                                            timezone: task.due?.timezone ?? ''),
-                                        creatorId: task.creatorId,
-                                        createdAt: task.createdAt,
-                                        commentCount: task.commentCount,
-                                        isCompleted: task.isCompleted,
-                                        content: task.content,
-                                        description: task.description,
-                                        id: task.id,
-                                        labels: task.labels,
-                                        order: task.order,
-                                        priority: task.priority,
-                                        projectId: task.projectId,
-                                        url: task.url),
-                                  child: UpdateTaskScreen(taskId: task.id),
-                                );
-                              },
-                            ),
-                          );
-
-                          // router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
+                          router.push(
+                              '${AppRoutePath.updateTaskRoute}/${task.id}');
                         },
                         child: Card(
                           elevation: 4,

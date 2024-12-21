@@ -5,12 +5,16 @@ import 'package:todo/services/api/project_service.dart';
 
 abstract class TasksRemoteDataSource {
   Future<List<TaskModelResponse>> getTasks(String? projectId);
+
+  Future<TaskModelResponse> getTask(String? taskId);
+
   Future<TaskModelResponse> createTask(TaskDataRequest taskData);
 
   Future<bool> deleteTask(String id);
-  Future<bool> closeTask(String id);
-  Future<TaskModelResponse> updateTask(TaskDataRequest taskData,String id);
 
+  Future<bool> closeTask(String id);
+
+  Future<TaskModelResponse> updateTask(TaskDataRequest taskData, String id);
 }
 
 class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
@@ -23,22 +27,19 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   @override
   Future<List<TaskModelResponse>> getTasks(String? projectId) async {
     try {
-      final tasks = await service.getTasks( projectId);
+      final tasks = await service.getTasks(projectId);
       return tasks;
     } catch (e) {
-      throw  ServerFailure(message: 'Failed to fetch tasks ${e.toString()}');
+      throw ServerFailure(message: 'Failed to fetch tasks ${e.toString()}');
     }
   }
 
   @override
-  Future<TaskModelResponse> createTask(
-      TaskDataRequest taskData
-      ) async {
+  Future<TaskModelResponse> createTask(TaskDataRequest taskData) async {
     try {
-
-      return await service.createTask(
-          taskData);
+      return await service.createTask(taskData);
     } catch (e) {
+      print('-----------------------create task ${e.toString()}');
       throw const ServerFailure(message: 'Failed to create task');
     }
   }
@@ -66,13 +67,22 @@ class TasksRemoteDataSourceImpl implements TasksRemoteDataSource {
   }
 
   @override
-  Future<TaskModelResponse> updateTask(TaskDataRequest taskData, String id) async{
+  Future<TaskModelResponse> updateTask(
+      TaskDataRequest taskData, String id) async {
     try {
-      return await service.updateTask(
-          taskData,id
-      );
+      return await service.updateTask(taskData, id);
     } catch (e) {
       throw const ServerFailure(message: 'Failed to update task');
+    }
+  }
+
+  @override
+  Future<TaskModelResponse> getTask(String? taskId) async {
+    try {
+      final task = await service.getTask(taskId ?? '');
+      return task;
+    } catch (e) {
+      throw const ServerFailure(message: 'Failed to get task');
     }
   }
 }

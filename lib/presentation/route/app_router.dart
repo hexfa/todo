@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
+import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/project_page.dart';
 import 'package:todo/presentation/views/task/create/create_task_screen.dart';
@@ -53,7 +54,8 @@ class AppRouter {
             );
           }
           return BlocProvider(
-            create: (context) => getIt<UpdateTaskBloc>(),
+            create: (context) =>
+                getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),
             child: UpdateTaskScreen(taskId: taskId),
           );
         },

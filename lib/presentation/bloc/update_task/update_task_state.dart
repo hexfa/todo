@@ -32,3 +32,12 @@ class UpdateTask extends UpdateTaskState {
   @override
   List<Object> get props => [task, timestamp];
 }
+
+class TaskLoadedState extends UpdateTaskState {
+  final TaskModelResponse task;
+
+  TaskLoadedState({required this.task});
+
+  @override
+  List<Object> get props => [task];
+}

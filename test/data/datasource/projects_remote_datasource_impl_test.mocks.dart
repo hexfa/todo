@@ -179,4 +179,20 @@ class MockProjectService extends _i1.Mock implements _i4.ProjectService {
         returnValue:
             _i5.Future<List<_i7.CommentModel>>.value(<_i7.CommentModel>[]),
       ) as _i5.Future<List<_i7.CommentModel>>);
+
+  @override
+  _i5.Future<_i3.TaskModelResponse> getTask(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getTask,
+          [id],
+        ),
+        returnValue:
+            _i5.Future<_i3.TaskModelResponse>.value(_FakeTaskModelResponse_1(
+          this,
+          Invocation.method(
+            #getTask,
+            [id],
+          ),
+        )),
+      ) as _i5.Future<_i3.TaskModelResponse>);
 }

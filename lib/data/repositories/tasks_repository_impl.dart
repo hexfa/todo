@@ -36,7 +36,7 @@ class TasksRepositoryImpl implements TasksRepository {
       await localDataSource.saveTasks(remoteTasks);
       return Right(remoteTasks.map((t) => t.toEntity()).toList());
     } catch (e) {
-      return  Left(ServerFailure(message: 'Unexpected Error ${e.toString()}'));
+      return Left(ServerFailure(message: 'Unexpected Error ${e.toString()}'));
     }
   }
 
@@ -114,6 +114,28 @@ class TasksRepositoryImpl implements TasksRepository {
         ));
         return const Right(true);
       }
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Failed to close task'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, TaskEntity>> getTask(String? taskId) async {
+    try {
+      // if (await _isConnected()) {
+      final result = await remoteDataSource.getTask(taskId);
+      print('-------------------repo${result.creatorId}');
+      // await localDataSource.getTask(id);
+      return Right(result.toEntity());
+      // } else {
+      //   await localDataSource.getTask(id);
+      //   await syncQueue.addOperation(SyncOperation(
+      //     type: 'get',
+      //     id: id,
+      //     entityType: 'task',
+      //   ));
+      //   return const Right(true);
+      // }
     } catch (e) {
       return const Left(ServerFailure(message: 'Failed to close task'));
     }
