@@ -98,8 +98,10 @@ Future<void> setupLocator(String token) async{
   getIt.registerLazySingleton(() => SyncManager(
     syncQueue: getIt<SyncLocalDataSource>(),
     projectsRemoteDataSource: getIt<ProjectsRemoteDataSource>(),
-    tasksRemoteDataSource: getIt<TasksRemoteDataSource>(),
-  ));
+        tasksRemoteDataSource: getIt<TasksRemoteDataSource>(),
+        projectsLocalDataSource: getIt(),
+        tasksLocalDataSource: getIt(),
+      ));
 
   // Register use cases
   //register use cases
