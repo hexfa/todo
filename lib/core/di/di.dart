@@ -12,21 +12,23 @@ import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/models/task_model_response.dart';
+import 'package:todo/data/repositories/comments_repository_impl.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/data/sync_manager.dart';
 import 'package:todo/domain/repositories/comments_repository.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
+import 'package:todo/domain/usecases/create_comments_usecase.dart';
 import 'package:todo/domain/usecases/create_project_usecase.dart';
 import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/CloseTaskUseCase.dart';
-import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/delete_usease.dart';
 import 'package:todo/domain/usecases/get_all_comments_usecase.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
+import 'package:todo/presentation/bloc/comment/comment_bloc.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
@@ -35,15 +37,11 @@ import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
-import '../../domain/repositories/tasks_repository.dart';
-import '../../domain/usecases/create_project_usecase.dart';
 import '../../domain/usecases/get_tasks_usecase.dart';
-import '../../presentation/bloc/task/task_bloc.dart';
-
 
 final getIt = GetIt.instance;
 
-Future<void> setupLocator(String token) async{
+Future<void> setupLocator(String token) async {
   final dio = createDio(token);
   getIt.registerLazySingleton<Dio>(() => dio);
 
@@ -70,7 +68,7 @@ Future<void> setupLocator(String token) async{
       () => ProjectsRemoteDataSourceImpl(getIt()));
 
   getIt.registerLazySingleton<TasksRemoteDataSource>(
-        () => TasksRemoteDataSourceImpl(
+    () => TasksRemoteDataSourceImpl(
       service: getIt<ProjectService>(),
     ),
   );
@@ -83,13 +81,11 @@ Future<void> setupLocator(String token) async{
   getIt.registerLazySingleton<SyncLocalDataSource>(
       () => SyncLocalDataSource(getIt()));
 
-
-
   //register repositories
-  getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>(),
-              localDataSource: getIt<ProjectsLocalDataSource>(),
-              syncQueue: getIt<SyncLocalDataSource>()));
+  getIt.registerLazySingleton<ProjectsRepository>(() => ProjectsRepositoryImpl(
+      remoteDataSource: getIt<ProjectsRemoteDataSource>(),
+      localDataSource: getIt<ProjectsLocalDataSource>(),
+      syncQueue: getIt<SyncLocalDataSource>()));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(
@@ -97,14 +93,18 @@ Future<void> setupLocator(String token) async{
         localDataSource: getIt(),
         syncQueue: getIt()),
   );
+  getIt.registerLazySingleton<CommentsRepository>(
+    () => CommentsRepositoryImpl(
+        remoteDataSource: getIt<CommentsRemoteDataSource>()),
+  );
   getIt.registerLazySingleton<CommentsRemoteDataSource>(
-        () => CommentsRemoteDataSourceImpl(
+    () => CommentsRemoteDataSourceImpl(
       getIt<ProjectService>(),
     ),
   );
   getIt.registerLazySingleton(() => SyncManager(
-    syncQueue: getIt<SyncLocalDataSource>(),
-    projectsRemoteDataSource: getIt<ProjectsRemoteDataSource>(),
+        syncQueue: getIt<SyncLocalDataSource>(),
+        projectsRemoteDataSource: getIt<ProjectsRemoteDataSource>(),
         tasksRemoteDataSource: getIt<TasksRemoteDataSource>(),
         projectsLocalDataSource: getIt(),
         tasksLocalDataSource: getIt(),
@@ -120,7 +120,7 @@ Future<void> setupLocator(String token) async{
   );
 
   getIt.registerLazySingleton<GetTasksUseCase>(
-        () => GetTasksUseCase(getIt<TasksRepository>()),
+    () => GetTasksUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<DeleteProjectUseCase>(
@@ -128,35 +128,42 @@ Future<void> setupLocator(String token) async{
   );
 
   getIt.registerLazySingleton<CreateTaskUseCase>(
-        () => CreateTaskUseCase(getIt<TasksRepository>()),
+    () => CreateTaskUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<DeleteTaskUseCase>(
-        () => DeleteTaskUseCase(getIt<TasksRepository>()),
+    () => DeleteTaskUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<CloseTaskUseCase>(
-        () => CloseTaskUseCase(getIt<TasksRepository>()),
+    () => CloseTaskUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<UpdateTaskUseCase>(
-        () => UpdateTaskUseCase(getIt<TasksRepository>()),
+    () => UpdateTaskUseCase(getIt<TasksRepository>()),
   );
 
   getIt.registerLazySingleton<GetAllCommentsUseCase>(
-        () => GetAllCommentsUseCase(getIt<CommentsRepository>()),
+    () => GetAllCommentsUseCase(getIt<CommentsRepository>()),
   );
+
+  getIt.registerLazySingleton<CreateCommentUseCase>(
+    () => CreateCommentUseCase(getIt<CommentsRepository>()),
+  );
+
   //register blocs
   getIt.registerFactory<ProjectsBloc>(
     () => ProjectsBloc(
-      createProjectUseCase: getIt<CreateProjectUseCase>(),
-      getProjectsUseCase: getIt<GetProjectsUseCase>(),
-      deleteUseCase:getIt<DeleteProjectUseCase>()
-    ),
+        createProjectUseCase: getIt<CreateProjectUseCase>(),
+        getProjectsUseCase: getIt<GetProjectsUseCase>(),
+        deleteUseCase: getIt<DeleteProjectUseCase>()),
   );
 
   getIt.registerFactory<TasksBloc>(
-        () => TasksBloc(getTasksUseCase: getIt<GetTasksUseCase>(), updateTaskUseCase: getIt<UpdateTaskUseCase>(), deleteTaskUseCase: getIt<DeleteTaskUseCase>()),
+    () => TasksBloc(
+        getTasksUseCase: getIt<GetTasksUseCase>(),
+        updateTaskUseCase: getIt<UpdateTaskUseCase>(),
+        deleteTaskUseCase: getIt<DeleteTaskUseCase>()),
   );
 
   getIt.registerFactory<UpdateTaskBloc>(() => UpdateTaskBloc(
@@ -166,5 +173,10 @@ Future<void> setupLocator(String token) async{
   getIt.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(
         createTaskUseCase: getIt<CreateTaskUseCase>(),
         getProjectsUseCase: getIt<GetProjectsUseCase>(),
+      ));
+
+  getIt.registerFactory<CommentBloc>(() => CommentBloc(
+        getAllCommentsUseCase: getIt<GetAllCommentsUseCase>(),
+        createCommentUseCase: getIt<CreateCommentUseCase>(),
       ));
 }

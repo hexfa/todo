@@ -10,16 +10,16 @@ class Comment extends Equatable {
   final String? taskId;
   final Attachment attachment;
 
-  Comment({
+  const Comment({
     required this.id,
     required this.content,
     required this.postedAt,
-    this.projectId,
-    this.taskId,
+    required this.projectId,
+    required this.taskId,
     required this.attachment,
   });
 
   @override
-  List<Object?> get props => [id, content, postedAt, projectId, taskId, attachment];
+  List<Object?> get props =>
+      [id, content, postedAt, projectId, taskId, attachment];
 }
-

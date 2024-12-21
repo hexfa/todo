@@ -5,6 +5,11 @@ class DateTimeConvert {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
+  static String wrapDateToString(String date) {
+    DateTime parsedDate = DateTime.parse(date);
+    return DateFormat('yyyy-MM-dd').format(parsedDate);
+  }
+
   static String getCurrentDate() {
     return DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
   }
