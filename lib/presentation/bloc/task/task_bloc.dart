@@ -51,7 +51,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
             content: null,
             description: null,
             deadLine: null,
-            projectId: event.projectId,
+            projectId: null,
             priority: event.priority,
             duration: 0,
             startTimer: '',

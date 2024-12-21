@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo/core/error/failure.dart';
-import 'package:todo/data/datasources/tasks_remote_datasource_impl.dart';
+import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
 import 'package:todo/data/models/due_model.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';

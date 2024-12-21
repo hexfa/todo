@@ -5,6 +5,8 @@ import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/task_data_request.dart';
 
 import '../../core/constants/constants_value.dart';
+import '../../data/models/comment_model.dart';
+import '../../data/models/comment_model.dart';
 import '../../data/models/task_model_response.dart';
 
 part 'project_service.g.dart';
@@ -15,7 +17,7 @@ abstract class ProjectService {
 
   @GET("projects")
   Future<List<ProjectModelResponse>> getProjects();
-  
+
   @DELETE("projects/{id}")
   Future<void> deleteProjects(@Path('id') String projectId);
 
@@ -29,23 +31,23 @@ abstract class ProjectService {
 
   @POST("tasks")
   Future<TaskModelResponse> createTask(
-      @Body() TaskDataRequest taskData,
-      );
+    @Body() TaskDataRequest taskData,
+  );
 
   @DELETE("tasks/{id}")
   Future<void> deleteTask(
-      @Path("id") String id,
-      );
+    @Path("id") String id,
+  );
 
   @POST("tasks/{id}/close")
   Future<void> closeTask(
-      @Path("id") String id,
-      );
+    @Path("id") String id,
+  );
 
   @POST("/tasks/{id}")
   Future<TaskModelResponse> updateTask(
-      @Body() TaskDataRequest taskData,
-      @Path("id") String id
-      );
+      @Body() TaskDataRequest taskData, @Path("id") String id);
 
+  @GET("/comments")
+  Future<List<CommentModel>> getAllComments(@Query("task_id") String taskId);
 }

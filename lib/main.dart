@@ -6,17 +6,31 @@ import 'package:get_it/get_it.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/data/models/project_model_response.dart';
+import 'package:todo/data/models/sync_model.dart';
+import 'package:todo/data/sync_manager.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'core/di/di.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'data/models/task_model_response.dart';
 
 final storage = GetIt.I<Storage>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelResponseAdapter());
+  Hive.registerAdapter(ProjectModelResponseAdapter());
+  Hive.registerAdapter(SyncOperationAdapter());
+  await Hive.openBox<TaskModelResponse>('tasks');
+  await Hive.openBox<ProjectModelResponse>('projects');
   const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
   await setupLocator(token);
   bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
   String? languageCode = await storage.getLanguage();
+  final syncManager = getIt<SyncManager>();
+  syncManager.monitorConnection();
   runApp(MyApp(
     isDarkTheme: isDarkTheme,
     initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
