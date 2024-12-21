@@ -51,7 +51,7 @@ class TasksRepositoryImpl implements TasksRepository {
       } else {
         final tempTask = TaskModelResponse(
           id: const Uuid().v4(),
-          projectId: taskData.project_id ?? '',
+          projectId: taskData.projectId ?? '',
           description: '',
           creatorId: '',
           createdAt: '',
@@ -120,8 +120,8 @@ class TasksRepositoryImpl implements TasksRepository {
   }
 
   @override
-  Future<Either<Failure, TaskEntity>> updateTask(TaskDataRequest taskData,
-      String id) async {
+  Future<Either<Failure, TaskEntity>> updateTask(
+      TaskDataRequest taskData, String id) async {
     try {
       if (await _isConnected()) {
         final response = await remoteDataSource.updateTask(taskData, id);
@@ -156,7 +156,6 @@ class TasksRepositoryImpl implements TasksRepository {
           id: id,
           data: taskData.toJson(),
           entityType: 'task',
-
         ));
         return Right(tempTask.toEntity());
       }
@@ -168,7 +167,8 @@ class TasksRepositoryImpl implements TasksRepository {
   Future<bool> _isConnected() async {
     final connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult.first == ConnectivityResult.mobile || connectivityResult.first == ConnectivityResult.wifi) {
+    if (connectivityResult.first == ConnectivityResult.mobile ||
+        connectivityResult.first == ConnectivityResult.wifi) {
       print('is conected true');
       return true;
     }

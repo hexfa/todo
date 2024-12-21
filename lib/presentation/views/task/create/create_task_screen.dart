@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/due_model.dart';
-import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/domain/entities/project.dart';
+import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:todo/presentation/views/state_widget.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -223,7 +221,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                         ElevatedButton(
                           onPressed: () async {
                             getBloc<CreateTaskBloc>(context).add(AddEvent(
-                                TaskModelResponse(
+                                TaskEntity(
                                     due: DueModel(
                                         date:
                                             DateTimeConvert.convertDateToString(

@@ -33,9 +33,6 @@ class TaskModelResponse extends HiveObject {
   @HiveField(5)
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
-  String content;
-  String description;
-  DueModel? due;
 
   @HiveField(6)
   final String content;
@@ -87,7 +84,7 @@ class TaskModelResponse extends HiveObject {
     required this.content,
     required this.description,
     this.due,
-    // this.durationChange,
+    this.duration,
     required this.id,
     required this.labels,
     required this.order,
@@ -134,10 +131,10 @@ class TaskModelResponse extends HiveObject {
       assignerId: assignerId,
       commentCount: commentCount,
       isCompleted: isCompleted,
-      title: content,
+      content: content,
       description: description,
       due: due,
-      duration: duration,
+      // duration: duration,
       id: id,
       labels: labels,
       order: order,
@@ -146,7 +143,6 @@ class TaskModelResponse extends HiveObject {
       sectionId: sectionId,
       parentId: parentId,
       url: url,
-      state: '', // Set appropriate value for `state` if required
     );
   }
 }

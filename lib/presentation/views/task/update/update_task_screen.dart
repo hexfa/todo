@@ -321,10 +321,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                           itemCount: task!.commentList.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(task!.commentList[index].comment),
-                              trailing: Text(
-                                  DateTimeConvert.convertDateToString(
-                                      task!.commentList[index].dateCreated)),
+                              title:
+                                  Text('' /*task!.commentList[index].comment*/),
+                              // trailing: Text(
+                              //     DateTimeConvert.convertDateToString(task!.commentList[index].dateCreated)),
                             );
                           }),
                     ),

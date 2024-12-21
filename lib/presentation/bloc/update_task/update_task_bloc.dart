@@ -43,7 +43,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
 
   void _onCreateCommentEvent(CreateCommentEvent event, Emitter emit) {
     //create comment in server
-    currentTask.addComment(Comment(event.comment));
+    // currentTask.addComment(Comment(event.comment));
     emit(UpdateTask(currentTask));
   }
 
