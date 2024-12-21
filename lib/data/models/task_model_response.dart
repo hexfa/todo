@@ -106,7 +106,9 @@ class TaskModelResponse extends HiveObject {
       /*due: json['due'] == null
           ? null
           : DueModel.fromJson(json['due'] as Map<String, dynamic>),*/
+/*
       duration: json['duration'] as String?,
+*/
       id: json['id'] as String,
       labels:
           (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
