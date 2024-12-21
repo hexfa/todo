@@ -5,14 +5,15 @@ class CustomDropdown<T> extends StatefulWidget {
   final List<T> items;
   final String hintText;
   final Widget Function(T)? itemBuilder;
+  final void Function(T?)? onValueChanged;
 
-  const CustomDropdown({
-    required this.selectedValue,
-    required this.items,
-    required this.hintText,
-    this.itemBuilder,
-    super.key,
-  });
+  const CustomDropdown(
+      {super.key,
+      required this.selectedValue,
+      required this.items,
+      required this.hintText,
+      this.itemBuilder,
+      this.onValueChanged});
 
   @override
   _CustomDropdownState<T> createState() => _CustomDropdownState<T>();
@@ -59,6 +60,9 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
       onChanged: (T? newValue) {
         setState(() {
           _selectedValue = newValue;
+          if (widget.onValueChanged != null) {
+            widget.onValueChanged!(newValue);
+          }
         });
       },
       isExpanded: true,

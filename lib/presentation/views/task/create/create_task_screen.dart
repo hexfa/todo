@@ -77,12 +77,19 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                           itemBuilder: (Project project) {
                             return Text(project.name);
                           },
+                          onValueChanged: (newValue) {
+                            _selectProject = newValue;
+                          },
                         ),
                         // priority
                         CustomDropdown<String>(
-                            selectedValue: _selectPriority,
-                            items: _priorityList,
-                            hintText: localization.selectATaskState),
+                          selectedValue: _selectPriority,
+                          items: _priorityList,
+                          hintText: localization.selectATaskState,
+                          onValueChanged: (newValue) {
+                            _selectPriority = newValue;
+                          },
+                        ),
                         // end date
                         InkWell(
                             onTap: () {

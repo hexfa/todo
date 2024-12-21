@@ -154,9 +154,13 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                             SizedBox(height: 20),
                             //priority
                             CustomDropdown<String>(
-                                selectedValue: _selectPriority,
-                                items: _priorityList,
-                                hintText: localization.selectATaskState),
+                              selectedValue: _selectPriority,
+                              items: _priorityList,
+                              hintText: localization.selectATaskState,
+                              onValueChanged: (newValue) {
+                                _selectPriority = newValue;
+                              },
+                            ),
                             const SizedBox(height: 16),
                             Align(
                               alignment: Alignment.centerLeft,
