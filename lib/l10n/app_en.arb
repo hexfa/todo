@@ -21,5 +21,16 @@
   "projectName": "Project Name",
   "pleaseEnterProjectName": "Please enter a project name",
   "createTask": "Create task",
-  "nothingToSeeHere": "Nothing to see here"
+  "nothingToSeeHere": "Nothing to see here",
+  "selectAProject": "select a project ...",
+  "selectATaskState": "select a task state ...",
+  "endDateLabel": "end date ...",
+  "endDate": "end date",
+  "isRecurring": "Is Recurring",
+  "createTask": "Create Task",
+  "updateTask": "Update Task",
+  "content": "Content",
+  "description": "Description",
+  "stop": "Stop",
+  "start": "Start"
 }
