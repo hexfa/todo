@@ -28,14 +28,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final result =
           await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
 
-
       result.fold(
         (failure) => emit(TasksError(failure.message)),
         (tasks) {
-          print('object  title ${tasks.first.title}');
-          print('object  due ${tasks.first.due?.toString()}');
-          print('object  duration ${tasks.first.duration.toString()}');
-          emit(TasksLoaded(tasks,sectionResult));},
+          emit(TasksLoaded(tasks, sectionResult));
+        },
       );
     });
 
@@ -54,10 +51,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
           content: event.content,
-          dueString: null,
-          dueLang: null,
+          deadLine: null,
+          description: null,
+          duration: 1,
+          durationUnit: 'minute',
           priority: event.priority,
-          project_id: event.projectId,
+          startTimer: '',
+          projectId: event.projectId,
         ),
       ));
       result.fold(

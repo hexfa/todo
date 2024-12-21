@@ -110,7 +110,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                         }
 
                         context.read<TasksBloc>().add(UpdateTaskEvent(
-                            task.id, priority, widget.projectId,task.title));
+                            task.id, priority, widget.projectId,task.content));
                       },
                       item: GestureDetector(
                         onTap: () {
@@ -123,7 +123,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                                     ..currentTask = TaskModelResponse(
                                         due: DueModel(
                                             date: task.due?.date ?? '',
-                                            isRrecurring:
+                                            isRecurring:
                                                 task.due?.isRecurring ?? false,
                                             datetime: task.due?.datetime ??
                                                 '2024-12-21T06:24:54',

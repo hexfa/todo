@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/due_model.dart';
+import 'package:todo/domain/entities/due.dart';
 import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
@@ -131,14 +132,14 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                           onPressed: () async {
                             getBloc<CreateTaskBloc>(context).add(AddEvent(
                                 TaskEntity(
-                                    due: DueModel(
+                                    due: Due(
                                         date:
                                             DateTimeConvert.convertDateToString(
                                                 _selectEndDate!),
                                         datetime: '',
                                         string: '',
                                         timezone: '',
-                                        isRrecurring: isRecurring),
+                                        isRecurring: isRecurring),
                                     commentCount: 0,
                                     isCompleted: _selectPriority == 'done'
                                         ? true

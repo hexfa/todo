@@ -27,7 +27,7 @@ class CommentsRepositoryImpl implements CommentsRepository {
       CommentDataRequest comment) async {
     try {
       final result = await remoteDataSource.createComment(comment);
-      return Right(result);
+      return Right(result.toEntity());
     } catch (e) {
       print('-----------------catch');
       return Left(ServerFailure(message: e.toString()));

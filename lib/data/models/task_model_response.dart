@@ -137,7 +137,7 @@ class TaskModelResponse extends HiveObject {
       content: content,
       description: description,
       due: due?.toEntity(),
-      duration: duration?.toEntity(),
+      // duration: duration?.toEntity(),
       id: id,
       labels: labels,
       order: order,

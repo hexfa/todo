@@ -29,10 +29,10 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
       child: Scaffold(
         appBar: AppBar(
             title: Text(
-              localization.taskHistory,
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(color: theme.colorScheme.onPrimary),
-            )),
+          localization.taskHistory,
+          style: theme.textTheme.titleMedium
+              ?.copyWith(color: theme.colorScheme.onPrimary),
+        )),
         body: BlocConsumer<TasksBloc, TasksState>(
           listener: (context, state) {
             if (state is TasksError) {
@@ -44,7 +44,7 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
               return StateWidget(isLoading: true, null);
             } else if (state is TasksLoaded) {
               final filteredTasks =
-              state.tasks.where((task) => task.priority == 3).toList();
+                  state.tasks.where((task) => task.priority == 3).toList();
               if (filteredTasks.isEmpty) {
                 return StateWidget(isLoading: false, '');
               } else {
@@ -60,7 +60,7 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
                       ),
                       child: ListTile(
                         title: Text(
-                          task.title,
+                          task.content,
                           maxLines: 1,
                           style: TextStyle(
                             color: theme.colorScheme.onSurface,

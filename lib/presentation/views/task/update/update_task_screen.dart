@@ -57,16 +57,16 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
     }
 
     //show timer
-    if (task != null &&
-        task!.due?.datetime != null &&
-        task!.due!.datetime.isNotEmpty) {
-      int diff =
-          DateTimeConvert.calculateSecondsDifference(task!.due!.datetime);
-      int duration = /*(task?.duration != null ? task!.commentCount : 0)  * 60 */
-          0;
-      _seconds = diff + duration;
-      _startTimer();
-    }
+    // if (task != null &&
+    //     task!.due?.datetime != null &&
+    //     task!.due!.datetime.isNotEmpty) {
+    //   int diff =
+    //       DateTimeConvert.calculateSecondsDifference(task!.due!.datetime);
+    //   int duration = /*(task?.duration != null ? task!.commentCount : 0)  * 60 */
+    //       0;
+    //   _seconds = diff + duration;
+    //   _startTimer();
+    // }
   }
 
   @override
