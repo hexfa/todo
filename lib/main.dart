@@ -18,23 +18,28 @@ import 'data/models/task_model_response.dart';
 final storage = GetIt.I<Storage>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter(TaskModelResponseAdapter());
-  Hive.registerAdapter(ProjectModelResponseAdapter());
-  Hive.registerAdapter(SyncOperationAdapter());
-  await Hive.openBox<TaskModelResponse>('tasks');
-  await Hive.openBox<ProjectModelResponse>('projects');
-  const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
-  await setupLocator(token);
-  bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
-  String? languageCode = await storage.getLanguage();
-  final syncManager = getIt<SyncManager>();
-  syncManager.monitorConnection();
-  runApp(MyApp(
-    isDarkTheme: isDarkTheme,
-    initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
-  ));
+  try {
+    const token = 'fd1df697c8622b190f2f2999047342d91e90690b';
+    await setupLocator(token);
+    WidgetsFlutterBinding.ensureInitialized();
+    await Hive.initFlutter();
+    Hive.registerAdapter(TaskModelResponseAdapter());
+    Hive.registerAdapter(ProjectModelResponseAdapter());
+    Hive.registerAdapter(SyncOperationAdapter());
+
+    bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ??
+        false;
+    String? languageCode = await storage.getLanguage();
+    final syncManager = getIt<SyncManager>();
+    syncManager.monitorConnection();
+    runApp(MyApp(
+      isDarkTheme: isDarkTheme,
+      initialLocale: languageCode != null ? Locale(languageCode) : const Locale('en'),
+    ));
+  }catch(e){
+    print('errrrrrrrrrrrrrr is $e');
+  }
+
 }
 
 class MyApp extends StatefulWidget {

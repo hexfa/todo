@@ -34,6 +34,7 @@ import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
+
 import '../../domain/repositories/tasks_repository.dart';
 import '../../domain/usecases/create_project_usecase.dart';
 import '../../domain/usecases/get_tasks_usecase.dart';
@@ -82,18 +83,13 @@ Future<void> setupLocator(String token) async{
   getIt.registerLazySingleton<SyncLocalDataSource>(
       () => SyncLocalDataSource(getIt()));
 
-  // Register repositories
-  getIt.registerLazySingleton<ProjectsRepository>(() => ProjectsRepositoryImpl(
-      remoteDataSource: getIt(), localDataSource: getIt(), syncQueue: getIt()));
-  getIt.registerLazySingleton<CommentsRemoteDataSource>(
-        () => CommentsRemoteDataSourceImpl(
-      getIt<ProjectService>(),
-    ),
-  );
+
 
   //register repositories
   getIt.registerLazySingleton<ProjectsRepository>(
-          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>(), localDataSource: getIt<ProjectsLocalDataSource>(), syncQueue: getIt<SyncLocalDataSource>()));
+          () => ProjectsRepositoryImpl(remoteDataSource:getIt<ProjectsRemoteDataSource>(),
+              localDataSource: getIt<ProjectsLocalDataSource>(),
+              syncQueue: getIt<SyncLocalDataSource>()));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(
@@ -101,7 +97,11 @@ Future<void> setupLocator(String token) async{
         localDataSource: getIt(),
         syncQueue: getIt()),
   );
-
+  getIt.registerLazySingleton<CommentsRemoteDataSource>(
+        () => CommentsRemoteDataSourceImpl(
+      getIt<ProjectService>(),
+    ),
+  );
   getIt.registerLazySingleton(() => SyncManager(
     syncQueue: getIt<SyncLocalDataSource>(),
     projectsRemoteDataSource: getIt<ProjectsRemoteDataSource>(),
