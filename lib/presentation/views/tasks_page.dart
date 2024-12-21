@@ -110,7 +110,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                         }
 
                         context.read<TasksBloc>().add(UpdateTaskEvent(
-                            task.id, priority, widget.projectId));
+                            task.id, priority, widget.projectId,task.title));
                       },
                       item: GestureDetector(
                         onTap: () {

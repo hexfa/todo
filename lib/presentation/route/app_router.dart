@@ -8,6 +8,7 @@ import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/project_page.dart';
 import 'package:todo/presentation/views/task/create/create_task_screen.dart';
 import 'package:todo/presentation/views/task/update/update_task_screen.dart';
+import 'package:todo/presentation/views/task_history.dart';
 import 'package:todo/presentation/views/tasks_page.dart';
 
 class AppRouter {
@@ -37,7 +38,10 @@ class AppRouter {
           return TasksPage(projectId: taskId);
         },
       ),
-
+      GoRoute(
+        path: AppRoutePath.taskHistory,
+        builder: (context, state) => TaskHistory(),
+      ),
       // Add Task Route
       GoRoute(
         path: AppRoutePath.createTaskRoute,

@@ -9,6 +9,10 @@ import 'package:todo/data/datasources/local/sync_local_datasource.dart';
 import 'package:todo/data/datasources/local/tasks_local_datasource.dart';
 import 'package:todo/data/datasources/remote/projects_remote_datasource.dart';
 import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
+import 'package:todo/data/models/attachment_model.dart';
+import 'package:todo/data/models/comment_model.dart';
+import 'package:todo/data/models/due_model.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/models/task_model_response.dart';
@@ -57,10 +61,18 @@ Future<void> setupLocator(String token) async {
   final taskBox = await Hive.openBox<TaskModelResponse>('tasks');
   final projectBox = await Hive.openBox<ProjectModelResponse>('projects');
   final syncBox = await Hive.openBox<SyncOperation>('sync');
+  final durationBox = await Hive.openBox<DurationModel>('duration');
+  final dueBox = await Hive.openBox<DueModel>('due');
+  final commentBox = await Hive.openBox<CommentModel>('comment');
+  final attachmentBox = await Hive.openBox<AttachmentModel>('attachment');
 
   getIt.registerSingleton<Box<TaskModelResponse>>(taskBox);
   getIt.registerSingleton<Box<ProjectModelResponse>>(projectBox);
   getIt.registerSingleton<Box<SyncOperation>>(syncBox);
+  getIt.registerSingleton<Box<DurationModel>>(durationBox);
+  getIt.registerSingleton<Box<DueModel>>(dueBox);
+  getIt.registerSingleton<Box<CommentModel>>(commentBox);
+  getIt.registerSingleton<Box<AttachmentModel>>(attachmentBox);
 
   // Register data sources
   //register data sources

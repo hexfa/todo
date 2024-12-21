@@ -50,9 +50,6 @@ class SyncManager {
                 operation.data!['name']);
             await projectsLocalDataSource.deleteProject(operation.id);
             await projectsLocalDataSource.saveProject(response);
-           var dfs= await projectsLocalDataSource.getProjects();
-            print('create  is $dfs');
-
             break;
           }catch(e){
             print('create errrrrr is $e');
@@ -75,9 +72,11 @@ class SyncManager {
         await tasksRemoteDataSource.createTask(taskData);
         break;
       case 'update':
-        final taskData = TaskDataRequest.fromJson(operation.data!);
-        await tasksRemoteDataSource.updateTask(taskData, operation.id);
-        break;
+        {
+          final taskData = TaskDataRequest.fromJson(operation.data!);
+          await tasksRemoteDataSource.updateTask(taskData, operation.id);
+          break;
+        }
       case 'delete':
         await tasksRemoteDataSource.deleteTask(operation.id);
         break;
