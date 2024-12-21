@@ -1,12 +1,10 @@
 {
   "helloWorld": "Hello World!",
   "createTask": "Create Task",
-  "helloWorld": "Hello World!",
   "confirmDeletion": "Confirm Deletion",
   "wantConfirmDeletion": "Are you sure you want to delete this project?",
   "wantConfirmDeletionTask": "Are you sure you want to delete this task?",
   "kanbanBoard": "Kanban Board",
-  "createTask": "Create a Task",
   "projects": "Projects",
   "addNewTask": "Add new task",
   "cancel": "Cancel",
@@ -20,6 +18,6 @@
   "createProject": "Create Project",
   "projectName": "Project Name",
   "pleaseEnterProjectName": "Please enter a project name",
-  "createTask": "Create task",
+  "taskHistory": "Task history",
   "nothingToSeeHere": "Nothing to see here"
 }
