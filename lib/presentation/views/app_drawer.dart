@@ -1,11 +1,14 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/gen/assets.gen.dart';
 import 'package:todo/main.dart';
+import 'package:todo/presentation/route/app_router.dart';
+import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -87,6 +90,14 @@ class _AppDrawerState extends BaseState<AppDrawer> {
               ],
             ),
             SizedBox(height: 8),
+
+            ListTile(
+              onTap: (){
+                context.push(AppRoutePath.taskHistory);
+              },
+              leading: Icon(Icons.history, color: Colors.white),
+              title: Text(localization.taskHistory, style: TextStyle(color: Colors.white)),
+            ),
             // Dark Mode Switch
             ListTile(
               leading: Icon(Icons.brightness_6, color: Colors.white),

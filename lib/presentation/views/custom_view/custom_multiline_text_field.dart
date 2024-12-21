@@ -3,13 +3,15 @@ import 'package:todo/presentation/views/base/base-stateless-widget.dart';
 
 class CustomMultiLineTextField extends BaseStatelessWidget {
   final TextEditingController? controller;
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
   final int countLine;
 
   const CustomMultiLineTextField(
       {super.key,
       required this.controller,
-      required this.labelText,
+      this.labelText,
+      this.hintText,
       required this.countLine});
 
   @override
@@ -24,6 +26,7 @@ class CustomMultiLineTextField extends BaseStatelessWidget {
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
         labelText: labelText,
+        hintText: hintText,
         alignLabelWithHint: true,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),

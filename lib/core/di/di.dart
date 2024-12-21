@@ -9,15 +9,21 @@ import 'package:todo/data/datasources/local/sync_local_datasource.dart';
 import 'package:todo/data/datasources/local/tasks_local_datasource.dart';
 import 'package:todo/data/datasources/remote/projects_remote_datasource.dart';
 import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
+import 'package:todo/data/models/attachment_model.dart';
+import 'package:todo/data/models/comment_model.dart';
+import 'package:todo/data/models/due_model.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/models/task_model_response.dart';
+import 'package:todo/data/repositories/comments_repository_impl.dart';
 import 'package:todo/data/repositories/projects_repository_impl.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/data/sync_manager.dart';
 import 'package:todo/domain/repositories/comments_repository.dart';
 import 'package:todo/domain/repositories/projects_repository.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
+import 'package:todo/domain/usecases/create_comments_usecase.dart';
 import 'package:todo/domain/usecases/create_project_usecase.dart';
 import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/CloseTaskUseCase.dart';
@@ -27,6 +33,7 @@ import 'package:todo/domain/usecases/get_all_comments_usecase.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
 import 'package:todo/domain/usecases/get_task_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
+import 'package:todo/presentation/bloc/comment/comment_bloc.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
@@ -35,8 +42,6 @@ import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
-import '../../domain/repositories/tasks_repository.dart';
-import '../../domain/usecases/create_project_usecase.dart';
 import '../../domain/usecases/get_tasks_usecase.dart';
 import '../../presentation/bloc/task/task_bloc.dart';
 
@@ -58,10 +63,18 @@ Future<void> setupLocator(String token) async {
   final taskBox = await Hive.openBox<TaskModelResponse>('tasks');
   final projectBox = await Hive.openBox<ProjectModelResponse>('projects');
   final syncBox = await Hive.openBox<SyncOperation>('sync');
+  final durationBox = await Hive.openBox<DurationModel>('duration');
+  final dueBox = await Hive.openBox<DueModel>('due');
+  final commentBox = await Hive.openBox<CommentModel>('comment');
+  final attachmentBox = await Hive.openBox<AttachmentModel>('attachment');
 
   getIt.registerSingleton<Box<TaskModelResponse>>(taskBox);
   getIt.registerSingleton<Box<ProjectModelResponse>>(projectBox);
   getIt.registerSingleton<Box<SyncOperation>>(syncBox);
+  getIt.registerSingleton<Box<DurationModel>>(durationBox);
+  getIt.registerSingleton<Box<DueModel>>(dueBox);
+  getIt.registerSingleton<Box<CommentModel>>(commentBox);
+  getIt.registerSingleton<Box<AttachmentModel>>(attachmentBox);
 
   // Register data sources
   //register data sources
@@ -93,6 +106,10 @@ Future<void> setupLocator(String token) async {
         remoteDataSource: getIt<TasksRemoteDataSource>(),
         localDataSource: getIt(),
         syncQueue: getIt()),
+  );
+  getIt.registerLazySingleton<CommentsRepository>(
+    () => CommentsRepositoryImpl(
+        remoteDataSource: getIt<CommentsRemoteDataSource>()),
   );
   getIt.registerLazySingleton<CommentsRemoteDataSource>(
     () => CommentsRemoteDataSourceImpl(
@@ -147,6 +164,11 @@ Future<void> setupLocator(String token) async {
   getIt.registerLazySingleton<GetTaskUseCase>(
     () => GetTaskUseCase(getIt<TasksRepository>()),
   );
+
+  getIt.registerLazySingleton<CreateCommentUseCase>(
+    () => CreateCommentUseCase(getIt<CommentsRepository>()),
+  );
+
   //register blocs
   getIt.registerFactory<ProjectsBloc>(
     () => ProjectsBloc(
@@ -169,5 +191,10 @@ Future<void> setupLocator(String token) async {
   getIt.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(
         createTaskUseCase: getIt<CreateTaskUseCase>(),
         getProjectsUseCase: getIt<GetProjectsUseCase>(),
+      ));
+
+  getIt.registerFactory<CommentBloc>(() => CommentBloc(
+        getAllCommentsUseCase: getIt<GetAllCommentsUseCase>(),
+        createCommentUseCase: getIt<CreateCommentUseCase>(),
       ));
 }

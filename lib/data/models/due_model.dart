@@ -1,46 +1,55 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:todo/domain/entities/due.dart';
+import 'package:todo/domain/entities/due.dart'; // فرض بر این است که کلاس Entity به نام Due تعریف شده باشد.
 
 part 'due_model.g.dart';
 
+@HiveType(typeId: 4) // Set a unique typeId for Hive
 @JsonSerializable()
-class DueModel extends Due {
-  //deadline
-  final String date;
+class DueModel extends HiveObject {
+  @HiveField(0)
+  final String? date;
+
+  @HiveField(1)
   @JsonKey(name: 'is_recurring')
-  final bool isRrecurring;
+  final bool? isRecurring;
 
-  //start timer
-  final String datetime;
-  @JsonKey(name: 'string')
-  final String string;
-  final String timezone;
+  @HiveField(2)
+  final String? datetime;
 
-  const DueModel({
+  @HiveField(3)
+  final String? string;
+
+  @HiveField(4)
+  final String? timezone;
+
+  DueModel({
     required this.date,
-    required this.isRrecurring,
+    required this.isRecurring,
     required this.datetime,
     required this.string,
     required this.timezone,
-  }) : super(
-          date: date,
-          isRecurring: isRrecurring,
-          datetime: datetime,
-          string: string,
-          timezone: timezone,
-        );
+  });
 
   factory DueModel.fromJson(Map<String, dynamic> json) {
-    print("DueModel |$json['due']['date']");
     return DueModel(
-      date: json['due']['date'] as String,
-      isRrecurring: json['due']['is_recurring'] as bool,
-      datetime: json['due']['datetime'] as String,
-      string: json['due']['string'] as String,
-      timezone: json['due']['timezone'] as String,
+      date: json['date'] as String?,
+      isRecurring: json['is_recurring'] as bool?,
+      datetime: json['datetime'] as String?,
+      string: json['string'] as String?,
+      timezone: json['timezone'] as String?,
     );
   }
 
-  @override
   Map<String, dynamic> toJson() => _$DueModelToJson(this);
+
+  Due toEntity() {
+    return Due(
+      date: date ?? '',
+      isRecurring: isRecurring ?? false,
+      datetime: datetime ?? '',
+      string: string ?? '',
+      timezone: timezone ?? '',
+    );
+  }
 }

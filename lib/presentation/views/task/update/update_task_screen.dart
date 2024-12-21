@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/task_model_response.dart';
+import 'package:todo/domain/entities/comment.dart';
+import 'package:todo/presentation/bloc/comment/comment_bloc.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_state.dart';
@@ -28,6 +31,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   final List<String> _priorityList = ['todo', 'inProgress', 'done'];
   String? _selectPriority;
   TaskModelResponse? task;
+  List<Comment> comments = [];
 
   Timer? _timer;
   int _seconds = 0;

@@ -30,7 +30,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
       result.fold(
         (failure) => emit(TasksError(failure.message)),
-        (tasks) => emit(TasksLoaded(tasks, sectionResult)),
+        (tasks) {
+          emit(TasksLoaded(tasks, sectionResult));
+        },
       );
     });
 
@@ -48,14 +50,15 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final result = await updateTaskUseCase.call(UpdateTaskParams(
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
-            content: null,
-            description: null,
-            deadLine: null,
-            projectId: null,
-            priority: event.priority,
-            duration: 0,
-            startTimer: '',
-            durationUnit: 'minute'),
+          content: event.content,
+          deadLine: null,
+          description: null,
+          duration: 1,
+          durationUnit: 'minute',
+          priority: event.priority,
+          startTimer: '',
+          projectId: event.projectId,
+        ),
       ));
       result.fold(
         (failure) => emit(TasksError(failure.message)),

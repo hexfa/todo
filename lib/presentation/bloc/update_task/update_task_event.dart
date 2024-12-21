@@ -73,14 +73,14 @@ class ConfirmUpdateTask extends UpdateTaskEvent {
       ];
 }
 
-class CreateCommentEvent extends UpdateTaskEvent {
-  final String comment;
-
-  CreateCommentEvent(this.comment);
-
-  @override
-  List<Object> get props => [comment];
-}
+// class CreateCommentEvent extends UpdateTaskEvent {
+//   final String comment;
+//
+//   CreateCommentEvent(this.comment);
+//
+//   @override
+//   List<Object> get props => [comment];
+// }
 
 class FetchTask extends UpdateTaskEvent {
   final String taskId;

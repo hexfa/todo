@@ -17,7 +17,6 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
   UpdateTaskBloc(
       {required this.updateTaskUseCase, required this.getTaskUseCase})
       : super(TaskInitializeState()) {
-    on<CreateCommentEvent>(_onCreateCommentEvent);
     on<ChangeTimer>(_onChangeTimer);
     on<ConfirmUpdateTask>(_onConfirmUpdateTask);
     on<FetchTask>(_onFetchTask);
@@ -71,12 +70,6 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
                 priority: task.priority,
                 projectId: task.projectId,
                 url: task.url))));
-  }
-
-  void _onCreateCommentEvent(CreateCommentEvent event, Emitter emit) {
-    //create comment in server
-    // currentTask.addComment(Comment(event.comment));
-    // emit(UpdateTask(currentTask));
   }
 
   Future<void> _onChangeTimer(ChangeTimer event, Emitter emit) async {

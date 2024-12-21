@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/data/models/duration_model.dart';
+import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/domain/entities/task.dart';
 
 import 'due_model.dart';
@@ -106,9 +107,9 @@ class TaskModelResponse extends HiveObject {
       isCompleted: json['is_completed'] as bool,
       content: json['content'] as String,
       description: json['description'] as String,
-      /*  due: json['due'] == null
+      due: json['due'] == null
           ? null
-          : DueModel.fromJson(json['due'] as Map<String, dynamic>),*/
+          : DueModel.fromJson(json['due'] as Map<String, dynamic>),
       duration: json['duration'] == null
           ? null
           : DurationModel.fromJson(json['duration'] as Map<String, dynamic>),
@@ -136,8 +137,8 @@ class TaskModelResponse extends HiveObject {
       isCompleted: isCompleted,
       content: content,
       description: description,
-      due: due,
-      duration: duration,
+      due: due?.toEntity(),
+      duration: duration?.toEntity(),
       id: id,
       labels: labels,
       order: order,

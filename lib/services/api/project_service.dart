@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:todo/data/models/comment_data_request.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/task_data_request.dart';
 
@@ -50,6 +51,9 @@ abstract class ProjectService {
 
   @GET("/comments")
   Future<List<CommentModel>> getAllComments(@Query("task_id") String taskId);
+
+  @POST("comments")
+  Future<CommentModel> createComment(@Body() CommentDataRequest commentData);
 
   @GET("tasks/{id}")
   Future<TaskModelResponse> getTask(@Path("id") String id);
