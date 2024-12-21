@@ -8,6 +8,9 @@ import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
+import 'package:todo/presentation/views/custom_view/custom_dropdown_button.dart';
+import 'package:todo/presentation/views/custom_view/custom_multiline_text_field.dart';
+import 'package:todo/presentation/views/custom_view/custom_normal_text_field.dart';
 import 'package:todo/presentation/views/state_widget.dart';
 
 class CreateTaskScreen extends StatefulWidget {
@@ -59,121 +62,27 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TextField(
-                          controller: _titleController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius)),
-                            labelText: localization.content,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: BorderSide(
-                                  color: theme.colorScheme.primary, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                        ),
-                        TextField(
-                          controller: _descriptionController,
-                          maxLines: 3,
-                          minLines: 3,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius)),
+                        CustomNormalTextField(
+                            controller: _titleController,
+                            labelText: localization.content),
+                        CustomMultiLineTextField(
+                            controller: _descriptionController,
                             labelText: localization.description,
-                            alignLabelWithHint: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: BorderSide(
-                                  color: theme.colorScheme.primary, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                          ),
-                          style: theme.textTheme.bodyMedium,
-                          scrollPadding: const EdgeInsets.all(20),
-                          scrollPhysics: const BouncingScrollPhysics(),
-                        ),
+                            countLine: 3),
                         // project
-                        DropdownButtonFormField<Project>(
-                          value: _selectProject,
-                          hint: Text(localization.selectAProject),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius)),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: BorderSide(
-                                  color: theme.colorScheme.primary, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                            filled: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 8.0),
-                          ),
-                          items: _projectList.map((Project option) {
-                            return DropdownMenuItem<Project>(
-                              value: option,
-                              child: Text(option.name),
-                            );
-                          }).toList(),
-                          onChanged: (Project? newValue) {
-                            setState(() {
-                              _selectProject = newValue;
-                            });
+                        CustomDropdown<Project>(
+                          selectedValue: _selectProject,
+                          items: _projectList,
+                          hintText: localization.selectAProject,
+                          itemBuilder: (Project project) {
+                            return Text(project.name);
                           },
-                          isExpanded: true,
                         ),
                         // priority
-                        DropdownButtonFormField<String>(
-                          value: _selectPriority,
-                          hint: Text(localization.selectATaskState),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius)),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: BorderSide(
-                                  color: theme.colorScheme.primary, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(borderRadius),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                            filled: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 8.0),
-                          ),
-                          items: _priorityList.map((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectPriority = newValue;
-                            });
-                          },
-                          isExpanded: true,
-                        ),
+                        CustomDropdown<String>(
+                            selectedValue: _selectPriority,
+                            items: _priorityList,
+                            hintText: localization.selectATaskState),
                         // end date
                         InkWell(
                             onTap: () {
