@@ -111,8 +111,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                     },
                     item: GestureDetector(
                       onTap: () {
-                        router
-                            .push('${AppRoutePath.updateTaskRoute}/${task.id}');
+                        router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
                       },
                       child: Card(
                         elevation: 4,

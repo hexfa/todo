@@ -32,9 +32,9 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
 
   @override
   Widget build(BuildContext buildContext) {
-    return ThemeSwitchingArea(
-      child: BlocProvider(
-        create: (context) => getIt<ProjectsBloc>()..add(FetchProjectsEvent()),
+    return BlocProvider(
+      create: (context) => getIt<ProjectsBloc>()..add(FetchProjectsEvent()),
+      child: ThemeSwitchingArea(
         child: Scaffold(
           drawer: AppDrawer(),
           floatingActionButton: showFab ? FAB() : null,
@@ -46,6 +46,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
           )),
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
+              print('state change ${state}');
               if (state is ProjectsError) {
                 context.read<ProjectsBloc>().add(FetchProjectsEvent());
               }

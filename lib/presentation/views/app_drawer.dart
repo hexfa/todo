@@ -47,6 +47,12 @@ class _AppDrawerState extends BaseState<AppDrawer> {
     MyApp.setLocale(context, newLocale);
   }
 
+  Future<bool> _getDarkTheme() async {
+    final theme = await storage.getData<bool>(StorageKey.IS_DARK_THEME);
+    return theme ?? false; // Provide a default value if null
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -61,73 +67,96 @@ class _AppDrawerState extends BaseState<AppDrawer> {
         child: Column(
           children: [
             // Header
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: CircleAvatar(
+            Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: Column(
+                children: [
+                  CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(Assets.png.manCharacter.path),
                   ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Amir Dehdarian',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 12),
+                  Text(
+                    'Amir Dehdarian',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'amir.dehdarian@example.com',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
+                  const SizedBox(height: 4),
+                  Text(
+                    'amir.dehdarian@example.com',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
 
+            // Task History
             ListTile(
-              onTap: (){
+              onTap: () {
                 context.push(AppRoutePath.taskHistory);
               },
-              leading: Icon(Icons.history, color: Colors.white),
-              title: Text(localization.taskHistory, style: TextStyle(color: Colors.white)),
+              leading: const Icon(Icons.history, color: Colors.white),
+              title: Text(
+                localization.taskHistory,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
+
             // Dark Mode Switch
             ListTile(
-              leading: Icon(Icons.brightness_6, color: Colors.white),
-              title: Text(localization.darkMode, style: TextStyle(color: Colors.white)),
-              trailing: ThemeSwitcher(
-                builder: (context) {
-                  return Switch(
-                    value: isDarkTheme,
-                    activeColor: Colors.white,
-                    onChanged: (value) async {
-                      setState(() {
-                        isDarkTheme = value;
-                      });
-                      await storage.saveData(StorageKey.IS_DARK_THEME, isDarkTheme);
-                      ThemeSwitcher.of(context).changeTheme(
-                        theme: isDarkTheme ? darkTheme : lightTheme,
+              leading: const Icon(Icons.brightness_6, color: Colors.white),
+              title: Text(
+                localization.darkMode,
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: FutureBuilder<bool>(
+                future: _getDarkTheme(), // Call the corrected method
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const CircularProgressIndicator(); // Loading indicator
+                  }
+                  final currentTheme = snapshot.data!;
+                  return ThemeSwitcher(
+                    builder: (context) {
+                      return Switch(
+                        value: currentTheme,
+                        activeColor: Colors.white,
+                        onChanged: (value) async {
+                          await storage.saveData(StorageKey.IS_DARK_THEME, value);
+                          ThemeSwitcher.of(context).changeTheme(
+                            theme: value ? darkTheme : lightTheme,
+                          );
+                          setState(() {
+                            isDarkTheme = value;
+                          });
+                        },
                       );
                     },
                   );
                 },
               ),
             ),
+
             // Language Selector
             ExpansionTile(
-              leading: Icon(Icons.language, color: Colors.white),
-              title: Text(localization.language, style: TextStyle(color: Colors.white)),
+              leading: const Icon(Icons.language, color: Colors.white),
+              title: Text(
+                localization.language,
+                style: const TextStyle(color: Colors.white),
+              ),
               trailing: Text(
                 selectedLanguage,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white70),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white70,
+                ),
               ),
               initiallyExpanded: isLanguageExpanded,
               onExpansionChanged: (expanded) {
@@ -137,26 +166,37 @@ class _AppDrawerState extends BaseState<AppDrawer> {
               },
               children: [
                 ListTile(
-                  title: Text(localization.english, style: TextStyle(color: Colors.white)),
+                  title: Text(
+                    localization.english,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   trailing: selectedLanguage == 'en'
-                      ? Icon(Icons.check, color: Colors.white)
+                      ? const Icon(Icons.check, color: Colors.white)
                       : null,
                   onTap: () => _changeLanguage('en'),
                 ),
                 ListTile(
-                  title: Text(localization.german, style: TextStyle(color: Colors.white)),
+                  title: Text(
+                    localization.german,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   trailing: selectedLanguage == 'de'
-                      ? Icon(Icons.check, color: Colors.white)
+                      ? const Icon(Icons.check, color: Colors.white)
                       : null,
                   onTap: () => _changeLanguage('de'),
                 ),
               ],
             ),
-            Spacer(),
+
+            const Spacer(),
+
             // Logout
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.white),
-              title: Text(localization.logout, style: TextStyle(color: Colors.white)),
+              leading: const Icon(Icons.logout, color: Colors.white),
+              title: Text(
+                localization.logout,
+                style: const TextStyle(color: Colors.white),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
