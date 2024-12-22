@@ -104,17 +104,19 @@ Below are examples of the app's user interface and features:
 
 ### Screenshots
 
-1. **Task List with Timer**:
-   ![Task List](https://via.placeholder.com/300x600)
+<img src="https://github.com/hexfa/Files/blob/main/photo_1_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_2_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_3_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_4_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_5_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_6_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_7_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_8_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_9_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_10_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_11_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
+<img src="https://github.com/hexfa/Files/blob/main/photo_12_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
 
-2. **Dark Theme**:
-   ![Dark Theme](https://via.placeholder.com/300x600)
-
-3. **Light Theme**:
-   ![Light Theme](https://via.placeholder.com/300x600)
-
-4. **Completed Tasks View**:
-   ![Completed Tasks](https://via.placeholder.com/300x600)
 
 ### Video Demo
 Experience the app in action:
