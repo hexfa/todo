@@ -25,6 +25,7 @@
   "endDateLabel": "Enddatum ...",
   "endDate": "Enddatum",
   "isRecurring": "Wiederkehrend",
+  "createTask": "Aufgabe erstellen",
   "updateTask": "Aufgabe aktualisieren",
   "content": "Inhalt",
   "description": "Beschreibung",
@@ -35,4 +36,5 @@
   "startDateLabel": "Startdatum ...",
   "startDate": "Startdatum",
   "pleaseFillInAllFields": "Bitte alle Felder ausfüllen!",
+  "totalTime": "Gesamtzeit"
 }

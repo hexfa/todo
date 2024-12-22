@@ -270,33 +270,6 @@ class _ProjectService implements ProjectService {
   }
 
   @override
-  Future<TaskModelResponse> getTask(String id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<TaskModelResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'tasks/${id}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = TaskModelResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
   Future<CommentModel> createComment(CommentDataRequest commentData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -321,6 +294,33 @@ class _ProjectService implements ProjectService {
               baseUrl,
             ))));
     final value = CommentModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<TaskModelResponse> getTask(String id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TaskModelResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'tasks/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = TaskModelResponse.fromJson(_result.data!);
     return value;
   }
 

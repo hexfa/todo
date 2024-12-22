@@ -120,7 +120,9 @@ TaskModelResponse _$TaskModelResponseFromJson(Map<String, dynamic> json) =>
       sectionId: json['section_id'] as String?,
       parentId: json['parent_id'] as String?,
       url: json['url'] as String,
-    );
+    )..commentList = (json['commentList'] as List<dynamic>)
+        .map((e) => CommentModel.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$TaskModelResponseToJson(TaskModelResponse instance) =>
     <String, dynamic>{
@@ -142,4 +144,5 @@ Map<String, dynamic> _$TaskModelResponseToJson(TaskModelResponse instance) =>
       'section_id': instance.sectionId,
       'parent_id': instance.parentId,
       'url': instance.url,
+      'commentList': instance.commentList.map((e) => e.toJson()).toList(),
     };

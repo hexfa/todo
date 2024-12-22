@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:todo/data/models/comment_model.dart';
 import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/domain/entities/task.dart';
@@ -73,7 +74,7 @@ class TaskModelResponse extends HiveObject {
 
   @HiveField(17)
   final String url;
-  List<Comment> commentList = [];
+  List<CommentModel> commentList = [];
 
   TaskModelResponse({
     required this.creatorId,
