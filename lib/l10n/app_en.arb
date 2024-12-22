@@ -37,5 +37,8 @@
   "comments": "Comments",
   "startDateLabel": "start date ...",
   "startDate": "start date",
+  "totalTime": "Total time",
+  "startDate": "start date",
+  "endDate": "end date",
   "pleaseFillInAllFields": "Please fill in all fields!"
 }
