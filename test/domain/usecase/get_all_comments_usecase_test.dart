@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo/data/models/attachment_model.dart';
+import 'package:todo/domain/entities/attachment.dart';
 import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/domain/repositories/comments_repository.dart';
 import 'package:todo/domain/usecases/get_all_comments_usecase.dart';
@@ -29,7 +30,7 @@ void main() {
         postedAt: "2016-09-22T07:00:00.000000Z",
         projectId: null,
         taskId: taskId,
-        attachment: AttachmentModel(
+        attachment: Attachment(
           fileName: "File.pdf",
           fileType: "application/pdf",
           fileUrl: "https://cdn-domain.tld/path/to/file.pdf",

@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:todo/core/error/failure.dart';
 import 'package:todo/data/datasources/remote/tasks_remote_datasource.dart';
 import 'package:todo/data/models/due_model.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/services/api/project_service.dart';
@@ -31,7 +32,7 @@ void main() {
       content: "Test Task",
       description: "This is a test task",
       due: null,
-      duration: "1h",
+      duration: DurationModel(amount: 1,unit: "unit"),
       id: "1",
       labels: ["label1", "label2"],
       order: 1,
@@ -52,7 +53,7 @@ void main() {
           .thenAnswer((_) async => tTaskList);
 
       // Act
-      final result = await dataSource.getTasks('2345233582');
+      final result = await dataSource.getTasks(projectId: '2345233582');
 
       // Assert
       expect(result, equals(tTaskList));
@@ -71,7 +72,7 @@ void main() {
     final call = dataSource.getTasks;
 
     // Assert
-    expect(() => call('2345233582'), throwsA(isA<ServerFailure>()));
+    expect(() => call(projectId: '2345233582'), throwsA(isA<ServerFailure>()));
     verify(mockProjectService.getTasks('2345233582'));
     verifyNoMoreInteractions(mockProjectService);
   });
@@ -82,7 +83,7 @@ void main() {
     when(mockProjectService.getTasks('2345233582')).thenAnswer((_) async => []);
 
     // Act
-    final result = await dataSource.getTasks('2345233582');
+    final result = await dataSource.getTasks(projectId: '2345233582');
 
     // Assert
     expect(result, equals([]));
@@ -119,7 +120,7 @@ void main() {
       description: "",
       due: DueModel(
         date: "2024-12-19",
-        isRrecurring: false,
+        isRecurring: false,
         datetime: "2024-12-19T12:00:00.000000Z",
         string: "2024-12-19",
         timezone: "Europe/Moscow",

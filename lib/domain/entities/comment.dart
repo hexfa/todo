@@ -8,7 +8,7 @@ class Comment extends Equatable {
   final String postedAt;
   final String? projectId;
   final String? taskId;
-  final Attachment? attachment;
+  final Attachment attachment;
 
   const Comment({
     required this.id,

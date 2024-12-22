@@ -32,13 +32,18 @@ class TasksRepositoryImpl implements TasksRepository {
         return Right(localTasks.map((t) => t.toEntity()).toList());
       }
 
-      final remoteTasks = await remoteDataSource.getTasks(projectId);
+      final remoteTasks = await remoteDataSource.getTasks(projectId: projectId!);
       await localDataSource.saveTasks(remoteTasks);
       return Right(remoteTasks.map((t) => t.toEntity()).toList());
+    } on ServerFailure catch (e) {
+      // بازگرداندن استثنا بدون تغییر
+      return Left(e);
     } catch (e) {
+      // مدیریت سایر استثناها
       return Left(ServerFailure(message: 'Unexpected Error ${e.toString()}'));
     }
   }
+
 
   @override
   Future<Either<Failure, TaskEntity>> createTask(
