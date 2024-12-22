@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/presentation/bloc/task/task_bloc.dart';
+import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
@@ -16,6 +18,8 @@ class AppRouter {
   final Storage storage;
 
   AppRouter({required this.storage});
+
+  final ValueNotifier<bool> refreshNotifier = ValueNotifier(false);
 
   late final GoRouter router = GoRouter(
     initialLocation: AppRoutePath.homeRoute,
@@ -36,7 +40,10 @@ class AppRouter {
               body: Center(child: Text('Project ID is missing')),
             );
           }
-          return TasksPage(projectId: taskId);
+          return BlocProvider(
+              create: (context) =>
+                  getIt<TasksBloc>()..add(FetchTasksEvent(taskId)),
+              child: TasksPage(projectId: taskId));
         },
       ),
       GoRoute(
@@ -74,3 +81,5 @@ class AppRouter {
     ),
   );
 }
+
+bool refreshNotifier = false;
