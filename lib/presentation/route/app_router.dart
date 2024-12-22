@@ -67,7 +67,7 @@ class AppRouter {
             );
           }
           return BlocProvider(
-            create: (context) => getIt<CommentBloc>(),
+            create: (context) => getIt<CommentBloc>()..add(FetchCommentsEvent(taskId: taskId, projectId: '')),
             child: BlocProvider(
               create: (context) =>
                 getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),

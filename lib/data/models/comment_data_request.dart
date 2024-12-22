@@ -15,16 +15,16 @@ class CommentDataRequest extends CommentDataEntityRequest {
   @JsonKey(name: 'attachment')
   final AttachmentModel? attachment;
 
-   CommentDataRequest({
+  CommentDataRequest({
     required this.content,
     required this.projectId,
     required this.taskId,
     required this.attachment,
   }) : super(
-            attachment: attachment,
-            content: content,
-            projectId: projectId,
-            taskId: taskId);
+      attachment: attachment,
+      content: content,
+      projectId: projectId,
+      taskId: taskId);
 
   factory CommentDataRequest.fromJson(Map<String, dynamic> json) =>
       _$CommentDataRequestFromJson(json);
