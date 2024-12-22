@@ -14,6 +14,8 @@ import 'package:todo/presentation/views/task/update/update_task_screen.dart';
 import 'package:todo/presentation/views/task_history.dart';
 import 'package:todo/presentation/views/tasks_page.dart';
 
+import '../bloc/comment/comment_bloc.dart';
+
 class AppRouter {
   final Storage storage;
 
@@ -65,9 +67,12 @@ class AppRouter {
             );
           }
           return BlocProvider(
-            create: (context) =>
+            create: (context) => getIt<CommentBloc>(),
+            child: BlocProvider(
+              create: (context) =>
                 getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),
             child: UpdateTaskScreen(taskId: taskId),
+            ),
           );
         },
       ),

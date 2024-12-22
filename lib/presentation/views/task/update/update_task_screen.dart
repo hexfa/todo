@@ -286,7 +286,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                     bottom: 10,
                                     child: GestureDetector(
                                       onTap: () {
-                                        getBloc<CommentBloc>(context).add(
+                                        context.read<CommentBloc>().add(
                                             CreateCommentEvent(
                                                 content:
                                                     _commentController.text,
