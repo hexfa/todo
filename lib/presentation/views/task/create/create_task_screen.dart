@@ -163,34 +163,51 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            getBloc<CreateTaskBloc>(context).add(AddEvent(
-                                TaskEntity(
-                                    due: Due(
-                                        date:
-                                            DateTimeConvert.convertDateToString(
-                                                _selectEndDate!),
-                                        datetime:
-                                            DateTimeConvert.convertDateToString(
-                                                _selectStartDate!),
-                                        string: '',
-                                        timezone: '',
-                                        isRecurring: isRecurring),
-                                    commentCount: 0,
-                                    isCompleted: _selectPriority == 'done'
-                                        ? true
-                                        : false,
-                                    creatorId: '',
-                                    createdAt: DateTimeConvert.getCurrentDate(),
-                                    id: '',
-                                    content: _titleController.text,
-                                    description: _descriptionController.text,
-                                    priority: getSelectPriority(),
-                                    projectId: _selectProject != null
-                                        ? _selectProject!.id
-                                        : '',
-                                    labels: [],
-                                    order: 0,
-                                    url: '')));
+                            if (_titleController.text.isEmpty ||
+                                _descriptionController.text.isEmpty ||
+                                _selectProject == null ||
+                                _selectPriority == null ||
+                                _selectStartDate == null ||
+                                _selectEndDate == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text(localization.pleaseFillInAllFields),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            } else {
+                              getBloc<CreateTaskBloc>(context).add(AddEvent(
+                                  TaskEntity(
+                                      due: Due(
+                                          date: DateTimeConvert
+                                              .convertDateToString(
+                                                  _selectEndDate!),
+                                          datetime: DateTimeConvert
+                                              .convertDateToString(
+                                                  _selectStartDate!),
+                                          string: '',
+                                          timezone: '',
+                                          isRecurring: isRecurring),
+                                      commentCount: 0,
+                                      isCompleted: _selectPriority == 'done'
+                                          ? true
+                                          : false,
+                                      creatorId: '',
+                                      createdAt:
+                                          DateTimeConvert.getCurrentDate(),
+                                      id: '',
+                                      content: _titleController.text,
+                                      description: _descriptionController.text,
+                                      priority: getSelectPriority(),
+                                      projectId: _selectProject != null
+                                          ? _selectProject!.id
+                                          : '',
+                                      labels: [],
+                                      order: 0,
+                                      url: '')));
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
