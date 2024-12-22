@@ -7,6 +7,7 @@ part 'due_model.g.dart';
 @HiveType(typeId: 4) // Set a unique typeId for Hive
 @JsonSerializable()
 class DueModel extends HiveObject {
+  //start date select by user
   @HiveField(0)
   final String? date;
 
@@ -14,9 +15,11 @@ class DueModel extends HiveObject {
   @JsonKey(name: 'is_recurring')
   final bool? isRecurring;
 
+  //start date select by user
   @HiveField(2)
   final String? datetime;
 
+  //start timer fill by developer
   @HiveField(3)
   String? string;
 

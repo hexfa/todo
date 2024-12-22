@@ -24,6 +24,7 @@ class CreateTaskScreen extends StatefulWidget {
 class _AddTaskScreen extends BaseState<CreateTaskScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  DateTime? _selectStartDate;
   DateTime? _selectEndDate;
   List<Project> _projectList = [];
   Project? _selectProject;
@@ -92,10 +93,34 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                             _selectPriority = newValue;
                           },
                         ),
+                        //start date
+                        InkWell(
+                            onTap: () {
+                              _pickDate(context, true);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(borderRadius),
+                              ),
+                              child: ListTile(
+                                leading: const Icon(Icons.arrow_drop_down),
+                                title: Text(
+                                  _selectStartDate == null
+                                      ? localization.startDateLabel
+                                      : "${localization.startDate} at ${DateTimeConvert.convertDateToString(_selectStartDate!)}",
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ),
+                            )),
                         // end date
                         InkWell(
                             onTap: () {
-                              _pickDate(context);
+                              _pickDate(context, false);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -111,7 +136,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                 title: Text(
                                   _selectEndDate == null
                                       ? localization.endDateLabel
-                                      : "${localization.endDate}: ${DateTimeConvert.convertDateToString(_selectEndDate!)}",
+                                      : "${localization.endDate} at ${DateTimeConvert.convertDateToString(_selectEndDate!)}",
                                   style: theme.textTheme.bodyMedium,
                                 ),
                               ),
@@ -144,7 +169,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                         date:
                                             DateTimeConvert.convertDateToString(
                                                 _selectEndDate!),
-                                        datetime: '',
+                                        datetime:
+                                            DateTimeConvert.convertDateToString(
+                                                _selectStartDate!),
                                         string: '',
                                         timezone: '',
                                         isRecurring: isRecurring),
@@ -181,7 +208,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
     );
   }
 
-  Future<void> _pickDate(BuildContext context) async {
+  Future<void> _pickDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -190,7 +217,11 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
     );
     if (picked != null) {
       setState(() {
-        _selectEndDate = picked;
+        if (isStartDate) {
+          _selectStartDate = picked;
+        } else {
+          _selectEndDate = picked;
+        }
       });
     }
   }

@@ -34,5 +34,7 @@
   "stop": "Stop",
   "start": "Start",
   "postComment": "post comment",
-  "comments": "Comments"
+  "comments": "Comments",
+  "startDateLabel": "start date ...",
+  "startDate": "start date"
 }
