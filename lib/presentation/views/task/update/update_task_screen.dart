@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/util/date_time_convert.dart';
@@ -14,6 +13,7 @@ import 'package:todo/presentation/views/custom_view/custom_dropdown_button.dart'
 import 'package:todo/presentation/views/custom_view/custom_multiline_text_field.dart';
 import 'package:todo/presentation/views/custom_view/custom_normal_text_field.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/timer_widget.dart';
 
 class UpdateTaskScreen extends StatefulWidget {
   final String taskId;
@@ -33,40 +33,12 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   TaskModelResponse? task;
   List<Comment> comments = [];
 
-  Timer? _timer;
-  int _seconds = 0;
-  bool _isRunning = false;
-
-  @override
-  void dispose() {
-    _stopTimer();
-    super.dispose();
-  }
-
   int sumDurations() {
     int diff = task!.due?.string == null
         ? 0
         : DateTimeConvert.calculateSecondsDifference(task!.due!.string!);
     int duration = (task?.duration != null ? task!.duration!.amount : 0) * 60;
     return diff + duration;
-  }
-
-  void _startTimer() {
-    _seconds = sumDurations();
-    _isRunning = true;
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        _seconds++;
-      });
-    });
-  }
-
-  void _stopTimer() {
-    _isRunning = false;
-    _timer?.cancel();
-    _timer = null;
-    setState(() {});
   }
 
   @override
@@ -98,16 +70,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
             default:
               _selectPriority = 'todo';
               break;
-          }
-
-          //show timer
-          if (task != null &&
-              task!.due?.string != null &&
-              task!.due!.string!.isNotEmpty &&
-              DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
-                  0) {
-            _seconds = sumDurations();
-            _startTimer();
           }
         }
         return PopScope(
@@ -175,87 +137,17 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                               ),
                               const SizedBox(height: 16),
                               Align(
-                                alignment: Alignment.centerLeft,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        if (_isRunning) {
-                                          context.read<UpdateTaskBloc>().add(
-                                              ChangeTimer(
-                                                  id: task!.id,
-                                                  content: task!.content,
-                                                  description:
-                                                      task!.description,
-                                                  priority: task!.priority,
-                                                  deadLine:
-                                                      task!.due?.date ?? '',
-                                                  startTimer: '',
-                                                  duration: ((task!.duration
-                                                                  ?.amount ??
-                                                              1) *
-                                                          60) +
-                                                      DateTimeConvert
-                                                          .calculateSecondsDifference(
-                                                              task!.due
-                                                                      ?.string ??
-                                                                  ''),
-                                                  projectId: task!.projectId));
-                                          task!.due?.string = '';
-                                          _stopTimer();
-                                        } else {
-                                          String startTimer =
-                                              DateTimeConvert.getCurrentDate();
-                                          context.read<UpdateTaskBloc>().add(
-                                              ChangeTimer(
-                                                  id: task!.id,
-                                                  content: task!.content,
-                                                  description:
-                                                      task!.description,
-                                                  priority: task!.priority,
-                                                  deadLine:
-                                                      task!.due?.date ?? '',
-                                                  startTimer: startTimer,
-                                                  duration:
-                                                      (task!.duration?.amount ??
-                                                              1) *
-                                                          60,
-                                                  projectId: task!.projectId));
-                                          task!.due?.string = startTimer;
-                                          _startTimer();
-                                        }
-                                      },
-                                      child: Text(
-                                        _isRunning
-                                            ? '${localization.stop} :'
-                                            : '${localization.start} :',
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
-                                                color: _isRunning
-                                                    ? theme.colorScheme.error
-                                                    : Colors.green,
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      DateTimeConvert.formatSecondsToTime(
-                                                  _seconds) ==
-                                              '00:00:00'
-                                          ? DateTimeConvert.formatSecondsToTime(
-                                              sumDurations())
-                                          : DateTimeConvert.formatSecondsToTime(
-                                              _seconds),
-                                      style: theme.textTheme.labelLarge
-                                          ?.copyWith(
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                  alignment: Alignment.centerLeft,
+                                  child: TimerWidget(
+                                    isStartTimer: task != null &&
+                                            task!.due?.string != null &&
+                                            task!.due!.string!.isNotEmpty &&
+                                            DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
+                                                0,
+                                      onStartChanged: startTimerChange,
+                                      onStopChanged: stopTimerChange,
+                                      sumDurations: sumDurations)
+                                  ),
                               SizedBox(height: 20),
                               //comment
                               Stack(
@@ -323,6 +215,34 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         );
       },
     );
+  }
+
+  void stopTimerChange() {
+    context.read<UpdateTaskBloc>().add(ChangeTimer(
+        id: task!.id,
+        content: task!.content,
+        description: task!.description,
+        priority: task!.priority,
+        deadLine: task!.due?.date ?? '',
+        startTimer: '',
+        duration: ((task!.duration?.amount ?? 1) * 60) +
+            DateTimeConvert.calculateSecondsDifference(task!.due?.string ?? ''),
+        projectId: task!.projectId));
+    task!.due?.string = '';
+  }
+
+  void startTimerChange() {
+    String startTimer = DateTimeConvert.getCurrentDate();
+    context.read<UpdateTaskBloc>().add(ChangeTimer(
+        id: task!.id,
+        content: task!.content,
+        description: task!.description,
+        priority: task!.priority,
+        deadLine: task!.due?.date ?? '',
+        startTimer: startTimer,
+        duration: (task!.duration?.amount ?? 1) * 60,
+        projectId: task!.projectId));
+    task!.due?.string = startTimer;
   }
 
   int getSelectPriority() {
