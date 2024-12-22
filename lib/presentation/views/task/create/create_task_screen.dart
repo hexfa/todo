@@ -59,166 +59,181 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
             ),
             body: state is CreateTaskLoadingState
                 ? StateWidget(isLoading: true, null)
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomNormalTextField(
-                            controller: _titleController,
-                            labelText: localization.content),
-                        CustomMultiLineTextField(
-                            controller: _descriptionController,
-                            labelText: localization.description,
-                            countLine: 3),
-                        // project
-                        CustomDropdown<Project>(
-                          selectedValue: _selectProject,
-                          items: _projectList,
-                          hintText: localization.selectAProject,
-                          itemBuilder: (Project project) {
-                            return Text(project.name);
-                          },
-                          onValueChanged: (newValue) {
-                            _selectProject = newValue;
-                          },
-                        ),
-                        // priority
-                        CustomDropdown<String>(
-                          selectedValue: _selectPriority,
-                          items: _priorityList,
-                          hintText: localization.selectATaskState,
-                          onValueChanged: (newValue) {
-                            _selectPriority = newValue;
-                          },
-                        ),
-                        //start date
-                        InkWell(
-                            onTap: () {
-                              _pickDate(context, true);
+                : SingleChildScrollView(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CustomNormalTextField(
+                              controller: _titleController,
+                              labelText: localization.content),
+                          SizedBox(height: 8,),
+                          CustomMultiLineTextField(
+                              controller: _descriptionController,
+                              labelText: localization.description,
+                              countLine: 3),
+                          // project
+                          SizedBox(height: 8,),
+
+                          CustomDropdown<Project>(
+                            selectedValue: _selectProject,
+                            items: _projectList,
+                            hintText: localization.selectAProject,
+                            itemBuilder: (Project project) {
+                              return Text(project.name);
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius),
-                              ),
-                              child: ListTile(
-                                leading: const Icon(Icons.arrow_drop_down),
-                                title: Text(
-                                  _selectStartDate == null
-                                      ? localization.startDateLabel
-                                      : "${localization.startDate} at ${DateTimeConvert.convertDateToString(_selectStartDate!)}",
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ),
-                            )),
-                        // end date
-                        InkWell(
-                            onTap: () {
-                              _pickDate(context, false);
+                            onValueChanged: (newValue) {
+                              _selectProject = newValue;
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius),
-                              ),
-                              child: ListTile(
-                                leading: const Icon(Icons.arrow_drop_down),
-                                title: Text(
-                                  _selectEndDate == null
-                                      ? localization.endDateLabel
-                                      : "${localization.endDate} at ${DateTimeConvert.convertDateToString(_selectEndDate!)}",
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ),
-                            )),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: isRecurring,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isRecurring = value ?? false;
-                                });
-                              },
-                              activeColor: isRecurring
-                                  ? theme.colorScheme.primary
-                                  : Colors.grey,
-                            ),
-                            Text(localization.isRecurring,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: isRecurring
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.onSurface)),
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            if (_titleController.text.isEmpty ||
-                                _descriptionController.text.isEmpty ||
-                                _selectProject == null ||
-                                _selectPriority == null ||
-                                _selectStartDate == null ||
-                                _selectEndDate == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content:
-                                      Text(localization.pleaseFillInAllFields),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 3),
-                                ),
-                              );
-                            } else {
-                              getBloc<CreateTaskBloc>(context).add(AddEvent(
-                                  TaskEntity(
-                                      due: Due(
-                                          date: DateTimeConvert
-                                              .convertDateToString(
-                                                  _selectEndDate!),
-                                          datetime: DateTimeConvert
-                                              .convertDateToString(
-                                                  _selectStartDate!),
-                                          string: '',
-                                          timezone: '',
-                                          isRecurring: isRecurring),
-                                      commentCount: 0,
-                                      isCompleted: _selectPriority == 'done'
-                                          ? true
-                                          : false,
-                                      creatorId: '',
-                                      createdAt:
-                                          DateTimeConvert.getCurrentDate(),
-                                      id: '',
-                                      content: _titleController.text,
-                                      description: _descriptionController.text,
-                                      priority: getSelectPriority(),
-                                      projectId: _selectProject != null
-                                          ? _selectProject!.id
-                                          : '',
-                                      labels: [],
-                                      order: 0,
-                                      url: '')));
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            child: Text(localization.createTask,
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.colorScheme.onPrimary)),
                           ),
-                        ),
-                      ],
+                          // priority
+                          SizedBox(height: 8,),
+
+                          CustomDropdown<String>(
+                            selectedValue: _selectPriority,
+                            items: _priorityList,
+                            hintText: localization.selectATaskState,
+                            onValueChanged: (newValue) {
+                              _selectPriority = newValue;
+                            },
+                          ),
+                          //start date
+                          SizedBox(height: 8,),
+
+                          InkWell(
+                              onTap: () {
+                                _pickDate(context, true);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(borderRadius),
+                                ),
+                                child: ListTile(
+                                  leading: const Icon(Icons.arrow_drop_down),
+                                  title: Text(
+                                    _selectStartDate == null
+                                        ? localization.startDateLabel
+                                        : "${localization.startDate} at ${DateTimeConvert.convertDateToString(_selectStartDate!)}",
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ),
+                              )),
+                          // end date
+                          SizedBox(height: 8,),
+
+                          InkWell(
+                              onTap: () {
+                                _pickDate(context, false);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(borderRadius),
+                                ),
+                                child: ListTile(
+                                  leading: const Icon(Icons.arrow_drop_down),
+                                  title: Text(
+                                    _selectEndDate == null
+                                        ? localization.endDateLabel
+                                        : "${localization.endDate} at ${DateTimeConvert.convertDateToString(_selectEndDate!)}",
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(height: 8,),
+
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: isRecurring,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isRecurring = value ?? false;
+                                  });
+                                },
+                                activeColor: isRecurring
+                                    ? theme.colorScheme.primary
+                                    : Colors.grey,
+                              ),
+                              Text(localization.isRecurring,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: isRecurring
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onSurface)),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_titleController.text.isEmpty ||
+                                  _descriptionController.text.isEmpty ||
+                                  _selectProject == null ||
+                                  _selectPriority == null ||
+                                  _selectStartDate == null ||
+                                  _selectEndDate == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text(localization.pleaseFillInAllFields),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                              } else {
+                                getBloc<CreateTaskBloc>(context).add(AddEvent(
+                                    TaskEntity(
+                                        due: Due(
+                                            date: DateTimeConvert
+                                                .convertDateToString(
+                                                    _selectEndDate!),
+                                            datetime: DateTimeConvert
+                                                .convertDateToString(
+                                                    _selectStartDate!),
+                                            string: '',
+                                            timezone: '',
+                                            isRecurring: isRecurring),
+                                        commentCount: 0,
+                                        isCompleted: _selectPriority == 'done'
+                                            ? true
+                                            : false,
+                                        creatorId: '',
+                                        createdAt:
+                                            DateTimeConvert.getCurrentDate(),
+                                        id: '',
+                                        content: _titleController.text,
+                                        description: _descriptionController.text,
+                                        priority: getSelectPriority(),
+                                        projectId: _selectProject != null
+                                            ? _selectProject!.id
+                                            : '',
+                                        labels: [],
+                                        order: 0,
+                                        url: '')));
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                              child: Text(localization.createTask,
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                      color: theme.colorScheme.onPrimary)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                ),
           );
         },
       ),
