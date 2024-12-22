@@ -115,7 +115,7 @@ class TaskModelResponse extends HiveObject {
           : DurationModel.fromJson(json['duration'] as Map<String, dynamic>),
       id: json['id'] as String,
       labels:
-      (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
+          (json['labels'] as List<dynamic>).map((e) => e as String).toList(),
       order: (json['order'] as num).toInt(),
       priority: (json['priority'] as num).toInt(),
       projectId: json['project_id'] as String,
@@ -138,7 +138,7 @@ class TaskModelResponse extends HiveObject {
       content: content,
       description: description,
       due: due?.toEntity(),
-      // duration: duration?.toEntity(),
+      duration: duration,
       id: id,
       labels: labels,
       order: order,
@@ -150,4 +150,3 @@ class TaskModelResponse extends HiveObject {
     );
   }
 }
-

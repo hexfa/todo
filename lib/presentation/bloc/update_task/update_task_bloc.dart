@@ -24,6 +24,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
 
   Future<void> _onConfirmUpdateTask(
       ConfirmUpdateTask event, Emitter emit) async {
+    int tempDuration = event.duration == 0 ? 1 : event.duration;
     emit(UpdateTaskLoadingState());
     final result = await updateTaskUseCase.call(UpdateTaskParams(
       id: event.id,
@@ -33,7 +34,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
           deadLine: event.deadLine,
           priority: event.priority.toString(),
           projectId: event.projectId,
-          duration: event.duration == 0 ? 1 : event.duration,
+          duration: tempDuration == 0 ? 1 : tempDuration,
           startTimer: event.startTimer,
           durationUnit: 'minute'),
     ));
@@ -52,8 +53,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
         (task) => emit(TaskLoadedState(
             task: TaskModelResponse(
                 duration: DurationModel(
-                    amount:
-                        task.duration == null ? 1 : task.duration!.amount ~/ 60,
+                    amount: task.duration == null ? 1 : task.duration!.amount,
                     unit: 'minute'),
                 due: DueModel(
                     date: task.due?.date ?? '',
@@ -76,6 +76,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
   }
 
   Future<void> _onChangeTimer(ChangeTimer event, Emitter emit) async {
+    int tempDuration = event.duration ~/ 60;
     await updateTaskUseCase.call(UpdateTaskParams(
       id: event.id,
       taskData: TaskDataRequest(
@@ -84,7 +85,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
           deadLine: event.deadLine,
           priority: event.priority.toString(),
           projectId: event.projectId,
-          duration: event.duration ~/ 60,
+          duration: tempDuration == 0 ? 1 : tempDuration,
           startTimer: event.startTimer,
           durationUnit: 'minute'),
     ));
