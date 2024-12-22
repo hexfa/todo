@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:todo/domain/entities/due.dart'; // فرض بر این است که کلاس Entity به نام Due تعریف شده باشد.
+import 'package:todo/domain/entities/due.dart';
 
 part 'due_model.g.dart';
 
@@ -18,7 +18,7 @@ class DueModel extends HiveObject {
   final String? datetime;
 
   @HiveField(3)
-  final String? string;
+  String? string;
 
   @HiveField(4)
   final String? timezone;

@@ -13,7 +13,7 @@ class TaskDataRequest extends TaskDataEntityRequest {
   final String? priority;
   @JsonKey(name: 'project_id')
   final String? projectId;
-  @JsonKey(name: 'due_datetime')
+  @JsonKey(name: 'due_string')
   final String? startTimer;
   @JsonKey(name: 'duration')
   final int? duration;

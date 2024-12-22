@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/domain/entities/comment.dart';
@@ -43,7 +42,16 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
     super.dispose();
   }
 
+  int sumDurations() {
+    int diff = task!.due?.string == null
+        ? 0
+        : DateTimeConvert.calculateSecondsDifference(task!.due!.string!);
+    int duration = (task?.duration != null ? task!.duration!.amount : 0) * 60;
+    return diff + duration;
+  }
+
   void _startTimer() {
+    _seconds = sumDurations();
     _isRunning = true;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -64,7 +72,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
       listener: (context, state) {
-        print('-------------------۹۵}');
         if (state is ConfirmUpdateTaskState) {
           navigator.pop();
         }
@@ -75,7 +82,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         }
 
         if (state is TaskLoadedState) {
-          print('-------------------105 ${state.task.due}');
           task = state.task;
 
           //init data
@@ -95,13 +101,11 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
 
           //show timer
           if (task != null &&
-              task!.due?.datetime != null &&
-              task!.due!.datetime.isNotEmpty) {
-            int diff =
-                DateTimeConvert.calculateSecondsDifference(task!.due!.datetime);
-            int duration =
-                (task?.duration != null ? task!.commentCount : 0) * 60;
-            _seconds = diff + duration;
+              task!.due?.string != null &&
+              task!.due!.string!.isNotEmpty &&
+              DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
+                  0) {
+            _seconds = sumDurations();
             _startTimer();
           }
         }
@@ -124,9 +128,8 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                           description: _descriptionController.text,
                           priority: getSelectPriority(),
                           deadLine: task!.due?.date ?? '',
-                          startTimer: task!.due?.datetime ?? '',
-                          duration: 1,
-                          // duration: task!.durationChange != null? int.parse(task!.durationChange!) : 0,
+                          startTimer: task!.due?.string ?? '',
+                          duration: task!.duration?.amount ?? 1,
                           projectId: task!.projectId));
                     }
                   },
@@ -155,7 +158,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                 controller: _descriptionController,
                                 labelText: localization.description,
                                 countLine: 3),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             //priority
                             CustomDropdown<String>(
                               selectedValue: _selectPriority,
@@ -188,12 +191,14 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                                         60) +
                                                     DateTimeConvert
                                                         .calculateSecondsDifference(
-                                                            task!.due
-                                                                    ?.datetime ??
+                                                            task!.due?.string ??
                                                                 ''),
                                                 projectId: task!.projectId));
+                                        task!.due?.string = '';
                                         _stopTimer();
                                       } else {
+                                        String startTimer =
+                                            DateTimeConvert.getCurrentDate();
                                         context.read<UpdateTaskBloc>().add(
                                             ChangeTimer(
                                                 id: task!.id,
@@ -201,13 +206,13 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                                 description: task!.description,
                                                 priority: task!.priority,
                                                 deadLine: task!.due?.date ?? '',
-                                                startTimer: DateTimeConvert
-                                                    .getCurrentDate(),
+                                                startTimer: startTimer,
                                                 duration:
                                                     (task!.duration?.amount ??
                                                             1) *
                                                         60,
                                                 projectId: task!.projectId));
+                                        task!.due?.string = startTimer;
                                         _startTimer();
                                       }
                                     },
@@ -226,7 +231,12 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                   const SizedBox(width: 8),
                                   Text(
                                     DateTimeConvert.formatSecondsToTime(
-                                        _seconds),
+                                                _seconds) ==
+                                            '00:00:00'
+                                        ? DateTimeConvert.formatSecondsToTime(
+                                            sumDurations())
+                                        : DateTimeConvert.formatSecondsToTime(
+                                            _seconds),
                                     style: theme.textTheme.labelLarge?.copyWith(
                                         color: theme.colorScheme.onSurface,
                                         fontWeight: FontWeight.bold),
@@ -257,9 +267,11 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                   bottom: 10,
                                   child: GestureDetector(
                                     onTap: () {
-                                      getBloc<UpdateTaskBloc>(context).add(
+                                      getBloc<CommentBloc>(context).add(
                                           CreateCommentEvent(
-                                              _commentController.text));
+                                              content: _commentController.text,
+                                              projectId: task!.projectId,
+                                              taskId: task!.id));
                                       _commentController.text = '';
                                     },
                                     child: Icon(

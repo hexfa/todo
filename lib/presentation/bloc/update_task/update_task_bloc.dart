@@ -54,7 +54,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
                 duration: task.duration,
                 due: DueModel(
                     date: task.due?.date ?? '',
-                    isRrecurring: task.due?.isRecurring ?? false,
+                    isRecurring: task.due?.isRecurring ?? false,
                     datetime: task.due?.datetime ?? '',
                     string: task.due?.string ?? '',
                     timezone: task.due?.timezone ?? ''),
@@ -82,7 +82,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
           priority: event.priority.toString(),
           projectId: event.projectId,
           duration: event.duration ~/ 60,
-          startTimer: event.startTimer.isEmpty ? null : event.startTimer,
+          startTimer: event.startTimer,
           durationUnit: 'minute'),
     ));
   }

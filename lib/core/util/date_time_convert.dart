@@ -22,7 +22,11 @@ class DateTimeConvert {
       final Duration difference = currentTime.difference(parsedTime);
       return difference.inSeconds;
     } catch (e) {
-      print("Error parsing date: $e");
+      if (e is FormatException) {
+        print("Error parsing date due to format: $e");
+      } else {
+        print("An unexpected error occurred: $e");
+      }
       return 0;
     }
   }
