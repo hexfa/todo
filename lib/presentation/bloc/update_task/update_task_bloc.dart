@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/data/models/due_model.dart';
+import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
-import 'package:todo/domain/entities/comment.dart';
 import 'package:todo/domain/usecases/get_task_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
@@ -33,7 +33,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
           deadLine: event.deadLine,
           priority: event.priority.toString(),
           projectId: event.projectId,
-          duration: event.duration,
+          duration: event.duration == 0 ? 1 : event.duration,
           startTimer: event.startTimer,
           durationUnit: 'minute'),
     ));
@@ -51,7 +51,10 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
         (failure) => emit(UpdateTaskErrorState(failure.message)),
         (task) => emit(TaskLoadedState(
             task: TaskModelResponse(
-                duration: task.duration,
+                duration: DurationModel(
+                    amount:
+                        task.duration == null ? 1 : task.duration!.amount ~/ 60,
+                    unit: 'minute'),
                 due: DueModel(
                     date: task.due?.date ?? '',
                     isRecurring: task.due?.isRecurring ?? false,

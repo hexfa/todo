@@ -19,7 +19,8 @@ class DueModel extends HiveObject {
   @HiveField(2)
   final String? datetime;
 
-  //start timer fill by developer
+  //in priority 1 and 2: start timer fill by developer
+  //in priority 3: The date the task was closed.
   @HiveField(3)
   String? string;
 

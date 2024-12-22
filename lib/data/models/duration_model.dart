@@ -7,7 +7,7 @@ part 'duration_model.g.dart';
 @JsonSerializable()
 class DurationModel extends HiveObject {
   @HiveField(0)
-  final int amount;
+  int amount;
 
   @HiveField(1)
   final String unit;

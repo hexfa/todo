@@ -48,7 +48,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         ? 0
         : DateTimeConvert.calculateSecondsDifference(task!.due!.string!);
     int duration = (task?.duration != null ? task!.duration!.amount : 0) * 60;
-    return diff + duration;
+    return task!.priority == 3 ? duration : diff + duration;
   }
 
   void _startTimer() {
@@ -101,13 +101,15 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           }
 
           //show timer
-          if (task != null &&
-              task!.due?.string != null &&
-              task!.due!.string!.isNotEmpty &&
-              DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
-                  0) {
-            _seconds = sumDurations();
-            _startTimer();
+          if (task!.priority != 3) {
+            if (task != null &&
+                task!.due?.string != null &&
+                task!.due!.string!.isNotEmpty &&
+                DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
+                    0) {
+              _seconds = sumDurations();
+              _startTimer();
+            }
           }
         }
         return PopScope(
@@ -133,8 +135,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                             description: _descriptionController.text,
                             priority: getSelectPriority(),
                             deadLine: task!.due?.date ?? '',
-                            startTimer: task!.due?.string ?? '',
-                            duration: task!.duration?.amount ?? 1,
+                            startTimer: getSelectPriority() == 3
+                                ? DateTimeConvert.getCurrentDate()
+                                : task!.due?.string ?? '',
+                            duration: sumDurations(),
                             projectId: task!.projectId));
                       }
                     },
@@ -179,65 +183,68 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        if (_isRunning) {
-                                          context.read<UpdateTaskBloc>().add(
-                                              ChangeTimer(
-                                                  id: task!.id,
-                                                  content: task!.content,
-                                                  description:
-                                                      task!.description,
-                                                  priority: task!.priority,
-                                                  deadLine:
-                                                      task!.due?.date ?? '',
-                                                  startTimer: '',
-                                                  duration: ((task!.duration
-                                                                  ?.amount ??
-                                                              1) *
-                                                          60) +
-                                                      DateTimeConvert
-                                                          .calculateSecondsDifference(
-                                                              task!.due
-                                                                      ?.string ??
-                                                                  ''),
-                                                  projectId: task!.projectId));
-                                          task!.due?.string = '';
-                                          _stopTimer();
-                                        } else {
-                                          String startTimer =
-                                              DateTimeConvert.getCurrentDate();
-                                          context.read<UpdateTaskBloc>().add(
-                                              ChangeTimer(
-                                                  id: task!.id,
-                                                  content: task!.content,
-                                                  description:
-                                                      task!.description,
-                                                  priority: task!.priority,
-                                                  deadLine:
-                                                      task!.due?.date ?? '',
-                                                  startTimer: startTimer,
-                                                  duration:
-                                                      (task!.duration?.amount ??
-                                                              1) *
-                                                          60,
-                                                  projectId: task!.projectId));
-                                          task!.due?.string = startTimer;
-                                          _startTimer();
-                                        }
-                                      },
-                                      child: Text(
-                                        _isRunning
-                                            ? '${localization.stop} :'
-                                            : '${localization.start} :',
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
-                                                color: _isRunning
-                                                    ? theme.colorScheme.error
-                                                    : Colors.green,
-                                                fontWeight: FontWeight.bold),
+                                    if (task!.priority != 3)
+                                      InkWell(
+                                        onTap: () {
+                                          if (_isRunning) {
+                                            context.read<UpdateTaskBloc>().add(
+                                                ChangeTimer(
+                                                    id: task!.id,
+                                                    content: task!.content,
+                                                    description:
+                                                        task!.description,
+                                                    priority: task!.priority,
+                                                    deadLine:
+                                                        task!.due?.date ?? '',
+                                                    startTimer: '',
+                                                    duration: ((task!.duration
+                                                                    ?.amount ??
+                                                                1) *
+                                                            60) +
+                                                        DateTimeConvert
+                                                            .calculateSecondsDifference(
+                                                                task!.due
+                                                                        ?.string ??
+                                                                    ''),
+                                                    projectId:
+                                                        task!.projectId));
+                                            task!.due?.string = '';
+                                            _stopTimer();
+                                          } else {
+                                            String startTimer = DateTimeConvert
+                                                .getCurrentDate();
+                                            context.read<UpdateTaskBloc>().add(
+                                                ChangeTimer(
+                                                    id: task!.id,
+                                                    content: task!.content,
+                                                    description:
+                                                        task!.description,
+                                                    priority: task!.priority,
+                                                    deadLine:
+                                                        task!.due?.date ?? '',
+                                                    startTimer: startTimer,
+                                                    duration: (task!.duration
+                                                                ?.amount ??
+                                                            1) *
+                                                        60,
+                                                    projectId:
+                                                        task!.projectId));
+                                            task!.due?.string = startTimer;
+                                            _startTimer();
+                                          }
+                                        },
+                                        child: Text(
+                                          _isRunning
+                                              ? '${localization.stop} :'
+                                              : '${localization.start} :',
+                                          style: theme.textTheme.titleMedium
+                                              ?.copyWith(
+                                                  color: _isRunning
+                                                      ? theme.colorScheme.error
+                                                      : Colors.green,
+                                                  fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
                                     const SizedBox(width: 8),
                                     Text(
                                       DateTimeConvert.formatSecondsToTime(
