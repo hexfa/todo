@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/entities/task.dart';
+import 'package:todo/domain/entities/task_data_request.dart';
 import 'package:todo/domain/usecases/create_task_usecase.dart';
 import 'package:todo/domain/usecases/get_projects_usecase.dart';
 import 'package:todo/domain/usecases/no_param.dart';
@@ -25,10 +26,11 @@ class CreateTaskBloc extends Bloc<CreateTaskEvent, CreateTaskState> {
 
   Future<void> _onAddEvent(AddEvent event, Emitter state) async {
     emit(CreateTaskLoadingState());
+    print("CreateTaskLoadingState ${event.task.priority.toString()}");
     final result = await createTaskUseCase(TaskDataRequest(
         content: event.task.content,
         description: event.task.description,
-        deadLine: event.task.due?.date,
+        deadLine: event.task.deadLine,
         priority: event.task.priority.toString(),
         projectId: event.task.projectId,
         startTimer: '',

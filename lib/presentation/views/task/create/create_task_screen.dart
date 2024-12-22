@@ -6,6 +6,7 @@ import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/domain/entities/due.dart';
 import 'package:todo/domain/entities/project.dart';
 import 'package:todo/domain/entities/task.dart';
+import 'package:todo/domain/entities/task_data_request.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
@@ -13,6 +14,7 @@ import 'package:todo/presentation/views/custom_view/custom_dropdown_button.dart'
 import 'package:todo/presentation/views/custom_view/custom_multiline_text_field.dart';
 import 'package:todo/presentation/views/custom_view/custom_normal_text_field.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/task/create/project_provider.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -47,6 +49,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
         builder: (context, state) {
           if (state is InitialDataState) {
             _projectList = state.projectList;
+            _selectProject= getIt<ProjectProvider>().getProjectName();
+
+
           }
 
           return Scaffold(
@@ -77,7 +82,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                           // project
                           SizedBox(height: 8,),
 
-                          CustomDropdown<Project>(
+                          /*CustomDropdown<Project>(
                             selectedValue: _selectProject,
                             items: _projectList,
                             hintText: localization.selectAProject,
@@ -87,7 +92,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                             onValueChanged: (newValue) {
                               _selectProject = newValue;
                             },
-                          ),
+                          ),*/
                           // priority
                           SizedBox(height: 8,),
 
@@ -193,7 +198,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                 );
                               } else {
                                 getBloc<CreateTaskBloc>(context).add(AddEvent(
-                                    TaskEntity(
+                                  TaskDataEntityRequest(content:_titleController.text,description: _descriptionController.text,deadLine: "tomorrow at 12:00" ,projectId: _selectProject!.id, priority: "2")));
+
+                                    /*TaskDataEntityRequest(
                                         due: Due(
                                             date: DateTimeConvert
                                                 .convertDateToString(
@@ -220,7 +227,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                             : '',
                                         labels: [],
                                         order: 0,
-                                        url: '')));
+                                        url: '')));*/
                               }
                             },
                             child: Padding(
@@ -263,9 +270,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
       case 'inProgress':
         return 2;
       case 'done':
-        return 3;
+        return 2;
       default:
-        return 1;
+        return 2;
     }
   }
 }

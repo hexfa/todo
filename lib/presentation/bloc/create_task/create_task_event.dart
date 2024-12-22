@@ -13,7 +13,7 @@ class FetchProject extends CreateTaskEvent {
 }
 
 class AddEvent extends CreateTaskEvent {
-  final TaskEntity task;
+  final TaskDataEntityRequest task;
 
   AddEvent(this.task);
 

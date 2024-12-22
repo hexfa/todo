@@ -14,6 +14,7 @@ import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/fab.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/task/create/project_provider.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -37,7 +38,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
       child: ThemeSwitchingArea(
         child: Scaffold(
           drawer: AppDrawer(),
-          floatingActionButton: showFab ? FAB() : null,
+          //floatingActionButton: showFab ? FAB() : null,
           appBar: AppBar(
               title: Text(
             localization.projects,
@@ -80,10 +81,12 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                     itemCount: state.projects.length,
                     itemBuilder: (gridContext, index) {
                       final project = state.projects[index];
+                      print("project ${project}");
                       return InkWell(
                         onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (mounted) {
+                              getIt<ProjectProvider>().setCurrentProject(project);
                               context.push(
                                   '${AppRoutePath.taskListRoute}/${project.id}');
                             }

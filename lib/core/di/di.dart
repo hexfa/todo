@@ -44,6 +44,8 @@ import 'package:todo/services/api/project_service.dart';
 
 import '../../domain/usecases/get_tasks_usecase.dart';
 import '../../presentation/bloc/task/task_bloc.dart';
+import '../../presentation/views/task/create/project_provider.dart';
+import '../../presentation/views/task/create/project_provider_impl.dart';
 
 final getIt = GetIt.instance;
 
@@ -75,6 +77,9 @@ Future<void> setupLocator(String token) async {
   getIt.registerSingleton<Box<DueModel>>(dueBox);
   getIt.registerSingleton<Box<CommentModel>>(commentBox);
   getIt.registerSingleton<Box<AttachmentModel>>(attachmentBox);
+
+
+  getIt.registerSingleton<ProjectProvider>(ProjectProviderImpl());
 
   // Register data sources
   //register data sources

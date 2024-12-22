@@ -98,7 +98,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                         int? newListIndex,
                         int? newItemIndex,
                         BoardItemState state) {
-                      String priority = '1';
+                      String priority='1' ;
                       if (oldListIndex == 0) {
                         priority = '1';
                       } else if (oldListIndex == 1) {
