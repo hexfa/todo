@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/di/di.dart';
+import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
+import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
@@ -54,11 +56,16 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
                   itemBuilder: (gridContext, index) {
                     final task = filteredTasks[index];
                     return Card(
+
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListTile(
+                        onTap: (){
+                          router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
+
+                        },
                         title: Text(
                           task.content,
                           maxLines: 1,
@@ -68,6 +75,8 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
                             fontSize: 14,
                           ),
                         ),
+                        subtitle: Text( "${localization.totalTime} "+DateTimeConvert.formatSecondsToTime(
+                            task?.duration?.amount??0)),
                         trailing: IconButton(
                           onPressed: () {
                             showCustomDialog(

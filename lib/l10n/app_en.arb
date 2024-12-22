@@ -38,5 +38,8 @@
   "startDateLabel": "start date ...",
   "startDate": "start date",
   "pleaseFillInAllFields": "Please fill all fields",
+  "totalTime": "Total time",
+  "startDate": "start date",
+  "endDate": "end date",
   "pleaseFillInAllFields": "Please fill in all fields!"
 }

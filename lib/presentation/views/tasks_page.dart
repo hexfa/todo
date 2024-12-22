@@ -4,6 +4,7 @@ import 'package:flutter_boardview/board_item.dart';
 import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
+import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
@@ -128,6 +129,9 @@ class _TasksPageState extends BaseState<TasksPage> {
                               fontSize: 14,
                             ),
                           ),
+
+                          subtitle: task.priority==3?Text( "${localization.totalTime} "+DateTimeConvert.formatSecondsToTime(
+                        task?.duration?.amount??0)):SizedBox.shrink(),
                           trailing: IconButton(
                             onPressed: () {
                               showCustomDialog(
