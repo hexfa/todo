@@ -98,13 +98,13 @@ class _TasksPageState extends BaseState<TasksPage> {
                         int? newListIndex,
                         int? newItemIndex,
                         BoardItemState state) {
-                      String priority='1' ;
+                      int priority = 1;
                       if (oldListIndex == 0) {
-                        priority = '1';
+                        priority = 1;
                       } else if (oldListIndex == 1) {
-                        priority = '2';
+                        priority = 2;
                       } else if (oldListIndex == 2) {
-                        priority = '3';
+                        priority = 3;
                       }
 
                       context.read<TasksBloc>().add(UpdateTaskEvent(
@@ -112,7 +112,8 @@ class _TasksPageState extends BaseState<TasksPage> {
                     },
                     item: GestureDetector(
                       onTap: () {
-                        router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
+                        router
+                            .push('${AppRoutePath.updateTaskRoute}/${task.id}');
                       },
                       child: Card(
                         elevation: 4,
@@ -129,9 +130,11 @@ class _TasksPageState extends BaseState<TasksPage> {
                               fontSize: 14,
                             ),
                           ),
-
-                          subtitle: task.priority==3?Text( "${localization.totalTime} "+DateTimeConvert.formatSecondsToTime(
-                        task?.duration?.amount??0)):SizedBox.shrink(),
+                          subtitle: task.priority == 3
+                              ? Text("${localization.totalTime} " +
+                                  DateTimeConvert.formatSecondsToTime(
+                                      task?.duration?.amount ?? 0))
+                              : SizedBox.shrink(),
                           trailing: IconButton(
                             onPressed: () {
                               showCustomDialog(

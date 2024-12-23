@@ -34,7 +34,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   TaskModelResponse? task;
   List<Comment> comments = [];
 
-
   int sumDurations() {
     int diff = task!.due?.string == null
         ? 0
@@ -42,8 +41,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
     int duration = (task?.duration != null ? task!.duration!.amount : 0) * 60;
     return task!.priority == 3 ? duration : diff + duration;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +52,9 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           });
         }
         if (state is CreateCommentSuccess) {
-          context.read<CommentBloc>().add(
-              FetchCommentsEvent(projectId: '', taskId: widget.taskId));
+          context
+              .read<CommentBloc>()
+              .add(FetchCommentsEvent(projectId: '', taskId: widget.taskId));
         }
       },
       child: BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
@@ -95,10 +93,9 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
               if (task != null &&
                   task!.due?.string != null &&
                   task!.due!.string!.isNotEmpty &&
-                  DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
-                      0) {
-
-              }
+                  DateTimeConvert.calculateSecondsDifference(
+                          task!.due!.string!) >
+                      0) {}
             }
           }
           return PopScope(
@@ -124,6 +121,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                               content: _contentController.text,
                               description: _descriptionController.text,
                               priority: getSelectPriority(),
+                              startDate: task!.due?.datetime ?? '',
                               deadLine: task!.due?.date ?? '',
                               startTimer: getSelectPriority() == 3
                                   ? DateTimeConvert.getCurrentDate()
@@ -138,116 +136,121 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
               body: state is UpdateTaskLoadingState
                   ? StateWidget(null, isLoading: true)
                   : task == null
-                  ? Container()
-                  : SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 16, horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8),
-                    CustomNormalTextField(
-                        controller: _contentController,
-                        labelText: localization.content),
-                    const SizedBox(height: 20),
-                    CustomMultiLineTextField(
-                        controller: _descriptionController,
-                        labelText: localization.description,
-                        countLine: 3),
-                    const SizedBox(height: 20),
-                    CustomDropdown<String>(
-                      selectedValue: _selectPriority,
-                      items: _priorityList,
-                      hintText: localization.selectATaskState,
-                      onValueChanged: (newValue) {
-                        _selectPriority = newValue;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: TimerWidget(
-                            isStartTimer: task != null &&
-                                task!.due?.string != null &&
-                                task!.due!.string!.isNotEmpty &&
-                                DateTimeConvert.calculateSecondsDifference(task!.due!.string!) >
-                                    0,
-                            onStartChanged: startTimerChange,
-                            onStopChanged: stopTimerChange,
-                            sumDurations: sumDurations)
-                    ),                    const SizedBox(height: 20),
-                    Stack(
-                      children: [
-                        TextField(
-                          controller: _commentController,
-                          maxLines: 5,
-                          minLines: 5,
-                          keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'post comment ...',
-                            alignLabelWithHint: true,
+                      ? Container()
+                      : SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8),
+                              CustomNormalTextField(
+                                  controller: _contentController,
+                                  labelText: localization.content),
+                              const SizedBox(height: 20),
+                              CustomMultiLineTextField(
+                                  controller: _descriptionController,
+                                  labelText: localization.description,
+                                  countLine: 3),
+                              const SizedBox(height: 20),
+                              CustomDropdown<String>(
+                                selectedValue: _selectPriority,
+                                items: _priorityList,
+                                hintText: localization.selectATaskState,
+                                onValueChanged: (newValue) {
+                                  _selectPriority = newValue;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TimerWidget(
+                                      isStartTimer: task != null &&
+                                          task!.due?.string != null &&
+                                          task!.due!.string!.isNotEmpty &&
+                                          DateTimeConvert
+                                                  .calculateSecondsDifference(
+                                                      task!.due!.string!) >
+                                              0,
+                                      onStartChanged: startTimerChange,
+                                      onStopChanged: stopTimerChange,
+                                      sumDurations: sumDurations)),
+                              const SizedBox(height: 20),
+                              Stack(
+                                children: [
+                                  TextField(
+                                    controller: _commentController,
+                                    maxLines: 5,
+                                    minLines: 5,
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'post comment ...',
+                                      alignLabelWithHint: true,
+                                    ),
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                  Positioned(
+                                    right: 10,
+                                    bottom: 10,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.read<CommentBloc>().add(
+                                            CreateCommentEvent(
+                                                content:
+                                                    _commentController.text,
+                                                projectId: task!.projectId,
+                                                taskId: task!.id));
+                                        _commentController.text = '';
+                                      },
+                                      child: Icon(
+                                        Icons.send,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('Comments',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                        color: theme.colorScheme.primary,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                    itemCount: comments.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(comments[index].content),
+                                        trailing: Text(
+                                            DateTimeConvert.wrapDateToString(
+                                                comments[index].postedAt),
+                                            style: theme.textTheme.labelMedium
+                                                ?.copyWith(color: Colors.grey)),
+                                      );
+                                    }),
+                              ),
+                            ],
                           ),
-                          style: theme.textTheme.bodyMedium,
                         ),
-                        Positioned(
-                          right: 10,
-                          bottom: 10,
-                          child: GestureDetector(
-                            onTap: () {
-                              context.read<CommentBloc>().add(
-                                  CreateCommentEvent(
-                                      content: _commentController.text,
-                                      projectId: task!.projectId,
-                                      taskId: task!.id));
-                              _commentController.text = '';
-                            },
-                            child: Icon(
-                              Icons.send,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Comments',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(comments[index].content),
-                              trailing: Text(
-                                  DateTimeConvert.wrapDateToString(
-                                      comments[index].postedAt),
-                                  style: theme.textTheme.labelMedium
-                                      ?.copyWith(color: Colors.grey)),
-                            );
-                          }),
-                    ),
-                  ],
-                ),
-              ),
             ),
           );
         },
       ),
     );
   }
+
   void stopTimerChange() {
     context.read<UpdateTaskBloc>().add(ChangeTimer(
         id: task!.id,
         content: task!.content,
         description: task!.description,
         priority: task!.priority,
+        startDate: task!.due?.datetime ?? '',
         deadLine: task!.due?.date ?? '',
         startTimer: '',
         duration: ((task!.duration?.amount ?? 1) * 60) +
@@ -263,6 +266,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         content: task!.content,
         description: task!.description,
         priority: task!.priority,
+        startDate: task!.due?.datetime ?? '',
         deadLine: task!.due?.date ?? '',
         startTimer: startTimer,
         duration: (task!.duration?.amount ?? 1) * 60,

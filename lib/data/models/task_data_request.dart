@@ -8,9 +8,11 @@ part 'task_data_request.g.dart';
 class TaskDataRequest extends TaskDataEntityRequest {
   final String? content;
   final String? description;
+  @JsonKey(name: 'due_datetime')
+  final String? startDate;
   @JsonKey(name: 'due_date')
   final String? deadLine;
-  final String? priority;
+  final int? priority;
   @JsonKey(name: 'project_id')
   final String? projectId;
   @JsonKey(name: 'due_string')
@@ -23,6 +25,7 @@ class TaskDataRequest extends TaskDataEntityRequest {
   const TaskDataRequest(
       {required this.content,
       required this.description,
+      required this.startDate,
       required this.deadLine,
       required this.priority,
       required this.projectId,
@@ -32,6 +35,7 @@ class TaskDataRequest extends TaskDataEntityRequest {
       : super(
           content: content,
           description: description,
+          startDate: startDate,
           deadLine: deadLine,
           priority: priority,
           projectId: projectId,

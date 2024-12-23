@@ -37,6 +37,7 @@ class _TimerWidgetState extends BaseState<TimerWidget> {
     _isRunning = true;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
       setState(() {
         _seconds++;
       });
@@ -47,7 +48,9 @@ class _TimerWidgetState extends BaseState<TimerWidget> {
     _isRunning = false;
     _timer?.cancel();
     _timer = null;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
     // widget.onTimeChanged(_seconds);  // Update time when stopped
   }
 
