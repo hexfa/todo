@@ -133,7 +133,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                           subtitle: task.priority == 3
                               ? Text("${localization.totalTime} " +
                                   DateTimeConvert.formatSecondsToTime(
-                                      task?.duration?.amount ?? 0))
+                                      (task.duration?.amount ?? 0) * 60))
                               : SizedBox.shrink(),
                           trailing: IconButton(
                             onPressed: () {

@@ -180,14 +180,18 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                   _selectPriority == null ||
                                   _selectStartDate == null ||
                                   _selectEndDate == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        localization.pleaseFillInAllFields),
-                                    backgroundColor: Colors.red,
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
+                                showSnack(context,
+                                    localization.pleaseFillInAllFields);
+                              } else if (DateTimeConvert.isDateBeforeToday(
+                                      _selectStartDate!) ||
+                                  DateTimeConvert.isDateBeforeToday(
+                                      _selectEndDate!)) {
+                                showSnack(context,
+                                    localization.theDatesCannotBeBeforeToday);
+                              } else if (!DateTimeConvert.isSecondDateValid(
+                                  _selectStartDate!, _selectEndDate!)) {
+                                showSnack(context,
+                                    localization.endDateCannotBeBeforeStart);
                               } else {
                                 getBloc<CreateTaskBloc>(context).add(AddEvent(
                                     TaskDataEntityRequest(
@@ -217,6 +221,17 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                   ),
           );
         },
+      ),
+    );
+  }
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnack(
+      BuildContext context, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
       ),
     );
   }

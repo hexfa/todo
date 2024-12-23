@@ -5,6 +5,7 @@ import 'package:todo/presentation/views/base/base-state.dart';
 
 class TimerWidget extends StatefulWidget {
   final bool isStartTimer;
+  final bool isShowControlButton;
   final Function() onStartChanged;
   final Function() onStopChanged;
   final Function() sumDurations;
@@ -12,6 +13,7 @@ class TimerWidget extends StatefulWidget {
   const TimerWidget(
       {super.key,
       required this.isStartTimer,
+      required this.isShowControlButton,
       required this.onStartChanged,
       required this.onStopChanged,
       required this.sumDurations});
@@ -65,23 +67,24 @@ class _TimerWidgetState extends BaseState<TimerWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: () {
-            if (_isRunning) {
-              widget.onStopChanged();
-              _stopTimer();
-            } else {
-              widget.onStartChanged();
-              _startTimer();
-            }
-          },
-          child: Text(
-            _isRunning ? '${localization.stop} :' : '${localization.start} :',
-            style: theme.textTheme.titleMedium?.copyWith(
-                color: _isRunning ? theme.colorScheme.error : Colors.green,
-                fontWeight: FontWeight.bold),
+        if (widget.isShowControlButton)
+          InkWell(
+            onTap: () {
+              if (_isRunning) {
+                widget.onStopChanged();
+                _stopTimer();
+              } else {
+                widget.onStartChanged();
+                _startTimer();
+              }
+            },
+            child: Text(
+              _isRunning ? '${localization.stop} :' : '${localization.start} :',
+              style: theme.textTheme.titleMedium?.copyWith(
+                  color: _isRunning ? theme.colorScheme.error : Colors.green,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
         const SizedBox(width: 8),
         Text(
           DateTimeConvert.formatSecondsToTime(_seconds) == '00:00:00'

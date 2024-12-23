@@ -35,5 +35,7 @@
   "startDateLabel": "Start date ...",
   "startDate": "Start Date",
   "pleaseFillInAllFields": "Please fill in all fields!",
-  "totalTime": "Total Time"
+  "totalTime": "Total Time",
+  "theDatesCannotBeBeforeToday": "The dates cannot be before today.",
+  "endDateCannotBeBeforeStart": "End date cannot be before start."
 }

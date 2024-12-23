@@ -62,9 +62,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           if (state is ConfirmUpdateTaskState) {
             router.pop();
           }
-          if(state is UpdateTaskErrorState){
-            context.read<UpdateTaskBloc>().add(FetchTask(taskId: widget.taskId));
-
+          if (state is UpdateTaskErrorState) {
+            context
+                .read<UpdateTaskBloc>()
+                .add(FetchTask(taskId: widget.taskId));
           }
         },
         builder: (context, state) {
@@ -116,6 +117,16 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                   IconButton(
                       onPressed: () {
                         if (task != null) {
+                          //handle timer
+                          String tempTimer = '';
+                          if (getSelectPriority() != 3 && task!.priority == 3) {
+                            tempTimer = '';
+                          } else if (getSelectPriority() == 3) {
+                            tempTimer = DateTimeConvert.getCurrentDate();
+                          } else {
+                            tempTimer = task!.due?.string ?? '';
+                          }
+
                           context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(
                               id: task!.id,
                               content: _contentController.text,
@@ -123,9 +134,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                               priority: getSelectPriority(),
                               startDate: task!.due?.datetime ?? '',
                               deadLine: task!.due?.date ?? '',
-                              startTimer: getSelectPriority() == 3
-                                  ? DateTimeConvert.getCurrentDate()
-                                  : task!.due?.string ?? '',
+                              startTimer: tempTimer,
                               duration: sumDurations(),
                               projectId: task!.projectId));
                         }
@@ -165,16 +174,19 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: TimerWidget(
-                                      isStartTimer: task != null &&
-                                          task!.due?.string != null &&
-                                          task!.due!.string!.isNotEmpty &&
-                                          DateTimeConvert
-                                                  .calculateSecondsDifference(
-                                                      task!.due!.string!) >
-                                              0,
-                                      onStartChanged: startTimerChange,
-                                      onStopChanged: stopTimerChange,
-                                      sumDurations: sumDurations)),
+                                    isStartTimer: task != null &&
+                                        task!.priority != 3 &&
+                                        task!.due?.string != null &&
+                                        task!.due!.string!.isNotEmpty &&
+                                        DateTimeConvert
+                                                .calculateSecondsDifference(
+                                                    task!.due!.string!) >
+                                            0,
+                                    isShowControlButton: task!.priority != 3,
+                                    onStartChanged: startTimerChange,
+                                    onStopChanged: stopTimerChange,
+                                    sumDurations: sumDurations,
+                                  )),
                               const SizedBox(height: 20),
                               Stack(
                                 children: [
@@ -245,6 +257,8 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   }
 
   void stopTimerChange() {
+    int updateDuration = ((task!.duration?.amount ?? 1) * 60) +
+        DateTimeConvert.calculateSecondsDifference(task!.due?.string ?? '');
     context.read<UpdateTaskBloc>().add(ChangeTimer(
         id: task!.id,
         content: task!.content,
@@ -253,10 +267,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         startDate: task!.due?.datetime ?? '',
         deadLine: task!.due?.date ?? '',
         startTimer: '',
-        duration: ((task!.duration?.amount ?? 1) * 60) +
-            DateTimeConvert.calculateSecondsDifference(task!.due?.string ?? ''),
+        duration: updateDuration,
         projectId: task!.projectId));
     task!.due?.string = '';
+    task!.duration?.amount = updateDuration ~/ 60;
   }
 
   void startTimerChange() {
