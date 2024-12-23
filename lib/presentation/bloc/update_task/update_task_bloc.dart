@@ -50,7 +50,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
     emit(UpdateTaskLoadingState());
     final result = await getTaskUseCase.call(event.taskId);
     result.fold(
-        (failure) => emit(UpdateTaskErrorState(failure.message)),
+        (failure) => emit(TaskErrorState(failure.message)),
         (task) => emit(TaskLoadedState(
             task: TaskModelResponse(
                 duration: DurationModel(

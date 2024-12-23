@@ -20,7 +20,14 @@ class UpdateTaskErrorState extends UpdateTaskState {
   @override
   List<Object> get props => [message];
 }
+class TaskErrorState extends UpdateTaskState {
+  final String message;
 
+  TaskErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
 class ConfirmUpdateTaskState extends UpdateTaskState {}
 
 class UpdateTask extends UpdateTaskState {

@@ -33,6 +33,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   String? _selectPriority;
   TaskModelResponse? task;
   List<Comment> comments = [];
+  String tempTimer='';
 
   int sumDurations() {
     int diff = task!.due?.string == null
@@ -62,10 +63,22 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           if (state is ConfirmUpdateTaskState) {
             router.pop();
           }
-          if (state is UpdateTaskErrorState) {
+          if (state is TaskErrorState) {
             context
                 .read<UpdateTaskBloc>()
                 .add(FetchTask(taskId: widget.taskId));
+          }
+          if (state is UpdateTaskErrorState) {
+            context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(
+                id: task!.id,
+                content: _contentController.text,
+                description: _descriptionController.text,
+                priority: getSelectPriority(),
+                startDate: task!.due?.datetime ?? '',
+                deadLine: task!.due?.date ?? '',
+                startTimer: tempTimer,
+                duration: sumDurations(),
+                projectId: task!.projectId));
           }
         },
         builder: (context, state) {
@@ -118,7 +131,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                       onPressed: () {
                         if (task != null) {
                           //handle timer
-                          String tempTimer = '';
+                           tempTimer = '';
                           if (getSelectPriority() != 3 && task!.priority == 3) {
                             tempTimer = '';
                           } else if (getSelectPriority() == 3) {
