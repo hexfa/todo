@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/core/constants/storage_value.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
@@ -14,9 +15,8 @@ import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/sync_manager.dart';
 import 'package:todo/presentation/route/app_router.dart';
+
 import 'core/di/di.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'data/models/task_model_response.dart';
 
 final storage = GetIt.I<Storage>();

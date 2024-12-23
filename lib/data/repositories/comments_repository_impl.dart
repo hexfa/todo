@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:todo/data/models/comment_data_request.dart';
+
 import '../../core/error/failure.dart';
 import '../../domain/entities/comment.dart';
 import '../../domain/repositories/comments_repository.dart';
@@ -17,7 +18,6 @@ class CommentsRepositoryImpl implements CommentsRepository {
 
       return Right(comments.map((t) => t.toEntity()).toList());
     } catch (e) {
-      print('-----------------catch:${e.toString()}');
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -29,7 +29,6 @@ class CommentsRepositoryImpl implements CommentsRepository {
       final result = await remoteDataSource.createComment(comment);
       return Right(result.toEntity());
     } catch (e) {
-      print('-----------------catch');
       return Left(ServerFailure(message: e.toString()));
     }
   }

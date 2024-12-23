@@ -6,7 +6,6 @@ import 'package:todo/data/models/task_data_request.dart';
 
 import '../../core/constants/constants_value.dart';
 import '../../data/models/comment_model.dart';
-import '../../data/models/comment_model.dart';
 import '../../data/models/task_model_response.dart';
 
 part 'project_service.g.dart';

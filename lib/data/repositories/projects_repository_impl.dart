@@ -20,13 +20,13 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   final ProjectsRemoteDataSource remoteDataSource;
   final ProjectsLocalDataSource localDataSource;
   final SyncLocalDataSource syncQueue;
-  final Connectivity connectivity; // اضافه کردن Connectivity به عنوان وابستگی
+  final Connectivity connectivity;
 
   ProjectsRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.syncQueue,
-    required this.connectivity, // دریافت Connectivity از طریق سازنده
+    required this.connectivity,
   });
 
   @override
@@ -105,8 +105,7 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   Future<bool> _isConnected() async {
     final connectivityResult = await connectivity.checkConnectivity();
 
-    // Check if connected to either mobile data or WiFi
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+    if (connectivityResult.first == ConnectivityResult.mobile || connectivityResult.first == ConnectivityResult.wifi) {
       return true;
     }
 

@@ -7,7 +7,6 @@ import 'package:todo/core/theme/theme.dart';
 import 'package:todo/core/util/storage.dart';
 import 'package:todo/gen/assets.gen.dart';
 import 'package:todo/main.dart';
-import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 

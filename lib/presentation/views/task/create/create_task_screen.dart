@@ -1,11 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
-import 'package:todo/domain/entities/due.dart';
 import 'package:todo/domain/entities/project.dart';
-import 'package:todo/domain/entities/task.dart';
 import 'package:todo/domain/entities/task_data_request.dart';
 import 'package:todo/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:todo/presentation/route/app_router.dart';

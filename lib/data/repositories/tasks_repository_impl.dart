@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failure.dart';
@@ -125,20 +123,8 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<Either<Failure, TaskEntity>> getTask(String? taskId) async {
     try {
-      // if (await _isConnected()) {
       final result = await remoteDataSource.getTask(taskId);
-      print('-------------------repo${result.creatorId}');
-      // await localDataSource.getTask(id);
       return Right(result.toEntity());
-      // } else {
-      //   await localDataSource.getTask(id);
-      //   await syncQueue.addOperation(SyncOperation(
-      //     type: 'get',
-      //     id: id,
-      //     entityType: 'task',
-      //   ));
-      //   return const Right(true);
-      // }
     } catch (e) {
       return const Left(ServerFailure(message: 'Failed to close task'));
     }
@@ -194,10 +180,8 @@ class TasksRepositoryImpl implements TasksRepository {
 
     if (connectivityResult.first == ConnectivityResult.mobile ||
         connectivityResult.first == ConnectivityResult.wifi) {
-      print('is conected true');
       return true;
     }
-    print('is conected false');
 
     return false;
   }
