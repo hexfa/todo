@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -101,10 +102,14 @@ Future<void> setupLocator(String token) async {
       () => SyncLocalDataSource(getIt()));
 
   //register repositories
+  getIt.registerSingleton<Connectivity>(Connectivity());
+
   getIt.registerLazySingleton<ProjectsRepository>(() => ProjectsRepositoryImpl(
       remoteDataSource: getIt<ProjectsRemoteDataSource>(),
       localDataSource: getIt<ProjectsLocalDataSource>(),
-      syncQueue: getIt<SyncLocalDataSource>()));
+      syncQueue: getIt<SyncLocalDataSource>(),
+    connectivity: getIt<Connectivity>(),
+  ));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(
