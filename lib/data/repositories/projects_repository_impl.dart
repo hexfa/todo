@@ -1,3 +1,5 @@
+// lib/data/repositories/projects_repository_impl.dart
+
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -18,11 +20,13 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   final ProjectsRemoteDataSource remoteDataSource;
   final ProjectsLocalDataSource localDataSource;
   final SyncLocalDataSource syncQueue;
+  final Connectivity connectivity; // اضافه کردن Connectivity به عنوان وابستگی
 
   ProjectsRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.syncQueue,
+    required this.connectivity, // دریافت Connectivity از طریق سازنده
   });
 
   @override
@@ -86,10 +90,10 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
       } else {
         await localDataSource.deleteProject(id);
         await syncQueue.addOperation(SyncOperation(
-          type: 'delete',
-          id: id,
-          entityType: 'project',
-          data: {}
+            type: 'delete',
+            id: id,
+            entityType: 'project',
+            data: {}
         ));
         return const Right(true);
       }
@@ -99,11 +103,10 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   }
 
   Future<bool> _isConnected() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
+    final connectivityResult = await connectivity.checkConnectivity();
 
     // Check if connected to either mobile data or WiFi
-    if (connectivityResult.first == ConnectivityResult.mobile || connectivityResult.first == ConnectivityResult.wifi) {
-
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
       return true;
     }
 
