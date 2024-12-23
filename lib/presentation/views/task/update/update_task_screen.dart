@@ -124,8 +124,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                           } else if (getSelectPriority() == 3) {
                             tempTimer = DateTimeConvert.getCurrentDate();
                           } else {
-                            print('-------------- else');
-                            task!.due?.string ?? '';
+                            tempTimer = task!.due?.string ?? '';
                           }
 
                           context.read<UpdateTaskBloc>().add(ConfirmUpdateTask(

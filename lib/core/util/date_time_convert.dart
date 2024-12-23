@@ -37,4 +37,25 @@ class DateTimeConvert {
     final remainingSeconds = (seconds % 60).toString().padLeft(2, '0');
     return '$hours:$minutes:$remainingSeconds';
   }
+
+  static bool isDateBeforeToday(DateTime date) {
+    try {
+      DateTime today = DateTime.now();
+      today = DateTime(today.year, today.month, today.day);
+      return date.isBefore(today);
+    } catch (e) {
+      print(date);
+      print("Invalid date format: $e");
+      return false;
+    }
+  }
+
+  static bool isSecondDateValid(DateTime firstDate, DateTime secondDate) {
+    try {
+      return !secondDate.isBefore(firstDate);
+    } catch (e) {
+      print("Invalid date format: $e");
+      return false;
+    }
+  }
 }
