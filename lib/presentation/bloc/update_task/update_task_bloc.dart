@@ -24,7 +24,7 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
 
   Future<void> _onConfirmUpdateTask(
       ConfirmUpdateTask event, Emitter emit) async {
-    int tempDuration = event.duration == 0 ? 1 : event.duration;
+    int tempDuration = event.duration == 0 ? 1 : event.duration ~/ 60;
     emit(UpdateTaskLoadingState());
     final result = await updateTaskUseCase.call(UpdateTaskParams(
       id: event.id,

@@ -241,6 +241,8 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   }
 
   void stopTimerChange() {
+    int updateDuration = ((task!.duration?.amount ?? 1) * 60) +
+        DateTimeConvert.calculateSecondsDifference(task!.due?.string ?? '');
     context.read<UpdateTaskBloc>().add(ChangeTimer(
         id: task!.id,
         content: task!.content,
@@ -249,10 +251,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
         startDate: task!.due?.datetime ?? '',
         deadLine: task!.due?.date ?? '',
         startTimer: '',
-        duration: ((task!.duration?.amount ?? 1) * 60) +
-            DateTimeConvert.calculateSecondsDifference(task!.due?.string ?? ''),
+        duration: updateDuration,
         projectId: task!.projectId));
     task!.due?.string = '';
+    task!.duration?.amount = updateDuration ~/ 60;
   }
 
   void startTimerChange() {
