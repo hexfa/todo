@@ -26,5 +26,11 @@ class UpdateTaskEvent extends TasksEvent {
   final int? priority;
   final String? projectId;
   final String? content;
-  UpdateTaskEvent(this.taskId, this.priority, this.projectId, this.content);
+  final String? description;
+  final String? startDate;
+  final String? deadLine;
+  final String? startTimer;
+  final int duration;
+
+  const UpdateTaskEvent(this.taskId, this.priority, this.projectId, this.content, this.description, this.startDate, this.deadLine, this.startTimer, this.duration);
 }

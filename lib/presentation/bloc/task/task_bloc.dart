@@ -47,18 +47,19 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     });
 
     on<UpdateTaskEvent>((event, emit) async {
+      int tempDuration = event.duration == 0 ? 1 : event.duration ~/ 60;
       final result = await updateTaskUseCase.call(UpdateTaskParams(
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
           content: event.content,
-          startDate: null,
-          deadLine: null,
-          description: null,
-          duration: 1,
-          durationUnit: 'minute',
+          description: event.description,
+          startDate: event.startDate,
+          deadLine: event.deadLine,
           priority: event.priority,
-          startTimer: '',
           projectId: event.projectId,
+          duration: tempDuration == 0 ? 1 : tempDuration,
+          startTimer: event.startTimer,
+          durationUnit: 'minute',
         ),
       ));
       result.fold(

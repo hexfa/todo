@@ -5,6 +5,7 @@ import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
 import 'package:todo/core/util/date_time_convert.dart';
+import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
@@ -107,8 +108,7 @@ class _TasksPageState extends BaseState<TasksPage> {
                         priority = 3;
                       }
 
-                      context.read<TasksBloc>().add(UpdateTaskEvent(
-                          task.id, priority, widget.projectId, task.content));
+                      updateTask(priority, task, context);
                     },
                     item: GestureDetector(
                       onTap: () {
@@ -175,5 +175,36 @@ class _TasksPageState extends BaseState<TasksPage> {
         },
       ),
     );
+  }
+
+  void updateTask(int priority, TaskEntity task, BuildContext context) {
+    //handle timer
+    String tempTimer = '';
+    if (priority != 3 && task.priority == 3) {
+      tempTimer = '';
+    } else if (priority == 3) {
+      tempTimer = DateTimeConvert.getCurrentDate();
+    } else {
+      tempTimer = task.due?.string ?? '';
+    }
+
+    //duration
+    int tempDuration = 1;
+    int diff = task.due?.string == null
+        ? 0
+        : DateTimeConvert.calculateSecondsDifference(task.due!.string!);
+    int duration = (task.duration != null ? task.duration!.amount : 0) * 60;
+    tempDuration = task.priority == 3 ? duration : diff + duration;
+
+    context.read<TasksBloc>().add(UpdateTaskEvent(
+        task.id,
+        priority,
+        widget.projectId,
+        task.content,
+        task.description,
+        task.due?.datetime ?? '',
+        task.due?.date ?? '',
+        tempTimer,
+        tempDuration));
   }
 }
