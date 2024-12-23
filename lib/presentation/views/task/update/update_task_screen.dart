@@ -46,16 +46,33 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
   Widget build(BuildContext context) {
     return BlocListener<CommentBloc, CommentState>(
       listener: (context, state) {
+        print('state is ${state}');
         if (state is CommentsLoaded) {
           setState(() {
             comments = state.comments;
           });
         }
-        if (state is CreateCommentSuccess) {
+       /* if(state is FetchCommentFailed){
           context
               .read<CommentBloc>()
               .add(FetchCommentsEvent(projectId: '', taskId: widget.taskId));
         }
+        if(state is CommentFailed){
+          context.read<CommentBloc>().add(
+              CreateCommentEvent(
+                  content:
+                  _commentController.text,
+                  projectId: task!.projectId,
+                  taskId: task!.id));
+        }*/
+        if (state is CreateCommentSuccess) {
+          _commentController.text = '';
+
+          context
+              .read<CommentBloc>()
+              .add(FetchCommentsEvent(projectId: '', taskId: widget.taskId));
+        }
+
       },
       child: BlocConsumer<UpdateTaskBloc, UpdateTaskState>(
         listener: (context, state) {
@@ -225,7 +242,6 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                                                     _commentController.text,
                                                 projectId: task!.projectId,
                                                 taskId: task!.id));
-                                        _commentController.text = '';
                                       },
                                       child: Icon(
                                         Icons.send,

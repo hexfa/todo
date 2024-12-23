@@ -50,7 +50,7 @@ class CommentModel extends HiveObject {
       postedAt: postedAt,
       projectId: projectId,
       taskId: taskId,
-      attachment: attachment!.toEntity(),
+      attachment: attachment?.toEntity(),
     );
   }
 }

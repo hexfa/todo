@@ -15,7 +15,7 @@ class CommentsRemoteDataSourceImpl implements CommentsRemoteDataSource {
     try {
       return await service.getAllComments(taskId);
     } catch (e) {
-      throw const ServerFailure(message: 'Failed to fetch comment');
+      throw  ServerFailure(message: 'Failed to fetch comment ${e.toString()}');
     }
   }
 

@@ -24,9 +24,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   Future<void> _onFetchCommentsEvent(
       FetchCommentsEvent event, Emitter emit) async {
     emit(CommentLoading());
-    final result = await getAllCommentsUseCase(event.taskId);
+    final result = await getAllCommentsUseCase.call(event.taskId);
     result.fold(
-      (failure) => emit(CommentFailed(message: 'Failed to fetch comment')),
+      (failure) {
+        emit(FetchCommentFailed(message: 'Failed to fetch comment'));
+      },
       (comments) => emit(CommentsLoaded(comments: comments)),
     );
   }

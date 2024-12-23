@@ -17,6 +17,14 @@ final class CommentFailed extends CommentState {
   @override
   List<Object> get props => [message];
 }
+final class FetchCommentFailed extends CommentState {
+  final String message;
+
+  FetchCommentFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
 
 final class CreateCommentSuccess extends CommentState {
   final Comment comment;
