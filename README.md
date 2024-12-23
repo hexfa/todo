@@ -103,7 +103,6 @@ For advanced configuration and customization, refer to the `lib/config` folder f
 Below are examples of the app's user interface and features:
 
 ### Video Demo
-Experience the app in action:
 <img src="https://github.com/hexfa/Files/blob/main/Todoist/demo_app.gif" height="649" width="300" alt="Todo App dehdarian fallah">
 
 ### Screenshots
