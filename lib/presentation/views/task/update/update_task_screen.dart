@@ -52,7 +52,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
             comments = state.comments;
           });
         }
-       /* if(state is FetchCommentFailed){
+        if(state is FetchCommentFailed){
           context
               .read<CommentBloc>()
               .add(FetchCommentsEvent(projectId: '', taskId: widget.taskId));
@@ -64,7 +64,7 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
                   _commentController.text,
                   projectId: task!.projectId,
                   taskId: task!.id));
-        }*/
+        }
         if (state is CreateCommentSuccess) {
           _commentController.text = '';
 
