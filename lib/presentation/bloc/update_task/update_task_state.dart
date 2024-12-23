@@ -33,6 +33,7 @@ class UpdateTask extends UpdateTaskState {
   List<Object> get props => [task, timestamp];
 }
 
+
 class TaskLoadedState extends UpdateTaskState {
   final TaskModelResponse task;
 

@@ -64,6 +64,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           if (state is ConfirmUpdateTaskState) {
             router.pop();
           }
+          if(state is UpdateTaskErrorState){
+            context.read<UpdateTaskBloc>().add(FetchTask(taskId: widget.taskId));
+
+          }
         },
         builder: (context, state) {
           if (state is UpdateTask) {

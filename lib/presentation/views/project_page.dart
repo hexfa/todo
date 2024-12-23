@@ -38,7 +38,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
       child: ThemeSwitchingArea(
         child: Scaffold(
           drawer: AppDrawer(),
-          //floatingActionButton: showFab ? FAB() : null,
+          floatingActionButton: showFab ? FAB() : null,
           appBar: AppBar(
               title: Text(
             localization.projects,
