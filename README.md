@@ -102,25 +102,16 @@ For advanced configuration and customization, refer to the `lib/config` folder f
 ## Preview 📱
 Below are examples of the app's user interface and features:
 
-### Screenshots
-
-<img src="https://github.com/hexfa/Files/blob/main/photo_1_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_2_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_3_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_4_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_5_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_6_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_7_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_8_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_9_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_10_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_11_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-<img src="https://github.com/hexfa/Files/blob/main/photo_12_2024-12-22_16-31-36.jpg" height="649" width="300" alt="Rick and morty App hexfa">
-
-
 ### Video Demo
 Experience the app in action:
-[Watch Demo](https://via.placeholder.com/demo-video)
+<img src="https://github.com/hexfa/Files/blob/main/Todoist/demo_app.gif" height="649" width="300" alt="Todo App dehdarian fallah">
+
+### Screenshots
+
+<img src="https://github.com/hexfa/Files/blob/main/Todoist/photo_12_2024-12-22_16-31-36.jpg?raw=true" height="649" width="300" alt="Todo App hexfa">  <img src="https://github.com/hexfa/Files/blob/main/Todoist/photo_1_2024-12-22_16-31-36.jpg?raw=true" height="649" width="300" alt="Todo App amir">
+<br>
+<img src="https://github.com/hexfa/Files/blob/main/Todoist/photo_2024-12-23_16-03-03.jpg?raw=true" height="649" width="300" alt="Todo App hexfa">         <img src="https://github.com/hexfa/Files/blob/main/Todoist/photo_6_2024-12-22_16-31-36.jpg?raw=true" height="649" width="300" alt="Todo App amir">
+
 
 ---
 
@@ -134,7 +125,7 @@ Experience the app in action:
 ---
 
 ## Contributing
-We welcome contributions from the community. To contribute:
+I welcome contributions from the community. To contribute:
 
 1. Fork the repository.
 2. Create a feature or bug fix branch:
@@ -151,7 +142,5 @@ We welcome contributions from the community. To contribute:
    ```
 5. Submit a pull request with detailed information about your changes.
 
----
 
-Thank you for contributing! 🚀
 
