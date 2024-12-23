@@ -31,7 +31,7 @@ void main() async {
   Hive.registerAdapter(DueModelAdapter());
   Hive.registerAdapter(AttachmentModelAdapter());
   Hive.registerAdapter(CommentModelAdapter());
-  const token = '30706_3ad651d248a3f5b7126dba04';
+  const token = '396cfbb60d2860647d5451920dc1962eb2505c01';
   await setupLocator(token);
   bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
   String? languageCode = await storage.getLanguage();
