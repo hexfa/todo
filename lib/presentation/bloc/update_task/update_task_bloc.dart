@@ -31,8 +31,9 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
       taskData: TaskDataRequest(
           content: event.content,
           description: event.description,
+          startDate: event.startDate,
           deadLine: event.deadLine,
-          priority: event.priority.toString(),
+          priority: event.priority,
           projectId: event.projectId,
           duration: tempDuration == 0 ? 1 : tempDuration,
           startTimer: event.startTimer,
@@ -82,8 +83,9 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
       taskData: TaskDataRequest(
           content: event.content,
           description: event.description,
+          startDate: event.startDate,
           deadLine: event.deadLine,
-          priority: event.priority.toString(),
+          priority: event.priority,
           projectId: event.projectId,
           duration: tempDuration == 0 ? 1 : tempDuration,
           startTimer: event.startTimer,

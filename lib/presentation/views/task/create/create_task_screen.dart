@@ -37,6 +37,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
   @override
   Widget build(BuildContext context) {
     double borderRadius = 12;
+    double spaceValue = 16;
     return BlocProvider(
       create: (_) => getIt<CreateTaskBloc>()..add(InitialDataEvent()),
       child: BlocConsumer<CreateTaskBloc, CreateTaskState>(
@@ -49,9 +50,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
         builder: (context, state) {
           if (state is InitialDataState) {
             _projectList = state.projectList;
-            _selectProject= getIt<ProjectProvider>().getProjectName();
-
-
+            _selectProject = getIt<ProjectProvider>().getProjectName();
           }
 
           return Scaffold(
@@ -65,37 +64,26 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
             body: state is CreateTaskLoadingState
                 ? StateWidget(isLoading: true, null)
                 : SingleChildScrollView(
-                  child: Padding(
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 16, horizontal: 24),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CustomNormalTextField(
                               controller: _titleController,
                               labelText: localization.content),
-                          SizedBox(height: 8,),
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           CustomMultiLineTextField(
                               controller: _descriptionController,
                               labelText: localization.description,
                               countLine: 3),
                           // project
-                          SizedBox(height: 8,),
-
-                          /*CustomDropdown<Project>(
-                            selectedValue: _selectProject,
-                            items: _projectList,
-                            hintText: localization.selectAProject,
-                            itemBuilder: (Project project) {
-                              return Text(project.name);
-                            },
-                            onValueChanged: (newValue) {
-                              _selectProject = newValue;
-                            },
-                          ),*/
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           // priority
-                          SizedBox(height: 8,),
-
                           CustomDropdown<String>(
                             selectedValue: _selectPriority,
                             items: _priorityList,
@@ -105,8 +93,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                             },
                           ),
                           //start date
-                          SizedBox(height: 8,),
-
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           InkWell(
                               onTap: () {
                                 _pickDate(context, true);
@@ -131,8 +120,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                 ),
                               )),
                           // end date
-                          SizedBox(height: 8,),
-
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           InkWell(
                               onTap: () {
                                 _pickDate(context, false);
@@ -156,8 +146,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                   ),
                                 ),
                               )),
-                          SizedBox(height: 8,),
-
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           Row(
                             children: [
                               Checkbox(
@@ -178,8 +169,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                           : theme.colorScheme.onSurface)),
                             ],
                           ),
-                          SizedBox(height: 8,),
-
+                          SizedBox(
+                            height: spaceValue,
+                          ),
                           ElevatedButton(
                             onPressed: () async {
                               if (_titleController.text.isEmpty ||
@@ -190,44 +182,26 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                                   _selectEndDate == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content:
-                                        Text(localization.pleaseFillInAllFields),
+                                    content: Text(
+                                        localization.pleaseFillInAllFields),
                                     backgroundColor: Colors.red,
                                     duration: Duration(seconds: 3),
                                   ),
                                 );
                               } else {
                                 getBloc<CreateTaskBloc>(context).add(AddEvent(
-                                  TaskDataEntityRequest(content:_titleController.text,description: _descriptionController.text,deadLine: "tomorrow at 12:00" ,projectId: _selectProject!.id, priority: "2")));
-
-                                    /*TaskDataEntityRequest(
-                                        due: Due(
-                                            date: DateTimeConvert
-                                                .convertDateToString(
-                                                    _selectEndDate!),
-                                            datetime: DateTimeConvert
-                                                .convertDateToString(
-                                                    _selectStartDate!),
-                                            string: '',
-                                            timezone: '',
-                                            isRecurring: isRecurring),
-                                        commentCount: 0,
-                                        isCompleted: _selectPriority == 'done'
-                                            ? true
-                                            : false,
-                                        creatorId: '',
-                                        createdAt:
-                                            DateTimeConvert.getCurrentDate(),
-                                        id: '',
+                                    TaskDataEntityRequest(
                                         content: _titleController.text,
-                                        description: _descriptionController.text,
-                                        priority: getSelectPriority(),
-                                        projectId: _selectProject != null
-                                            ? _selectProject!.id
-                                            : '',
-                                        labels: [],
-                                        order: 0,
-                                        url: '')));*/
+                                        description:
+                                            _descriptionController.text,
+                                        startDate:
+                                            DateTimeConvert.convertDateToString(
+                                                _selectStartDate!),
+                                        deadLine:
+                                            DateTimeConvert.convertDateToString(
+                                                _selectEndDate!),
+                                        projectId: _selectProject!.id,
+                                        priority: getSelectPriority())));
                               }
                             },
                             child: Padding(
@@ -240,7 +214,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
                         ],
                       ),
                     ),
-                ),
+                  ),
           );
         },
       ),
@@ -270,9 +244,9 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
       case 'inProgress':
         return 2;
       case 'done':
-        return 2;
+        return 3;
       default:
-        return 2;
+        return 1;
     }
   }
 }

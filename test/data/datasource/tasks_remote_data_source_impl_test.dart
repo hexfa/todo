@@ -94,8 +94,9 @@ void main() {
   group('createTask', () {
     const tContent = "Buy Milk";
     const tDescription = "Description of by milk";
+    const tStartDate = "2024-09-8";
     const tDeadLine = "2024-09-10";
-    const tPriority = "4"; // Changed to String as per your base class
+    const tPriority = 1; // Changed to String as per your base class
     const tProjectId = "123343";
     const tDuration = 1;
     const tDurationUnit = "minute";
@@ -103,6 +104,7 @@ void main() {
     var tTaskDataRequest = const TaskDataRequest(
         content: tContent,
         description: tDescription,
+        startDate: tStartDate,
         deadLine: tDeadLine,
         priority: tPriority,
         projectId: tProjectId,

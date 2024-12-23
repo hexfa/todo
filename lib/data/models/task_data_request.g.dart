@@ -10,8 +10,9 @@ TaskDataRequest _$TaskDataRequestFromJson(Map<String, dynamic> json) =>
     TaskDataRequest(
       content: json['content'] as String?,
       description: json['description'] as String?,
+      startDate: json['due_datetime'] as String?,
       deadLine: json['due_date'] as String?,
-      priority: json['priority'] as String?,
+      priority: (json['priority'] as num?)?.toInt(),
       projectId: json['project_id'] as String?,
       startTimer: json['due_string'] as String?,
       duration: (json['duration'] as num?)?.toInt(),
@@ -22,6 +23,7 @@ Map<String, dynamic> _$TaskDataRequestToJson(TaskDataRequest instance) =>
     <String, dynamic>{
       'content': instance.content,
       'description': instance.description,
+      'due_datetime': instance.startDate,
       'due_date': instance.deadLine,
       'priority': instance.priority,
       'project_id': instance.projectId,

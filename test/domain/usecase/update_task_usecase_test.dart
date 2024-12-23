@@ -24,8 +24,9 @@ void main() {
   var tTaskDataRequest = const TaskDataRequest(
       content: "Buy Coffee",
       description: "Description of by coffee",
+      startDate: "2024-12-18",
       deadLine: "2024-12-19",
-      priority: "4",
+      priority: 1,
       projectId: '123567',
       durationUnit: 'minute',
       duration: 1,

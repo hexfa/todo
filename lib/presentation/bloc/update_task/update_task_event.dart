@@ -13,6 +13,7 @@ class ChangeTimer extends UpdateTaskEvent {
   final String content;
   final String description;
   final int priority;
+  final String startDate;
   final String deadLine;
   final String startTimer;
   final int duration;
@@ -23,6 +24,7 @@ class ChangeTimer extends UpdateTaskEvent {
       required this.content,
       required this.description,
       required this.priority,
+      required this.startDate,
       required this.deadLine,
       required this.startTimer,
       required this.duration});
@@ -47,6 +49,7 @@ class ConfirmUpdateTask extends UpdateTaskEvent {
   final String content;
   final String description;
   final int priority;
+  final String startDate;
   final String deadLine;
   final String startTimer;
   final int duration;
@@ -56,6 +59,7 @@ class ConfirmUpdateTask extends UpdateTaskEvent {
       required this.projectId,
       required this.content,
       required this.description,
+      required this.startDate,
       required this.priority,
       required this.deadLine,
       required this.startTimer,
@@ -72,15 +76,6 @@ class ConfirmUpdateTask extends UpdateTaskEvent {
         duration
       ];
 }
-
-// class CreateCommentEvent extends UpdateTaskEvent {
-//   final String comment;
-//
-//   CreateCommentEvent(this.comment);
-//
-//   @override
-//   List<Object> get props => [comment];
-// }
 
 class FetchTask extends UpdateTaskEvent {
   final String taskId;

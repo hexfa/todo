@@ -26,11 +26,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<FetchTasksEvent>((event, emit) async {
       emit(TasksLoading());
       final result =
-      await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
+          await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
 
       result.fold(
-            (failure) => emit(TasksError(failure.message)),
-            (tasks) {
+        (failure) => emit(TasksError(failure.message)),
+        (tasks) {
           emit(TasksLoaded(tasks, sectionResult));
         },
       );
@@ -38,11 +38,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     on<UpdateFetchTasksEvent>((event, emit) async {
       final result =
-      await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
+          await getTasksUseCase.call(TasksParams(event.projectId ?? ''));
 
       result.fold(
-            (failure) => emit(TasksError(failure.message)),
-            (tasks) => emit(TasksLoaded(tasks, sectionResult)),
+        (failure) => emit(TasksError(failure.message)),
+        (tasks) => emit(TasksLoaded(tasks, sectionResult)),
       );
     });
 
@@ -51,6 +51,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         id: event.taskId ?? '',
         taskData: TaskDataRequest(
           content: event.content,
+          startDate: null,
           deadLine: null,
           description: null,
           duration: 1,
@@ -61,8 +62,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         ),
       ));
       result.fold(
-            (failure) => emit(TasksError(failure.message)),
-            (task) {
+        (failure) => emit(TasksError(failure.message)),
+        (task) {
           add(UpdateFetchTasksEvent(event.projectId));
         },
       );
@@ -71,8 +72,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<DeleteEvent>((event, emit) async {
       final result = await deleteTaskUseCase.call(event.taskId ?? '');
       result.fold(
-            (failure) => emit(TasksError(failure.message)),
-            (task) {
+        (failure) => emit(TasksError(failure.message)),
+        (task) {
           add(UpdateFetchTasksEvent(event.projectId));
         },
       );
