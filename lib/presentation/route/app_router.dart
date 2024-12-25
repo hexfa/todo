@@ -21,15 +21,13 @@ class AppRouter {
 
   AppRouter({required this.storage});
 
-  final ValueNotifier<bool> refreshNotifier = ValueNotifier(false);
-
   late final GoRouter router = GoRouter(
     initialLocation: AppRoutePath.homeRoute,
     routes: [
       // Home Route
       GoRoute(
         path: AppRoutePath.homeRoute,
-        builder: (context, state) => ProjectsPage(),
+        builder: (context, state) => const ProjectsPage(),
       ),
 
       // Task List Route
@@ -50,7 +48,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutePath.taskHistory,
-        builder: (context, state) => TaskHistory(),
+        builder: (context, state) => const TaskHistory(),
       ),
       // Add Task Route
       GoRoute(
@@ -67,11 +65,12 @@ class AppRouter {
             );
           }
           return BlocProvider(
-            create: (context) => getIt<CommentBloc>()..add(FetchCommentsEvent(taskId: taskId, projectId: '')),
+            create: (context) => getIt<CommentBloc>()
+              ..add(FetchCommentsEvent(taskId: taskId, projectId: '')),
             child: BlocProvider(
               create: (context) =>
-                getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),
-            child: UpdateTaskScreen(taskId: taskId),
+                  getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),
+              child: UpdateTaskScreen(taskId: taskId),
             ),
           );
         },

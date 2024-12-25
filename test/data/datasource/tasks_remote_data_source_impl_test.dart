@@ -32,7 +32,7 @@ void main() {
       content: "Test Task",
       description: "This is a test task",
       due: null,
-      duration: DurationModel(amount: 1,unit: "unit"),
+      duration: DurationModel(amount: 1, unit: "unit"),
       id: "1",
       labels: ["label1", "label2"],
       order: 1,
@@ -101,7 +101,7 @@ void main() {
     const tDuration = 1;
     const tDurationUnit = "minute";
     const tStartTimer = "2024-09-10";
-    var tTaskDataRequest = const TaskDataRequest(
+    var tTaskDataRequest = TaskDataRequest(
         content: tContent,
         description: tDescription,
         startDate: tStartDate,

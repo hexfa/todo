@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/data/models/task_model_response.dart';
 
 abstract class TasksLocalDataSource {

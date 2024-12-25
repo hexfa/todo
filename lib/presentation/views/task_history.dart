@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/di/di.dart';
-import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
-import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
-import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/task_tile.dart';
 
 import '../bloc/task/task_event.dart';
 
@@ -43,61 +41,25 @@ class _TaskHistoryState extends BaseState<TaskHistory> {
           },
           builder: (context, state) {
             if (state is TasksLoading) {
-              return StateWidget(isLoading: true, null);
+              return const StateWidget(isLoading: true, null);
             } else if (state is TasksLoaded) {
               final filteredTasks =
                   state.tasks.where((task) => task.priority == 3).toList();
               if (filteredTasks.isEmpty) {
-                return StateWidget(isLoading: false, '');
+                return const StateWidget(isLoading: false, '');
               } else {
                 return ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: filteredTasks.length,
                   itemBuilder: (gridContext, index) {
                     final task = filteredTasks[index];
-                    return Card(
-
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        onTap: (){
-                          router.push('${AppRoutePath.updateTaskRoute}/${task.id}');
-
-                        },
-                        title: Text(
-                          task.content,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                        subtitle: Text( "${localization.totalTime} "+DateTimeConvert.formatSecondsToTime(
-                            task?.duration?.amount??0)),
-                        trailing: IconButton(
-                          onPressed: () {
-                            showCustomDialog(
-                                context: context,
-                                title: localization.confirmDeletion,
-                                content: localization.wantConfirmDeletionTask,
-                                cancelText: localization.cancel,
-                                confirmText: localization.delete,
-                                onConfirm: () {
-                                  context
-                                      .read<TasksBloc>()
-                                      .add(DeleteEvent(task.id, ''));
-                                });
-                          },
-                          icon: const Icon(
-                            Icons.delete_outline,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                      ),
-                    );
+                    return TaskTile(
+                        task: task,
+                        onDeleteConfirm: () {
+                          context
+                              .read<TasksBloc>()
+                              .add(DeleteEvent(task.id, ''));
+                        });
                   },
                 );
               }

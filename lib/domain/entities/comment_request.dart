@@ -1,9 +1,6 @@
-//comment_data_request
-
-import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/data/models/attachment_model.dart';
 
-class CommentDataEntityRequest{
+class CommentDataEntityRequest {
   final String? content;
   final String? taskId;
   final String? projectId;
@@ -17,5 +14,5 @@ class CommentDataEntityRequest{
   });
 
   @override
-  List<Object?> get props => [ content, projectId, taskId, attachment];
+  List<Object?> get props => [content, projectId, taskId, attachment];
 }

@@ -26,7 +26,8 @@ Future<void> showCustomDialog({
             },
             child: Text(
               cancelText,
-              style: TextStyle(color: primaryColor ?? theme.colorScheme.primary),
+              style:
+                  TextStyle(color: primaryColor ?? theme.colorScheme.primary),
             ),
           ),
           TextButton(
@@ -36,7 +37,8 @@ Future<void> showCustomDialog({
             },
             child: Text(
               confirmText,
-              style: TextStyle(color: primaryColor ?? theme.colorScheme.primary),
+              style:
+                  TextStyle(color: primaryColor ?? theme.colorScheme.primary),
             ),
           ),
         ],

@@ -1,13 +1,8 @@
-// lib/data/repositories/projects_repository_impl.dart
-
-import 'dart:io';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
-import 'package:todo/core/constants/constants_value.dart';
 import 'package:todo/data/datasources/local/sync_local_datasource.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
+import 'package:todo/domain/repositories/connectivity_util.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/error/failure.dart';
@@ -16,17 +11,17 @@ import '../../domain/repositories/projects_repository.dart';
 import '../datasources/local/projects_local_datasource.dart';
 import '../datasources/remote/projects_remote_datasource.dart';
 
-class ProjectsRepositoryImpl implements ProjectsRepository {
+class ProjectsRepositoryImpl
+    with ConnectivityUtil
+    implements ProjectsRepository {
   final ProjectsRemoteDataSource remoteDataSource;
   final ProjectsLocalDataSource localDataSource;
   final SyncLocalDataSource syncQueue;
-  final Connectivity connectivity;
 
   ProjectsRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.syncQueue,
-    required this.connectivity,
   });
 
   @override
@@ -48,7 +43,7 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   @override
   Future<Either<Failure, Project>> createProject(String name) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final response = await remoteDataSource.createProjects(name);
         await localDataSource.saveProject(response);
         return Right(response.toEntity());
@@ -83,32 +78,18 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   @override
   Future<Either<Failure, bool>> deleteProject(String id) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final result = await remoteDataSource.deleteProjects(id);
         await localDataSource.deleteProject(id);
         return Right(result);
       } else {
         await localDataSource.deleteProject(id);
         await syncQueue.addOperation(SyncOperation(
-            type: 'delete',
-            id: id,
-            entityType: 'project',
-            data: {}
-        ));
+            type: 'delete', id: id, entityType: 'project', data: {}));
         return const Right(true);
       }
     } catch (e) {
       return const Left(ServerFailure(message: 'Failed to delete project'));
     }
-  }
-
-  Future<bool> _isConnected() async {
-    final connectivityResult = await connectivity.checkConnectivity();
-
-    if (connectivityResult.first == ConnectivityResult.mobile || connectivityResult.first == ConnectivityResult.wifi) {
-      return true;
-    }
-
-    return false;
   }
 }

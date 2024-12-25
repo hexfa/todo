@@ -14,7 +14,7 @@ class SyncManager {
   final ProjectsLocalDataSource projectsLocalDataSource;
   final TasksLocalDataSource tasksLocalDataSource;
 
-  SyncManager( {
+  SyncManager({
     required this.syncQueue,
     required this.projectsRemoteDataSource,
     required this.tasksRemoteDataSource,
@@ -29,39 +29,41 @@ class SyncManager {
 
       try {
         if (operation.entityType == 'project') {
-
           await _syncProjectOperation(operation);
         } else if (operation.entityType == 'task') {
           await _syncTaskOperation(operation);
         }
         await syncQueue.removeOperation(i); // Remove from queue if successful
       } catch (e) {
-        print('Sync failed for operation ${operation.type} on ${operation.entityType}: $e');
+        print(
+            'Sync failed for operation ${operation.type} on ${operation.entityType}: $e');
       }
     }
   }
-  Future<void> _syncProjectOperation(SyncOperation operation) async {
 
+  Future<void> _syncProjectOperation(SyncOperation operation) async {
     switch (operation.type) {
       case 'create':
         {
           try {
-            var response = await projectsRemoteDataSource.createProjects(
-                operation.data!['name']);
+            var response = await projectsRemoteDataSource
+                .createProjects(operation.data!['name']);
             await projectsLocalDataSource.deleteProject(operation.id);
             await projectsLocalDataSource.saveProject(response);
             break;
-          }catch(e){
+          } catch (e) {
             print('create errrrrr is $e');
           }
         }
-      case 'delete':{
-        await projectsRemoteDataSource.deleteProjects(operation.id);
-        await projectsLocalDataSource.deleteProject(operation.id);
-        break;
-      }
+      case 'delete':
+        {
+          await projectsRemoteDataSource.deleteProjects(operation.id);
+          await projectsLocalDataSource.deleteProject(operation.id);
+          break;
+        }
       default:
-        throw Exception('Unknown operation type for project: ${operation.type}');
+        throw Exception(
+            'Unknown operation type for project: ${operation.type}');
     }
   }
 
@@ -89,7 +91,8 @@ class SyncManager {
     Connectivity().onConnectivityChanged.listen((result) async {
       print('sync connectivity ');
 
-      if (result.first == ConnectivityResult.mobile || result.first == ConnectivityResult.wifi) {
+      if (result.first == ConnectivityResult.mobile ||
+          result.first == ConnectivityResult.wifi) {
         print('sync connectivity true');
 
         await sync();

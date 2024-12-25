@@ -1,3 +1,4 @@
+import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/presentation/bloc/base/event_base.dart';
 
 abstract class UpdateTaskEvent extends EventBase {
@@ -9,72 +10,24 @@ class TaskLoading extends UpdateTaskEvent {}
 
 class ChangeTimer extends UpdateTaskEvent {
   final String id;
-  final String projectId;
-  final String content;
-  final String description;
-  final int priority;
-  final String startDate;
-  final String deadLine;
-  final String startTimer;
-  final int duration;
+  final TaskDataRequest task;
 
-  ChangeTimer(
-      {required this.id,
-      required this.projectId,
-      required this.content,
-      required this.description,
-      required this.priority,
-      required this.startDate,
-      required this.deadLine,
-      required this.startTimer,
-      required this.duration});
+  ChangeTimer({required this.id, required this.task});
 
   @override
-  List<Object> get props => [
-        projectId,
-        content,
-        description,
-        priority,
-        deadLine,
-        startTimer,
-        duration
-      ];
+  List<Object> get props => [id, task];
 }
 
 class UpdateTimer extends UpdateTaskEvent {}
 
 class ConfirmUpdateTask extends UpdateTaskEvent {
   final String id;
-  final String projectId;
-  final String content;
-  final String description;
-  final int priority;
-  final String startDate;
-  final String deadLine;
-  final String startTimer;
-  final int duration;
+  final TaskDataRequest task;
 
-  ConfirmUpdateTask(
-      {required this.id,
-      required this.projectId,
-      required this.content,
-      required this.description,
-      required this.startDate,
-      required this.priority,
-      required this.deadLine,
-      required this.startTimer,
-      required this.duration});
+  ConfirmUpdateTask({required this.id, required this.task});
 
   @override
-  List<Object> get props => [
-        projectId,
-        content,
-        description,
-        priority,
-        deadLine,
-        startTimer,
-        duration
-      ];
+  List<Object> get props => [id, task];
 }
 
 class FetchTask extends UpdateTaskEvent {

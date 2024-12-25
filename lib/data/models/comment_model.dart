@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../../domain/entities/comment.dart';
 import 'attachment_model.dart';
@@ -54,5 +54,3 @@ class CommentModel extends HiveObject {
     );
   }
 }
-
-

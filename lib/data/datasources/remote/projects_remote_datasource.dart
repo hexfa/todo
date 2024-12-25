@@ -4,7 +4,9 @@ import 'package:todo/services/api/project_service.dart';
 
 abstract class ProjectsRemoteDataSource {
   Future<List<ProjectModelResponse>> getProjects();
+
   Future<bool> deleteProjects(String id);
+
   Future<ProjectModelResponse> createProjects(String name);
 }
 

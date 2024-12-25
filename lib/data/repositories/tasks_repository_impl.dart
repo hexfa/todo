@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failure.dart';
 import 'package:todo/data/datasources/local/sync_local_datasource.dart';
@@ -8,10 +7,11 @@ import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
 import 'package:todo/domain/entities/task.dart';
+import 'package:todo/domain/repositories/connectivity_util.dart';
 import 'package:todo/domain/repositories/tasks_repository.dart';
 import 'package:uuid/uuid.dart';
 
-class TasksRepositoryImpl implements TasksRepository {
+class TasksRepositoryImpl with ConnectivityUtil implements TasksRepository {
   final TasksRemoteDataSource remoteDataSource;
   final TasksLocalDataSource localDataSource;
   final SyncLocalDataSource syncQueue;
@@ -45,7 +45,7 @@ class TasksRepositoryImpl implements TasksRepository {
   Future<Either<Failure, TaskEntity>> createTask(
       TaskDataRequest taskData) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final taskModel = await remoteDataSource.createTask(taskData);
         await localDataSource.saveTask(taskModel);
         return Right(taskModel.toEntity());
@@ -81,7 +81,7 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<Either<Failure, bool>> deleteTask(String id) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final result = await remoteDataSource.deleteTask(id);
         await localDataSource.deleteTask(id);
         return Right(result);
@@ -102,7 +102,7 @@ class TasksRepositoryImpl implements TasksRepository {
   @override
   Future<Either<Failure, bool>> closeTask(String id) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final result = await remoteDataSource.closeTask(id);
         await localDataSource.deleteTask(id);
         return Right(result);
@@ -134,7 +134,7 @@ class TasksRepositoryImpl implements TasksRepository {
   Future<Either<Failure, TaskEntity>> updateTask(
       TaskDataRequest taskData, String id) async {
     try {
-      if (await _isConnected()) {
+      if (await isConnected()) {
         final response = await remoteDataSource.updateTask(taskData, id);
         final tasks = await localDataSource.getTasks();
         final taskIndex = tasks.indexWhere((task) => task.id == id);
@@ -173,16 +173,5 @@ class TasksRepositoryImpl implements TasksRepository {
     } catch (e) {
       return const Left(ServerFailure(message: 'Failed to update task'));
     }
-  }
-
-  Future<bool> _isConnected() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult.first == ConnectivityResult.mobile ||
-        connectivityResult.first == ConnectivityResult.wifi) {
-      return true;
-    }
-
-    return false;
   }
 }

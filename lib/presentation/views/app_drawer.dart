@@ -11,8 +11,10 @@ import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 
 class AppDrawer extends StatefulWidget {
+  const AppDrawer({super.key});
+
   @override
-  _AppDrawerState createState() => _AppDrawerState();
+  State<AppDrawer> createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends BaseState<AppDrawer> {
@@ -51,7 +53,6 @@ class _AppDrawerState extends BaseState<AppDrawer> {
     return theme ?? false; // Provide a default value if null
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -63,144 +64,134 @@ class _AppDrawerState extends BaseState<AppDrawer> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Column(
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.only(top: 32.0),
-              child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(Assets.png.manCharacter.path),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Amir Dehdarian',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'amir.dehdarian@example.com',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // Task History
+              ListTile(
+                onTap: () {
+                  context.push(AppRoutePath.taskHistory);
+                },
+                leading: const Icon(Icons.history, color: Colors.white),
+                title: Text(
+                  localization.taskHistory,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+
+              // Dark Mode Switch
+              ListTile(
+                leading: const Icon(Icons.brightness_6, color: Colors.white),
+                title: Text(
+                  localization.darkMode,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                trailing: FutureBuilder<bool>(
+                  future: _getDarkTheme(), // Call the corrected method
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator(); // Loading indicator
+                    }
+                    final currentTheme = snapshot.data!;
+                    return ThemeSwitcher(
+                      builder: (context) {
+                        return Switch(
+                          value: currentTheme,
+                          activeColor: Colors.white,
+                          onChanged: (value) async {
+                            await storage.saveData(
+                                StorageKey.IS_DARK_THEME, value);
+                            ThemeSwitcher.of(context).changeTheme(
+                              theme: value ? darkTheme : lightTheme,
+                            );
+                            setState(() {
+                              isDarkTheme = value;
+                            });
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+
+              // Language Selector
+              ExpansionTile(
+                leading: const Icon(Icons.language, color: Colors.white),
+                title: Text(
+                  localization.language,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                trailing: Text(
+                  selectedLanguage,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white70,
+                  ),
+                ),
+                initiallyExpanded: isLanguageExpanded,
+                onExpansionChanged: (expanded) {
+                  setState(() {
+                    isLanguageExpanded = expanded;
+                  });
+                },
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(Assets.png.manCharacter.path),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Amir Dehdarian',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  ListTile(
+                    title: Text(
+                      localization.english,
+                      style: const TextStyle(color: Colors.white),
                     ),
+                    trailing: selectedLanguage == 'en'
+                        ? const Icon(Icons.check, color: Colors.white)
+                        : null,
+                    onTap: () => _changeLanguage('en'),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'amir.dehdarian@example.com',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.white70,
+                  ListTile(
+                    title: Text(
+                      localization.german,
+                      style: const TextStyle(color: Colors.white),
                     ),
+                    trailing: selectedLanguage == 'de'
+                        ? const Icon(Icons.check, color: Colors.white)
+                        : null,
+                    onTap: () => _changeLanguage('de'),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 8),
 
-            // Task History
-            ListTile(
-              onTap: () {
-                context.push(AppRoutePath.taskHistory);
-              },
-              leading: const Icon(Icons.history, color: Colors.white),
-              title: Text(
-                localization.taskHistory,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-
-            // Dark Mode Switch
-            ListTile(
-              leading: const Icon(Icons.brightness_6, color: Colors.white),
-              title: Text(
-                localization.darkMode,
-                style: const TextStyle(color: Colors.white),
-              ),
-              trailing: FutureBuilder<bool>(
-                future: _getDarkTheme(), // Call the corrected method
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator(); // Loading indicator
-                  }
-                  final currentTheme = snapshot.data!;
-                  return ThemeSwitcher(
-                    builder: (context) {
-                      return Switch(
-                        value: currentTheme,
-                        activeColor: Colors.white,
-                        onChanged: (value) async {
-                          await storage.saveData(StorageKey.IS_DARK_THEME, value);
-                          ThemeSwitcher.of(context).changeTheme(
-                            theme: value ? darkTheme : lightTheme,
-                          );
-                          setState(() {
-                            isDarkTheme = value;
-                          });
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-
-            // Language Selector
-            ExpansionTile(
-              leading: const Icon(Icons.language, color: Colors.white),
-              title: Text(
-                localization.language,
-                style: const TextStyle(color: Colors.white),
-              ),
-              trailing: Text(
-                selectedLanguage,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white70,
-                ),
-              ),
-              initiallyExpanded: isLanguageExpanded,
-              onExpansionChanged: (expanded) {
-                setState(() {
-                  isLanguageExpanded = expanded;
-                });
-              },
-              children: [
-                ListTile(
-                  title: Text(
-                    localization.english,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: selectedLanguage == 'en'
-                      ? const Icon(Icons.check, color: Colors.white)
-                      : null,
-                  onTap: () => _changeLanguage('en'),
-                ),
-                ListTile(
-                  title: Text(
-                    localization.german,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: selectedLanguage == 'de'
-                      ? const Icon(Icons.check, color: Colors.white)
-                      : null,
-                  onTap: () => _changeLanguage('de'),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // Logout
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.white),
-              title: Text(
-                localization.logout,
-                style: const TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

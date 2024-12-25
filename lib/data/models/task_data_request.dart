@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/domain/entities/task_data_request.dart';
 
@@ -18,11 +17,11 @@ class TaskDataRequest extends TaskDataEntityRequest {
   @JsonKey(name: 'due_string')
   final String? startTimer;
   @JsonKey(name: 'duration')
-  final int? duration;
+  int? duration;
   @JsonKey(name: 'duration_unit')
   final String? durationUnit;
 
-  const TaskDataRequest(
+  TaskDataRequest(
       {required this.content,
       required this.description,
       required this.startDate,

@@ -1,14 +1,9 @@
-// project_provider_impl.dart
-
 import 'package:todo/domain/entities/project.dart';
 
 import 'project_provider.dart';
 
 class ProjectProviderImpl implements ProjectProvider {
   Project? _currentProject;
-
-
-
 
   @override
   Project getProjectName() {
@@ -17,6 +12,6 @@ class ProjectProviderImpl implements ProjectProvider {
 
   @override
   void setCurrentProject(Project project) {
-    _currentProject=project;
+    _currentProject = project;
   }
 }

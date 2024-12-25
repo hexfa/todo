@@ -21,7 +21,6 @@ class UpdateTaskUseCase implements UseCase<TaskEntity, UpdateTaskParams> {
   }
 }
 
-
 class UpdateTaskParams {
   final String id;
   final TaskDataRequest taskData;

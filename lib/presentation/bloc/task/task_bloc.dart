@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/domain/entities/section.dart';
 import 'package:todo/domain/usecases/delete_task_usecase.dart';
 import 'package:todo/domain/usecases/get_tasks_usecase.dart';
 import 'package:todo/domain/usecases/update_task_usecase.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
 import 'package:todo/presentation/bloc/task/task_state.dart';
+import 'package:todo/presentation/views/task_state.dart';
 
 final sectionResult = [
-  const Section(id: '1', name: 'todo'),
-  const Section(id: '2', name: 'inProgress'),
-  const Section(id: '3', name: 'done'),
+  Section(id: '1', name: TaskState.todo.name),
+  Section(id: '2', name: TaskState.inProgress.name),
+  Section(id: '3', name: TaskState.done.name),
 ];
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
@@ -47,25 +47,18 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     });
 
     on<UpdateTaskEvent>((event, emit) async {
-      int tempDuration = event.duration == 0 ? 1 : event.duration ~/ 60;
+      int tempDuration = event.task.duration == null || event.task.duration == 0
+          ? 1
+          : event.task.duration! ~/ 60;
+      event.task.duration = tempDuration == 0 ? 1 : tempDuration;
       final result = await updateTaskUseCase.call(UpdateTaskParams(
         id: event.taskId ?? '',
-        taskData: TaskDataRequest(
-          content: event.content,
-          description: event.description,
-          startDate: event.startDate,
-          deadLine: event.deadLine,
-          priority: event.priority,
-          projectId: event.projectId,
-          duration: tempDuration == 0 ? 1 : tempDuration,
-          startTimer: event.startTimer,
-          durationUnit: 'minute',
-        ),
+        taskData: event.task,
       ));
       result.fold(
         (failure) => emit(TasksError(failure.message)),
         (task) {
-          add(UpdateFetchTasksEvent(event.projectId));
+          add(UpdateFetchTasksEvent(event.task.projectId));
         },
       );
     });

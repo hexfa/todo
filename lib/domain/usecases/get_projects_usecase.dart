@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failure.dart';
 import 'package:todo/domain/entities/project.dart';
@@ -6,7 +5,6 @@ import 'package:todo/domain/repositories/projects_repository.dart';
 
 import 'base_usecase.dart';
 import 'no_param.dart';
-
 
 class GetProjectsUseCase implements UseCase<List<Project>, NoParams> {
   final ProjectsRepository repository;
@@ -18,5 +16,3 @@ class GetProjectsUseCase implements UseCase<List<Project>, NoParams> {
     return await repository.getProjects();
   }
 }
-
-
