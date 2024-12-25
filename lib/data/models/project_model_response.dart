@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/domain/entities/project.dart';
 
@@ -70,7 +70,6 @@ class ProjectModelResponse extends HiveObject {
       _$ProjectModelResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectModelResponseToJson(this);
-
 
   Project toEntity() => Project(
         id: id,

@@ -10,11 +10,11 @@ class DeleteTaskUseCase extends UseCase<bool, String> {
   DeleteTaskUseCase(this.repository);
 
   @override
-  Future<Either<Failure, bool>> call(String id) async {
+  Future<Either<Failure, bool>> call(String params) async {
     try {
-      return await repository.deleteTask(id);
+      return await repository.deleteTask(params);
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to close task'));
+      return const Left(ServerFailure(message: 'Failed to close task'));
     }
   }
 }

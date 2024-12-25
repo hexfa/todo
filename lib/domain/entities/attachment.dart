@@ -6,7 +6,7 @@ class Attachment extends Equatable {
   final String fileUrl;
   final String resourceType;
 
-  Attachment({
+  const Attachment({
     required this.fileName,
     required this.fileType,
     required this.fileUrl,

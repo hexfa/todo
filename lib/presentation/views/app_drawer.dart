@@ -11,8 +11,10 @@ import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 
 class AppDrawer extends StatefulWidget {
+  const AppDrawer({super.key});
+
   @override
-  _AppDrawerState createState() => _AppDrawerState();
+  State<AppDrawer> createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends BaseState<AppDrawer> {
@@ -51,7 +53,6 @@ class _AppDrawerState extends BaseState<AppDrawer> {
     return theme ?? false; // Provide a default value if null
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -75,18 +76,18 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                     backgroundImage: AssetImage(Assets.png.manCharacter.path),
                   ),
                   const SizedBox(height: 12),
-                  Text(
+                  const Text(
                     'Amir Dehdarian',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  const Text(
                     'amir.dehdarian@example.com',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
                     ),
@@ -128,7 +129,8 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                         value: currentTheme,
                         activeColor: Colors.white,
                         onChanged: (value) async {
-                          await storage.saveData(StorageKey.IS_DARK_THEME, value);
+                          await storage.saveData(
+                              StorageKey.IS_DARK_THEME, value);
                           ThemeSwitcher.of(context).changeTheme(
                             theme: value ? darkTheme : lightTheme,
                           );

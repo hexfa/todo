@@ -5,7 +5,7 @@ import 'package:todo/presentation/bloc/project/project_event.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
 
 class FAB extends StatefulWidget {
-  FAB({Key? key}) : super(key: key);
+  const FAB({super.key});
 
   @override
   State<FAB> createState() => _FABState();
@@ -22,16 +22,16 @@ class _FABState extends BaseState<FAB> {
           context: buildContext,
           builder: (BuildContext dialogContext) {
             return AlertDialog(
-              title:  Text(localization?.createProject??''),
+              title: Text(localization.createProject ?? ''),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: _controller,
-                      decoration: const InputDecoration(
-                        labelText: 'Project Name',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: localization.projectName,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -45,14 +45,12 @@ class _FABState extends BaseState<FAB> {
                           _controller.clear();
                           Navigator.of(dialogContext).pop();
                         } else {
-                          ScaffoldMessenger.of(dialogContext).showSnackBar(
-                             SnackBar(
-                                content: Text(localization?.pleaseEnterProjectName??'')),
-                          );
+                          showSnackBar(
+                              localization.pleaseEnterProjectName ?? '');
                         }
                       },
                       icon: const Icon(Icons.add),
-                      label:  Text(localization?.createProject??''),
+                      label: Text(localization.createProject ?? ''),
                     ),
                   ],
                 ),
@@ -69,10 +67,10 @@ class _FABState extends BaseState<FAB> {
           width: 56, // Reduced size
           height: 56, // Reduced size
           decoration: BoxDecoration(
-            color:theme.colorScheme.primary,
+            color: theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(35), // Match with Material
           ),
-          child:  Center(
+          child: Center(
             child: Icon(
               Icons.add,
               color: theme.colorScheme.onPrimary,

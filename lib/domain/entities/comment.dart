@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import 'attachment.dart';
 
 class Comment extends Equatable {
@@ -10,7 +9,7 @@ class Comment extends Equatable {
   final String? taskId;
   final Attachment? attachment;
 
-  Comment({
+  const Comment({
     required this.id,
     required this.content,
     required this.postedAt,
@@ -20,7 +19,6 @@ class Comment extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, content, postedAt, projectId, taskId, attachment];
+  List<Object?> get props =>
+      [id, content, postedAt, projectId, taskId, attachment];
 }
-
-

@@ -24,20 +24,11 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
 
   Future<void> _onConfirmUpdateTask(
       ConfirmUpdateTask event, Emitter emit) async {
-    int tempDuration = event.duration == 0 ? 1 : event.duration ~/ 60;
+    _setUpdateDuration(event.task);
     emit(UpdateTaskLoadingState());
     final result = await updateTaskUseCase.call(UpdateTaskParams(
       id: event.id,
-      taskData: TaskDataRequest(
-          content: event.content,
-          description: event.description,
-          startDate: event.startDate,
-          deadLine: event.deadLine,
-          priority: event.priority,
-          projectId: event.projectId,
-          duration: tempDuration == 0 ? 1 : tempDuration,
-          startTimer: event.startTimer,
-          durationUnit: 'minute'),
+      taskData: event.task,
     ));
     result.fold(
         (failure) => emit(UpdateTaskErrorState(failure.message)),
@@ -77,19 +68,16 @@ class UpdateTaskBloc extends Bloc<UpdateTaskEvent, UpdateTaskState> {
   }
 
   Future<void> _onChangeTimer(ChangeTimer event, Emitter emit) async {
-    int tempDuration = event.duration ~/ 60;
+    _setUpdateDuration(event.task);
     await updateTaskUseCase.call(UpdateTaskParams(
       id: event.id,
-      taskData: TaskDataRequest(
-          content: event.content,
-          description: event.description,
-          startDate: event.startDate,
-          deadLine: event.deadLine,
-          priority: event.priority,
-          projectId: event.projectId,
-          duration: tempDuration == 0 ? 1 : tempDuration,
-          startTimer: event.startTimer,
-          durationUnit: 'minute'),
+      taskData: event.task,
     ));
+  }
+
+  void _setUpdateDuration(TaskDataRequest task) {
+    int tempDuration =
+        task.duration == null || task.duration == 0 ? 1 : task.duration! ~/ 60;
+    task.duration = tempDuration == 0 ? 1 : tempDuration;
   }
 }

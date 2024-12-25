@@ -1,10 +1,13 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/data/models/project_model_response.dart';
 
 abstract class ProjectsLocalDataSource {
   Future<void> saveProjects(List<ProjectModelResponse> projects);
+
   Future<void> saveProject(ProjectModelResponse project);
+
   Future<List<ProjectModelResponse>> getProjects();
+
   Future<void> deleteProject(String id);
 }
 
@@ -33,10 +36,6 @@ class ProjectsLocalDataSourceImpl implements ProjectsLocalDataSource {
 
   @override
   Future<void> deleteProject(String id) async {
-    print('sync delete');
-
     await projectBox.delete(id);
-    print('sync delete 2 ');
-
   }
 }

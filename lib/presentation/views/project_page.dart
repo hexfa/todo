@@ -37,8 +37,8 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
       create: (context) => getIt<ProjectsBloc>()..add(FetchProjectsEvent()),
       child: ThemeSwitchingArea(
         child: Scaffold(
-          drawer: AppDrawer(),
-          floatingActionButton: showFab ? FAB() : null,
+          drawer: const AppDrawer(),
+          floatingActionButton: showFab ? const FAB() : null,
           appBar: AppBar(
               title: Text(
             localization.projects,
@@ -47,7 +47,6 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
           )),
           body: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
-              print('state change ${state}');
               if (state is ProjectsError) {
                 context.read<ProjectsBloc>().add(FetchProjectsEvent());
               }
@@ -63,7 +62,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
             },
             builder: (context, state) {
               if (state is ProjectsLoading) {
-                return StateWidget(isLoading: true, null);
+                return const StateWidget(isLoading: true, null);
               } else if (state is ProjectsLoaded) {
                 if (state.projects.isEmpty) {
                   return StateWidget(
@@ -81,12 +80,12 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                     itemCount: state.projects.length,
                     itemBuilder: (gridContext, index) {
                       final project = state.projects[index];
-                      print("project ${project}");
                       return InkWell(
                         onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (mounted) {
-                              getIt<ProjectProvider>().setCurrentProject(project);
+                              getIt<ProjectProvider>()
+                                  .setCurrentProject(project);
                               context.push(
                                   '${AppRoutePath.taskListRoute}/${project.id}');
                             }
@@ -125,7 +124,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                                     top: 8,
                                     left: 8,
                                     child: IconButton(
-                                      icon: Icon(Icons.close,
+                                      icon: const Icon(Icons.close,
                                           color: Colors.white),
                                       onPressed: () {
                                         showCustomDialog(

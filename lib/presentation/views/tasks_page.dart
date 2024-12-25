@@ -5,6 +5,7 @@ import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
 import 'package:todo/core/util/date_time_convert.dart';
+import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/domain/entities/task.dart';
 import 'package:todo/presentation/bloc/task/task_bloc.dart';
 import 'package:todo/presentation/bloc/task/task_event.dart';
@@ -12,8 +13,8 @@ import 'package:todo/presentation/bloc/task/task_state.dart';
 import 'package:todo/presentation/route/app_router.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/base/base-state.dart';
-import 'package:todo/presentation/views/dialog.dart';
 import 'package:todo/presentation/views/state_widget.dart';
+import 'package:todo/presentation/views/task_tile.dart';
 
 class TasksPage extends StatefulWidget {
   final String projectId;
@@ -115,46 +116,13 @@ class _TasksPageState extends BaseState<TasksPage> {
                         router
                             .push('${AppRoutePath.updateTaskRoute}/${task.id}');
                       },
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            task.content,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: theme.colorScheme.onSurface,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ),
-                          subtitle: task.priority == 3
-                              ? Text("${localization.totalTime} " +
-                                  DateTimeConvert.formatSecondsToTime(
-                                      (task.duration?.amount ?? 0) * 60))
-                              : SizedBox.shrink(),
-                          trailing: IconButton(
-                            onPressed: () {
-                              showCustomDialog(
-                                  context: context,
-                                  title: localization.confirmDeletion,
-                                  content: localization.wantConfirmDeletionTask,
-                                  cancelText: localization.cancel,
-                                  confirmText: localization.delete,
-                                  onConfirm: () {
-                                    context.read<TasksBloc>().add(
-                                        DeleteEvent(task.id, widget.projectId));
-                                  });
-                            },
-                            icon: const Icon(
-                              Icons.delete_outline,
-                              color: Colors.redAccent,
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: TaskTile(
+                          task: task,
+                          onDeleteConfirm: () {
+                            context
+                                .read<TasksBloc>()
+                                .add(DeleteEvent(task.id, widget.projectId));
+                          }),
                     ),
                   );
                 }).toList(),
@@ -198,13 +166,15 @@ class _TasksPageState extends BaseState<TasksPage> {
 
     context.read<TasksBloc>().add(UpdateTaskEvent(
         task.id,
-        priority,
-        widget.projectId,
-        task.content,
-        task.description,
-        task.due?.datetime ?? '',
-        task.due?.date ?? '',
-        tempTimer,
-        tempDuration));
+        TaskDataRequest(
+            content: task.content,
+            description: task.description,
+            projectId: widget.projectId,
+            priority: priority,
+            startDate: task.due?.datetime ?? '',
+            deadLine: task.due?.date ?? '',
+            startTimer: tempTimer,
+            duration: tempDuration,
+            durationUnit: 'minute')));
   }
 }

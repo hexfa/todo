@@ -44,7 +44,6 @@ import 'package:todo/services/api/dio_client.dart';
 import 'package:todo/services/api/project_service.dart';
 
 import '../../domain/usecases/get_tasks_usecase.dart';
-import '../../presentation/bloc/task/task_bloc.dart';
 import '../../presentation/views/task/create/project_provider.dart';
 import '../../presentation/views/task/create/project_provider_impl.dart';
 
@@ -79,7 +78,6 @@ Future<void> setupLocator(String token) async {
   getIt.registerSingleton<Box<CommentModel>>(commentBox);
   getIt.registerSingleton<Box<AttachmentModel>>(attachmentBox);
 
-
   getIt.registerSingleton<ProjectProvider>(ProjectProviderImpl());
 
   // Register data sources
@@ -105,11 +103,10 @@ Future<void> setupLocator(String token) async {
   getIt.registerSingleton<Connectivity>(Connectivity());
 
   getIt.registerLazySingleton<ProjectsRepository>(() => ProjectsRepositoryImpl(
-      remoteDataSource: getIt<ProjectsRemoteDataSource>(),
-      localDataSource: getIt<ProjectsLocalDataSource>(),
-      syncQueue: getIt<SyncLocalDataSource>(),
-    connectivity: getIt<Connectivity>(),
-  ));
+        remoteDataSource: getIt<ProjectsRemoteDataSource>(),
+        localDataSource: getIt<ProjectsLocalDataSource>(),
+        syncQueue: getIt<SyncLocalDataSource>(),
+      ));
 
   getIt.registerLazySingleton<TasksRepository>(
     () => TasksRepositoryImpl(

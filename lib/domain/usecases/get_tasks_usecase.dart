@@ -14,7 +14,9 @@ class GetTasksUseCase extends UseCase<List<TaskEntity>, TasksParams> {
     return await repository.getTasks(params.projectId);
   }
 }
+
 class TasksParams {
   String projectId;
+
   TasksParams(this.projectId);
 }

@@ -21,7 +21,7 @@ void main() {
   });
 
   const tId = "2995104339";
-  var tTaskDataRequest = const TaskDataRequest(
+  var tTaskDataRequest = TaskDataRequest(
       content: "Buy Coffee",
       description: "Description of by coffee",
       startDate: "2024-12-18",

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Colors for Light Theme
- Color primaryColor = Colors.deepPurple.shade200;
+Color primaryColor = Colors.deepPurple.shade200;
 const Color onPrimaryColor = Colors.white;
 const Color cardColor = Colors.white;
 const Color onCardColor = Colors.black87;
@@ -13,10 +13,10 @@ const Color errorColor = Color(0xffff3969);
 const Color onErrorColor = Colors.white;
 
 // Colors for Dark Theme
- Color darkPrimaryColor = Colors.deepPurple.shade500;
+Color darkPrimaryColor = Colors.deepPurple.shade500;
 const Color darkOnPrimaryColor = Colors.white;
 const Color darkCardColor = Colors.black45;
- Color darkBackgroundColor = Colors.grey.shade800;
+Color darkBackgroundColor = Colors.grey.shade800;
 const Color darkErrorColor = Color(0xffff6767);
 const Color darkOnErrorColor = Colors.black;
 
@@ -33,13 +33,13 @@ final List<Color> gradiantColors = [
 
 Color getRandomColor(BuildContext context) {
   var random = Random();
-    return gradiantColors[random.nextInt(gradiantColors.length)];
-
+  return gradiantColors[random.nextInt(gradiantColors.length)];
 }
+
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   scaffoldBackgroundColor: backgroundColor,
-  appBarTheme:  AppBarTheme(
+  appBarTheme: AppBarTheme(
     color: primaryColor,
     foregroundColor: onPrimaryColor,
   ),
@@ -87,8 +87,7 @@ final ThemeData lightTheme = ThemeData(
     contentPadding: const EdgeInsets.all(16),
   ),
   cardColor: cardColor,
-
-  colorScheme:  ColorScheme.light(
+  colorScheme: ColorScheme.light(
     primary: primaryColor,
     onPrimary: onPrimaryColor,
     surface: backgroundColor,
@@ -118,7 +117,7 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   useMaterial3: true,
   scaffoldBackgroundColor: darkBackgroundColor,
-  appBarTheme:  AppBarTheme(
+  appBarTheme: AppBarTheme(
     color: darkPrimaryColor,
     foregroundColor: darkOnPrimaryColor,
   ),
@@ -126,7 +125,6 @@ final ThemeData darkTheme = ThemeData(
     color: darkCardColor,
     elevation: 2,
   ),
-
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: darkPrimaryColor,
@@ -162,8 +160,8 @@ final ThemeData darkTheme = ThemeData(
     ),
     contentPadding: const EdgeInsets.all(16),
   ),
-cardColor: darkCardColor,
-  colorScheme:  ColorScheme.dark(
+  cardColor: darkCardColor,
+  colorScheme: ColorScheme.dark(
     primary: darkPrimaryColor,
     onPrimary: darkOnPrimaryColor,
     surface: darkBackgroundColor,
@@ -173,19 +171,19 @@ cardColor: darkCardColor,
   ),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.roboto(color: Colors.white),
-    displayMedium: GoogleFonts.roboto(color:  Colors.white),
-    displaySmall: GoogleFonts.roboto(color:  Colors.white),
-    headlineLarge: GoogleFonts.roboto(color:  Colors.white),
-    headlineMedium: GoogleFonts.roboto(color:  Colors.white),
-    headlineSmall: GoogleFonts.roboto(color:  Colors.white),
-    titleLarge: GoogleFonts.roboto(color:  Colors.white),
-    titleMedium: GoogleFonts.roboto(color:  Colors.white),
-    titleSmall: GoogleFonts.roboto(color:  Colors.white),
-    bodyLarge: GoogleFonts.roboto(color:  Colors.white),
-    bodyMedium: GoogleFonts.roboto(color:  Colors.white),
-    bodySmall: GoogleFonts.roboto(color:  Colors.white),
-    labelLarge: GoogleFonts.roboto(color:  Colors.white),
-    labelMedium: GoogleFonts.roboto(color:  Colors.white),
-    labelSmall: GoogleFonts.roboto(color:  Colors.white),
+    displayMedium: GoogleFonts.roboto(color: Colors.white),
+    displaySmall: GoogleFonts.roboto(color: Colors.white),
+    headlineLarge: GoogleFonts.roboto(color: Colors.white),
+    headlineMedium: GoogleFonts.roboto(color: Colors.white),
+    headlineSmall: GoogleFonts.roboto(color: Colors.white),
+    titleLarge: GoogleFonts.roboto(color: Colors.white),
+    titleMedium: GoogleFonts.roboto(color: Colors.white),
+    titleSmall: GoogleFonts.roboto(color: Colors.white),
+    bodyLarge: GoogleFonts.roboto(color: Colors.white),
+    bodyMedium: GoogleFonts.roboto(color: Colors.white),
+    bodySmall: GoogleFonts.roboto(color: Colors.white),
+    labelLarge: GoogleFonts.roboto(color: Colors.white),
+    labelMedium: GoogleFonts.roboto(color: Colors.white),
+    labelSmall: GoogleFonts.roboto(color: Colors.white),
   ),
 );

@@ -2,21 +2,12 @@ part of 'create_task_bloc.dart';
 
 abstract class CreateTaskState extends StateBase {}
 
-final class AddTaskInitial extends CreateTaskState {
+final class CreateTaskInitial extends CreateTaskState {
   @override
   List<Object> get props => [];
 }
 
-final class InitialDataState extends CreateTaskState {
-  final List<Project> projectList;
-
-  InitialDataState(this.projectList);
-
-  @override
-  List<Object> get props => [projectList];
-}
-
-final class AddSuccessState extends CreateTaskState {
+final class CreateTaskSuccessState extends CreateTaskState {
   @override
   List<Object> get props => [];
 }
