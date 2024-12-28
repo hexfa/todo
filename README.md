@@ -117,7 +117,7 @@ Below are examples of the app's user interface and features:
 
 - ### Online Document
     
-    **` you can see the first document version of the project on this link`** [Documentation][doc].
+    **` you can see the first document version of the project on this link`** [Documentation](https://hexfa.com/my-git-doc/todoist).
 
 
 ## Resources ℹ️
