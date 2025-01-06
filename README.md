@@ -148,4 +148,11 @@ I welcome contributions from the community. To contribute:
 5. Submit a pull request with detailed information about your changes.
 
 
+## Troubleshooting Clone Issues
+If you encounter any issues while cloning the repository, you can use the following command as an alternative:
+
+git clone https://<your-username>:<your-personal-access-token>@github.com/hexfa/todo.git
+
+
+
 
