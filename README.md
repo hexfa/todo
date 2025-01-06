@@ -151,7 +151,7 @@ I welcome contributions from the community. To contribute:
 ## Troubleshooting Clone Issues
 If you encounter any issues while cloning the repository, you can use the following command as an alternative:
 
-'git clone https://<your-username>:<your-personal-access-token>@github.com/hexfa/todo.git'
+git clone https://&lt;your-username&gt;:&lt;your-personal-access-token&gt;@github.com/hexfa/todo.git
 
 
 
