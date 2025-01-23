@@ -39,7 +39,7 @@ The app is built with the following technologies:
 - **Dart**: Programming language optimized for fast development and expressive UI.
 
 ### State Management and Dependencies:
-- **Flutter Bloc**: Efficient state management solution.
+- **Flutter BLoC**: Efficient state management solution.
 - **GetIt**: Dependency injection and service locator.
 
 ### Networking and APIs:
@@ -117,14 +117,14 @@ Below are examples of the app's user interface and features:
 
 - ### Online Document
     
-    **` you can see the first document version of the project on this link`** [Documentation](https://hexfa.com/my-git-doc/todoist).
+    **` You can see the first document version of the project on this link`** [Documentation](https://hexfa.com/my-git-doc/todoist).
 
 
 ## Resources ℹ️
 
 - **Todoist API Documentation**: [Todoist API](https://developer.todoist.com/rest/v2/#overview).
 - **Localization**: [Flutter Intl Package](https://pub.dev/packages/intl).
-- **State Management**: [Flutter Bloc Documentation](https://bloclibrary.dev/#/).
+- **State Management**: [Flutter BLoC Documentation](https://bloclibrary.dev/#/).
 - **Clean Architecture**: Based on [Uncle Bob’s Clean Architecture](https://blog.cleancoder.com/).
 
 ---
